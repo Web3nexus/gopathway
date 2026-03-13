@@ -46,6 +46,10 @@ export function LoginForm({
       const response = await authService.login(values);
       const user = response.data.user;
 
+      if (!user) {
+        throw new Error('Invalid response from server.');
+      }
+
       // Update the user cache immediately with the new structure
       queryClient.setQueryData(['user'], {
         user: user,
@@ -57,18 +61,16 @@ export function LoginForm({
       // Check for admin role
       const isAdmin = user?.roles?.some((role: any) => role.name === 'admin');
       
-      // Use window.location.href for a full page reload to ensure 
-      // the session cookie is properly established before ProtectedRoute checks auth
       if (isAdmin) {
-        window.location.href = '/securegate';
+        navigate('/securegate');
       } else {
-        window.location.href = '/dashboard';
+        navigate('/dashboard');
       }
     } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: error.response?.data?.message || 'Failed to log in.',
+        description: error.response?.data?.message || error.message || 'Failed to log in.',
       });
     } finally {
       setIsLoading(false);

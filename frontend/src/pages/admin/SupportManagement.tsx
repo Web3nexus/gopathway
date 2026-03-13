@@ -31,7 +31,7 @@ export default function SupportManagement() {
     const { data: conversations, isLoading: listLoading } = useQuery({
         queryKey: ['admin', 'support'],
         queryFn: async () => {
-            const res = await api.get('/v1/admin/support');
+            const res = await api.get('/api/v1/admin/support');
             return res.data.data;
         }
     });
@@ -40,7 +40,7 @@ export default function SupportManagement() {
     const { data: detailData, isLoading: detailLoading } = useQuery({
         queryKey: ['admin', 'support', selectedId],
         queryFn: async () => {
-            const res = await api.get(`/v1/admin/support/${selectedId}`);
+            const res = await api.get(`/api/v1/admin/support/${selectedId}`);
             return res.data.data;
         },
         enabled: !!selectedId
@@ -48,7 +48,7 @@ export default function SupportManagement() {
 
     const replyMutation = useMutation({
         mutationFn: async (body: string) => {
-            const res = await api.post(`/v1/admin/support/${selectedId}/reply`, { body });
+            const res = await api.post(`/api/v1/admin/support/${selectedId}/reply`, { body });
             return res.data;
         },
         onSuccess: () => {

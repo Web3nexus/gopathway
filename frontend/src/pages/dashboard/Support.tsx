@@ -58,7 +58,7 @@ export default function Support() {
         }
         setSending(true);
         try {
-            await api.post('/v1/support', {
+            await api.post('/api/v1/support', {
                 subject: contactForm.subject,
                 message: contactForm.message
             });

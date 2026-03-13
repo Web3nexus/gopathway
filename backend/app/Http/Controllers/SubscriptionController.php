@@ -9,17 +9,11 @@ use App\Services\CurrencyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
-use Illuminate\Support\Facades\Log;
 use App\Models\Setting;
 use App\Services\FlutterwaveService;
 
 class SubscriptionController extends Controller
 {
-    protected PaystackService $paystackService;
-    protected \App\Services\ReferralService $referralService;
-    protected CurrencyService $currencyService;
-
     protected PaystackService $paystackService;
     protected FlutterwaveService $flutterwaveService;
     protected \App\Services\ReferralService $referralService;

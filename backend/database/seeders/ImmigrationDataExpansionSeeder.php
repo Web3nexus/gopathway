@@ -41,7 +41,7 @@ class ImmigrationDataExpansionSeeder extends Seeder
             [
                 'name'        => 'Ireland',
                 'description' => 'A vibrant English-speaking EU country with world-class tech companies and a thriving expat scene.',
-                'image_url'   => 'https://images.unsplash.com/photo-1564959130747-897fb406b9af?q=80&w=2670&auto=format&fit=crop',
+                'image_url'   => 'https://images.unsplash.com/photo-1564959130747-897fb406b9af?q=80&w=1200&auto=format&fit=crop',
             ]
         );
 
@@ -118,7 +118,7 @@ class ImmigrationDataExpansionSeeder extends Seeder
             [
                 'name'        => 'Australia',
                 'description' => 'One of the world\'s most popular immigration destinations with clear pathways to permanent residency.',
-                'image_url'   => 'https://images.unsplash.com/photo-1523428096881-5bd79d043006?q=80&w=2670&auto=format&fit=crop',
+                'image_url'   => 'https://images.unsplash.com/photo-1523428096881-5bd79d043006?q=80&w=1200&auto=format&fit=crop',
             ]
         );
 
@@ -196,7 +196,7 @@ class ImmigrationDataExpansionSeeder extends Seeder
             [
                 'name'        => 'New Zealand',
                 'description' => 'A breathtaking country with open immigration policies and a high quality of life.',
-                'image_url'   => 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?q=80&w=2671&auto=format&fit=crop',
+                'image_url'   => 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?q=80&w=1200&auto=format&fit=crop',
             ]
         );
 
@@ -271,7 +271,7 @@ class ImmigrationDataExpansionSeeder extends Seeder
             [
                 'name'        => 'Netherlands',
                 'description' => 'A progressive, international country and gateway to Europe with a strong English-speaking workforce.',
-                'image_url'   => 'https://images.unsplash.com/photo-1576924542622-772281b13aa6?q=80&w=2670&auto=format&fit=crop',
+                'image_url'   => 'https://images.unsplash.com/photo-1576924542622-772281b13aa6?q=80&w=1200&auto=format&fit=crop',
             ]
         );
 
@@ -421,7 +421,7 @@ class ImmigrationDataExpansionSeeder extends Seeder
             [
                 'name'        => 'Italy',
                 'description' => 'Rich in culture, history, and opportunity with affordable living costs and EU access.',
-                'image_url'   => 'https://images.unsplash.com/photo-1515542622106-078bda69bf98?q=80&w=2670&auto=format&fit=crop',
+                'image_url'   => 'https://images.unsplash.com/photo-1515542622106-078bda69bf98?q=80&w=1200&auto=format&fit=crop',
             ]
         );
 
@@ -476,7 +476,7 @@ class ImmigrationDataExpansionSeeder extends Seeder
             [
                 'name'        => 'Sweden',
                 'description' => 'A progressive, innovative Scandinavian nation with free public education and excellent work-life balance.',
-                'image_url'   => 'https://images.unsplash.com/photo-1509356843151-3e7d96241e11?q=80&w=2670&auto=format&fit=crop',
+                'image_url'   => 'https://images.unsplash.com/photo-1509356843151-3e7d96241e11?q=80&w=1200&auto=format&fit=crop',
             ]
         );
 
@@ -529,7 +529,7 @@ class ImmigrationDataExpansionSeeder extends Seeder
             [
                 'name'        => 'Finland',
                 'description' => 'Ranked the world\'s happiest country, with free higher education and a tech-forward economy.',
-                'image_url'   => 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?q=80&w=2670&auto=format&fit=crop',
+                'image_url'   => 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?q=80&w=1200&auto=format&fit=crop',
             ]
         );
 
@@ -602,7 +602,7 @@ class ImmigrationDataExpansionSeeder extends Seeder
             [
                 'name'        => 'Norway',
                 'description' => 'A wealthy Nordic nation with free public universities and one of the highest living standards globally.',
-                'image_url'   => 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=2670&auto=format&fit=crop',
+                'image_url'   => 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=1200&auto=format&fit=crop',
             ]
         );
 
@@ -654,7 +654,7 @@ class ImmigrationDataExpansionSeeder extends Seeder
             [
                 'name'        => 'Austria',
                 'description' => 'A central European gem with world-class universities, strong economy, and high quality of life.',
-                'image_url'   => 'https://images.unsplash.com/photo-1609347644591-4b4d01c1d28c?q=80&w=2670&auto=format&fit=crop',
+                'image_url'   => 'https://images.unsplash.com/photo-1609347644591-4b4d01c1d28c?q=80&w=1200&auto=format&fit=crop',
             ]
         );
 

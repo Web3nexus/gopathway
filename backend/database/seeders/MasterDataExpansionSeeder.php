@@ -62,7 +62,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'GB'], [
             'name' => 'United Kingdom',
             'description' => 'A global hub for education, technology, and finance with diverse immigration routes.',
-            'image_url' => 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -114,7 +114,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'CA'], [
             'name' => 'Canada',
             'description' => 'Vast, welcoming, and high-quality living with clear permanent residency paths.',
-            'image_url' => 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?q=80&w=2524&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -162,7 +162,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'DE'], [
             'name' => 'Germany',
             'description' => 'Europe\'s powerhouse with free education and a high demand for skilled professionals.',
-            'image_url' => 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -206,7 +206,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'NL'], [
             'name' => 'Netherlands',
             'description' => 'Innovative, English-friendly, and a gateway to the European market.',
-            'image_url' => 'https://images.unsplash.com/photo-1576924542622-772281b13aa6?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1576924542622-772281b13aa6?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -237,7 +237,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'AU'], [
             'name' => 'Australia',
             'description' => 'Sunshine, high wages, and a points-based system built for skilled immigrants.',
-            'image_url' => 'https://images.unsplash.com/photo-1523428096881-5bd79d043006?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1523428096881-5bd79d043006?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -299,7 +299,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'IE'], [
             'name' => 'Ireland',
             'description' => 'The English-speaking heart of the EU, perfect for tech and finance professionals.',
-            'image_url' => 'https://images.unsplash.com/photo-1564959130747-897fb406b9af?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1564959130747-897fb406b9af?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -318,7 +318,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'ES'], [
             'name' => 'Spain',
             'description' => 'Warm weather, rich culture, and the popular Digital Nomad Visa.',
-            'image_url' => 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -338,7 +338,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'PT'], [
             'name' => 'Portugal',
             'description' => 'One of Europe\'s most peaceful countries with diverse residency options.',
-            'image_url' => 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -358,7 +358,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'FR'], [
             'name' => 'France',
             'description' => 'Culture, career, and a high standard of public security and support.',
-            'image_url' => 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2673&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -377,7 +377,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'IT'], [
             'name' => 'Italy',
             'description' => 'Affordable living, deep history, and new pathways for remote workers.',
-            'image_url' => 'https://images.unsplash.com/photo-1515542622106-078bda69bf98?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1515542622106-078bda69bf98?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -396,7 +396,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'SE'], [
             'name' => 'Sweden',
             'description' => 'Innovation hub with radical work-life balance and social equality.',
-            'image_url' => 'https://images.unsplash.com/photo-1509356843151-3e7d96241e11?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1509356843151-3e7d96241e11?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -415,7 +415,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'FI'], [
             'name' => 'Finland',
             'description' => 'The world\'s happiest country with free high-level education.',
-            'image_url' => 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -434,7 +434,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'NO'], [
             'name' => 'Norway',
             'description' => 'Stunning nature and safe society with high job security.',
-            'image_url' => 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [
@@ -452,7 +452,7 @@ class MasterDataExpansionSeeder extends Seeder
         $country = Country::updateOrCreate(['code' => 'AT'], [
             'name' => 'Austria',
             'description' => 'Central European quality of life with excellent connectivity.',
-            'image_url' => 'https://images.unsplash.com/photo-1609347644591-4b4d01c1d28c?q=80&w=2670&auto=format&fit=crop',
+            'image_url' => 'https://images.unsplash.com/photo-1609347644591-4b4d01c1d28c?q=80&w=1200&auto=format&fit=crop',
         ]);
 
         $pathways = [

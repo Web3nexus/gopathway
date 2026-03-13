@@ -13,6 +13,6 @@ export const featureService = {
     adminGetPlatformFeatures: () =>
         api.get('/api/v1/admin/platform-features').then(r => r.data.data),
 
-    adminTogglePlatformFeature: (id: number, data: { is_active: boolean }) =>
+    adminTogglePlatformFeature: (id: number, data: { is_active?: boolean; is_premium?: boolean }) =>
         api.put(`/api/v1/admin/platform-features/${id}`, data).then(r => r.data.data),
 };

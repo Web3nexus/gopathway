@@ -4,8 +4,8 @@ export const aiChatService = {
     getChats: () =>
         api.get('/api/v1/ai-chats').then(res => res.data),
 
-    createChat: (title?: string) =>
-        api.post('/api/v1/ai-chats', { title }).then(res => res.data),
+    createChat: (data: { title?: string }) =>
+        api.post('/api/v1/ai-chats', data).then(res => res.data),
 
     getMessages: (chatId: number) =>
         api.get(`/api/v1/ai-chats/${chatId}`).then(res => res.data),

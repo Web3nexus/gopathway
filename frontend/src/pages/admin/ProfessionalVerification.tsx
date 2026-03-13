@@ -9,7 +9,8 @@ import {
     Calendar,
     FileText,
     Loader2,
-    Search
+    Search,
+    Briefcase
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';

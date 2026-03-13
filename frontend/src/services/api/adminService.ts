@@ -99,4 +99,9 @@ export const adminService = {
     // Residency Rules
     getResidencyRules: (countryId: number) => api.get(`/api/v1/residency-rules/${countryId}`).then(r => r.data.data),
     updateResidencyRules: (countryId: number, data: any) => api.post(`/api/v1/admin/residency-rules/${countryId}`, data).then(r => r.data.data),
+
+    // CV Templates
+    createCvTemplate: (data: any) => api.post('/api/v1/admin/cv-templates', data).then(r => r.data.data),
+    updateCvTemplate: (id: number, data: any) => api.put(`/api/v1/admin/cv-templates/${id}`, data).then(r => r.data.data),
+    deleteCvTemplate: (id: number) => api.delete(`/api/v1/admin/cv-templates/${id}`).then(r => r.data.data),
 };

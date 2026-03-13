@@ -10,10 +10,11 @@ import { useCountries } from '@/hooks/useCountries';
 import { useQuery } from '@tanstack/react-query';
 import { planService } from '@/services/api/planService';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import { useState } from 'react';
 import { WorldConnectionMap } from '@/components/landing/WorldConnectionMap';
 
-const containerVariants = {
+const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
@@ -24,7 +25,7 @@ const containerVariants = {
     }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } }
 };

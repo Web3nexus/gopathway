@@ -36,13 +36,16 @@ export default function Billing() {
         }
     }, [reference, transactionId, gateway]);
 
-    const { data: subscription, isLoading: subLoading } = useQuery({
+    const { data: billingInfo, isLoading: subLoading } = useQuery({
         queryKey: ['current-subscription'],
         queryFn: async () => {
-            const res = await billingService.getCurrentSubscription();
-            return res.data;
+            return await billingService.getCurrentSubscription();
         }
     });
+
+    const subscription = billingInfo?.data;
+    const activeGateway = billingInfo?.active_gateway || 'paystack';
+    const gatewayName = activeGateway.charAt(0).toUpperCase() + activeGateway.slice(1);
 
     const { data: history, isLoading: historyLoading } = useQuery({
         queryKey: ['billing-history'],
@@ -118,10 +121,10 @@ export default function Billing() {
                             <CreditCard className="w-5 h-5 text-blue-400" />
                             <h4 className="font-bold">Payment Method</h4>
                         </div>
-                        <p className="text-slate-400 text-xs mb-4">Payments are processed securely via Paystack.</p>
+                        <p className="text-slate-400 text-xs mb-4">Payments are processed securely via {gatewayName}.</p>
                         <div className="p-4 bg-white/5 rounded-xl border border-white/10 text-sm text-center">
-                            <p className="text-slate-300 font-medium">Managed by Paystack</p>
-                            <p className="text-[10px] text-slate-500 mt-1">Card details are stored securely on Paystack's servers</p>
+                            <p className="text-slate-300 font-medium">Managed by {gatewayName}</p>
+                            <p className="text-[10px] text-slate-500 mt-1">Card details are stored securely on {gatewayName}'s servers</p>
                         </div>
                         <Button variant="ghost" onClick={() => navigate('/pricing')} className="w-full mt-4 text-xs hover:bg-white/5 hover:text-white">
                             Change Plan
@@ -156,7 +159,11 @@ export default function Billing() {
                             </div>
                         )}
 
-                        <Button variant="link" className="w-full mt-2 text-xs text-blue-600">
+                        <Button 
+                            variant="link" 
+                            className="w-full mt-2 text-xs text-blue-600"
+                            onClick={() => billingService.downloadHistory()}
+                        >
                             Download All Invoices
                         </Button>
                     </div>

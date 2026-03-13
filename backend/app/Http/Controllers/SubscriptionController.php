@@ -110,9 +110,52 @@ class SubscriptionController extends Controller
                 ->first();
         }
 
+        $activeGateway = Setting::where('key', 'payment_gateway_active')->value('value') ?: 'paystack';
+
         return response()->json([
-            'data' => $subscription
+            'data' => $subscription,
+            'active_gateway' => $activeGateway
         ]);
+    }
+
+    /**
+     * Download all invoices as CSV.
+     */
+    public function downloadInvoices(Request $request)
+    {
+        $user = $request->user();
+        $logs = $user->paymentLogs()->latest()->get();
+
+        $filename = "invoices_" . date('Y-m-d') . ".csv";
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+
+        $columns = ['Date', 'Plan', 'Amount', 'Currency', 'Reference', 'Status'];
+
+        $callback = function() use($logs, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($logs as $log) {
+                fputcsv($file, [
+                    $log->created_at->format('Y-m-d H:i'),
+                    $log->plan_name,
+                    $log->amount,
+                    $log->currency,
+                    $log->reference,
+                    $log->status
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     /**

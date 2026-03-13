@@ -9,4 +9,7 @@ export const billingService = {
         return api.get(`/api/v1/billing/verify?${queryParams}`).then(r => r.data);
     },
     getHistory: () => api.get('/api/v1/billing/history').then(r => r.data),
+    downloadHistory: () => {
+        window.open(`${api.defaults.baseURL}api/v1/billing/history/download`, '_blank');
+    },
 };

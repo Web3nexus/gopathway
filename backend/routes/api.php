@@ -109,6 +109,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/billing/subscribe', [SubscriptionController::class , 'subscribe']);
             Route::get('/billing/verify', [SubscriptionController::class , 'verify']);
             Route::get('/billing/history', [SubscriptionController::class , 'history']);
+            Route::get('/billing/history/download', [SubscriptionController::class , 'downloadInvoices']);
 
             // Documents
             Route::get('/documents', [DocumentController::class , 'index']);

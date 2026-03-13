@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && mv ../backend/public/index.html ../backend/public/frontend.html",
     "lint": "eslint .",
     "preview": "vite preview"
   },

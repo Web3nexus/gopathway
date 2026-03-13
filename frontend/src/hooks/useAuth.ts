@@ -18,6 +18,7 @@ export function useAuth() {
             }
         },
         retry: false,
+        staleTime: 30 * 1000, // 30s - prevents immediate refetch after login sets the cache
     });
 
     const logoutMutation = useMutation({

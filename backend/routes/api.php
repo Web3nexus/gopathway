@@ -56,6 +56,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/referral/track/{code}', [\App\Http\Controllers\Api\ReferralController::class , 'trackClick']);
 
     Route::post('/webhooks/paystack', [WebhookController::class , 'handle']);
+    Route::post('/webhooks/flutterwave', [WebhookController::class , 'handleFlutterwave']);
 
     Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 

@@ -113,6 +113,47 @@ class SettingSeeder extends Seeder
                 'label' => 'Label: Roadmap Title',
                 'description' => 'Title of the timeline steps section.',
             ],
+            // Payments
+            [
+                'key' => 'payment_gateway_active',
+                'value' => 'paystack', // Options: 'paystack', 'flutterwave', 'both'
+                'group' => 'payment',
+                'type' => 'string',
+                'label' => 'Active Gateway',
+                'description' => 'Select which gateway to use for checkout (paystack, flutterwave, both).',
+            ],
+            [
+                'key' => 'paystack_public_key',
+                'value' => '',
+                'group' => 'payment',
+                'type' => 'string',
+                'label' => 'Paystack Public Key',
+                'description' => 'Public API key for Paystack.',
+            ],
+            [
+                'key' => 'paystack_secret_key',
+                'value' => '',
+                'group' => 'payment',
+                'type' => 'encrypted_string',
+                'label' => 'Paystack Secret Key',
+                'description' => 'Secret API key for Paystack.',
+            ],
+            [
+                'key' => 'flutterwave_public_key',
+                'value' => '',
+                'group' => 'payment',
+                'type' => 'string',
+                'label' => 'Flutterwave Public Key',
+                'description' => 'Public API key for Flutterwave.',
+            ],
+            [
+                'key' => 'flutterwave_secret_key',
+                'value' => '',
+                'group' => 'payment',
+                'type' => 'encrypted_string',
+                'label' => 'Flutterwave Secret Key',
+                'description' => 'Secret API key for Flutterwave.',
+            ],
         ];
 
         foreach ($settings as $setting) {

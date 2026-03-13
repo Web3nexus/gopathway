@@ -10,19 +10,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Facades\Log;
+use App\Models\Setting;
+use App\Services\FlutterwaveService;
+
 class SubscriptionController extends Controller
 {
     protected PaystackService $paystackService;
     protected \App\Services\ReferralService $referralService;
     protected CurrencyService $currencyService;
 
+    protected PaystackService $paystackService;
+    protected FlutterwaveService $flutterwaveService;
+    protected \App\Services\ReferralService $referralService;
+    protected CurrencyService $currencyService;
+
     public function __construct(
         PaystackService $paystackService,
+        FlutterwaveService $flutterwaveService,
         \App\Services\ReferralService $referralService,
         CurrencyService $currencyService
         )
     {
         $this->paystackService = $paystackService;
+        $this->flutterwaveService = $flutterwaveService;
         $this->referralService = $referralService;
         $this->currencyService = $currencyService;
     }
@@ -72,9 +83,18 @@ class SubscriptionController extends Controller
             ];
         });
 
+        $activeGateway = Setting::where('key', 'payment_gateway_active')->value('value') ?: 'paystack';
+        $paystackKey = Setting::where('key', 'paystack_public_key')->value('value') ?: env('PAYSTACK_PUBLIC_KEY', '');
+        $flutterwaveKey = Setting::where('key', 'flutterwave_public_key')->value('value') ?: env('FLUTTERWAVE_PUBLIC_KEY', '');
+
         return response()->json([
             'data' => $plans,
-            'detected_currency' => $targetCurrency
+            'detected_currency' => $targetCurrency,
+            'gateways' => [
+                'active' => $activeGateway,
+                'paystack_public' => $paystackKey,
+                'flutterwave_public' => $flutterwaveKey,
+            ]
         ]);
     }
 
@@ -109,6 +129,7 @@ class SubscriptionController extends Controller
         $validated = $request->validate([
             'plan_id' => 'required|exists:subscription_plans,id',
             'currency' => 'nullable|string|size:3',
+            'gateway' => 'nullable|string|in:paystack,flutterwave',
         ]);
 
         $plan = SubscriptionPlan::find($validated['plan_id']);
@@ -145,27 +166,52 @@ class SubscriptionController extends Controller
             $amount = $plan->price * $rate;
         }
 
-        // Paystack supports NGN, GHS, KES, ZAR, and USD (if configured)
-        // For others, we might want to default to USD, but let's try the target first.
+        $gatewayChoice = $validated['gateway'] ?? Setting::where('key', 'payment_gateway_active')->value('value') ?? 'paystack';
+        if ($gatewayChoice === 'both') {
+            $gatewayChoice = 'paystack'; // Default to paystack if not explicitly sent when both are active
+        }
 
         try {
-            $checkoutData = $this->paystackService->initializeTransaction([
-                'email' => $user->email,
-                'amount' => (int)($amount * 100), // Kobo / Cents
-                'currency' => $targetCurrency,
-                'callback_url' => config('app.frontend_url') . '/billing/verify',
-                'metadata' => [
-                    'plan_id' => $plan->id,
-                    'user_id' => $user->id,
-                    'original_amount' => $amount,
-                    'original_currency' => $targetCurrency,
-                ],
-            ]);
+            if ($gatewayChoice === 'flutterwave') {
+                $checkoutData = $this->flutterwaveService->initializeTransaction([
+                    'tx_ref' => 'sub_' . uniqid() . '_' . time(),
+                    'amount' => $amount,
+                    'currency' => $targetCurrency,
+                    'redirect_url' => config('app.frontend_url') . '/billing/verify?gateway=flutterwave',
+                    'customer' => [
+                        'email' => $user->email,
+                        'name' => $user->name,
+                    ],
+                    'meta' => [
+                        'plan_id' => $plan->id,
+                        'user_id' => $user->id,
+                        'original_amount' => $amount,
+                        'original_currency' => $targetCurrency,
+                    ],
+                    'customizations' => [
+                        'title' => 'GoPathway Subscription',
+                        'description' => $plan->name . ' Plan',
+                    ]
+                ]);
+            } else {
+                $checkoutData = $this->paystackService->initializeTransaction([
+                    'email' => $user->email,
+                    'amount' => (int)($amount * 100), // Kobo / Cents
+                    'currency' => $targetCurrency,
+                    'callback_url' => config('app.frontend_url') . '/billing/verify?gateway=paystack',
+                    'metadata' => [
+                        'plan_id' => $plan->id,
+                        'user_id' => $user->id,
+                        'original_amount' => $amount,
+                        'original_currency' => $targetCurrency,
+                    ],
+                ]);
+            }
 
-            return response()->json(['data' => $checkoutData]);
+            return response()->json(['data' => $checkoutData, 'gateway' => $gatewayChoice]);
         }
         catch (\Exception $e) {
-            Log::error('Paystack Sub Error: ' . $e->getMessage());
+            Log::error('Subscription Payment Initialization Error: ' . $e->getMessage());
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
@@ -175,46 +221,88 @@ class SubscriptionController extends Controller
      */
     public function verify(Request $request)
     {
-        $reference = $request->query('reference');
-        if (!$reference) {
-            return response()->json(['message' => 'Reference not provided'], 400);
-        }
+        $gateway = $request->query('gateway', 'paystack');
+        $user = $request->user();
 
-        $paymentData = $this->paystackService->verifyTransaction($reference);
+        if ($gateway === 'flutterwave') {
+            $transactionId = $request->query('transaction_id');
+            if (!$transactionId) {
+                return response()->json(['message' => 'Transaction ID not provided'], 400);
+            }
 
-        if ($paymentData && $paymentData['status'] === 'success') {
-            $planId = $paymentData['metadata']['plan_id'];
-            $user = $request->user();
+            $paymentData = $this->flutterwaveService->verifyTransaction($transactionId);
 
-            DB::transaction(function () use ($user, $planId, $paymentData) {
-                $plan = SubscriptionPlan::find($planId);
-                $interval = $plan->interval ?? 'month';
-                $endsAt = $interval === 'year' ? now()->addYear() : now()->addMonth();
+            if ($paymentData && $paymentData['status'] === 'successful') {
+                $planId = $paymentData['meta']['plan_id'];
+                
+                DB::transaction(function () use ($user, $planId, $paymentData) {
+                    $plan = SubscriptionPlan::find($planId);
+                    $interval = $plan->interval ?? 'month';
+                    $endsAt = $interval === 'year' ? now()->addYear() : now()->addMonth();
 
-                $user->subscriptions()->update(['status' => 'inactive']);
-                $user->subscriptions()->create([
-                    'subscription_plan_id' => $planId,
-                    'paystack_id' => $paymentData['id'],
-                    'paystack_code' => $paymentData['reference'],
-                    'status' => 'active',
-                    'starts_at' => now(),
-                    'ends_at' => $endsAt,
-                ]);
+                    $user->subscriptions()->update(['status' => 'inactive']);
+                    $user->subscriptions()->create([
+                        'subscription_plan_id' => $planId,
+                        'paystack_id' => $paymentData['id'], // Using same column for simplicity or add flutterwave_id
+                        'paystack_code' => $paymentData['tx_ref'],
+                        'status' => 'active',
+                        'starts_at' => now(),
+                        'ends_at' => $endsAt,
+                    ]);
 
-                // Create Payment Log
-                $user->paymentLogs()->create([
-                    'amount' => $paymentData['amount'] / 100,
-                    'currency' => $paymentData['currency'],
-                    'reference' => $paymentData['reference'],
-                    'status' => 'success',
-                    'plan_name' => $plan->name,
-                ]);
+                    $user->paymentLogs()->create([
+                        'amount' => $paymentData['amount'],
+                        'currency' => $paymentData['currency'],
+                        'reference' => $paymentData['tx_ref'],
+                        'status' => 'success',
+                        'plan_name' => $plan->name,
+                    ]);
 
-                // Record Referral Commission
-                $this->referralService->recordPayment($user, $paymentData['amount'] / 100, $paymentData['reference']);
-            });
+                    $this->referralService->recordPayment($user, $paymentData['amount'], $paymentData['tx_ref']);
+                });
 
-            return response()->json(['message' => 'Subscription successful']);
+                return response()->json(['message' => 'Subscription successful']);
+            }
+        } 
+        else {
+            $reference = $request->query('reference');
+            if (!$reference) {
+                return response()->json(['message' => 'Reference not provided'], 400);
+            }
+
+            $paymentData = $this->paystackService->verifyTransaction($reference);
+
+            if ($paymentData && $paymentData['status'] === 'success') {
+                $planId = $paymentData['metadata']['plan_id'];
+
+                DB::transaction(function () use ($user, $planId, $paymentData) {
+                    $plan = SubscriptionPlan::find($planId);
+                    $interval = $plan->interval ?? 'month';
+                    $endsAt = $interval === 'year' ? now()->addYear() : now()->addMonth();
+
+                    $user->subscriptions()->update(['status' => 'inactive']);
+                    $user->subscriptions()->create([
+                        'subscription_plan_id' => $planId,
+                        'paystack_id' => $paymentData['id'],
+                        'paystack_code' => $paymentData['reference'],
+                        'status' => 'active',
+                        'starts_at' => now(),
+                        'ends_at' => $endsAt,
+                    ]);
+
+                    $user->paymentLogs()->create([
+                        'amount' => $paymentData['amount'] / 100,
+                        'currency' => $paymentData['currency'],
+                        'reference' => $paymentData['reference'],
+                        'status' => 'success',
+                        'plan_name' => $plan->name,
+                    ]);
+
+                    $this->referralService->recordPayment($user, $paymentData['amount'] / 100, $paymentData['reference']);
+                });
+
+                return response()->json(['message' => 'Subscription successful']);
+            }
         }
 
         return response()->json(['message' => 'Payment verification failed'], 400);

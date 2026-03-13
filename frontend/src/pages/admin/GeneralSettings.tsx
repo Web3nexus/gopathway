@@ -59,6 +59,7 @@ export default function GeneralSettings() {
             case 'general': return <Globe className="h-5 w-5" />;
             case 'appearance': return <Palette className="h-5 w-5" />;
             case 'system': return <ShieldCheck className="h-5 w-5" />;
+            case 'payment': return <DollarSign className="h-5 w-5" />;
             default: return <Settings className="h-5 w-5" />;
         }
     };
@@ -104,8 +105,19 @@ export default function GeneralSettings() {
                                                     onCheckedChange={(checked) => setFormData(p => ({ ...p, [s.key]: checked }))}
                                                 />
                                             </div>
+                                        ) : s.key === 'payment_gateway_active' ? (
+                                            <select
+                                                value={formData[s.key] || 'paystack'}
+                                                onChange={(e) => setFormData(p => ({ ...p, [s.key]: e.target.value }))}
+                                                className="flex h-11 w-full rounded-xl border border-[#E5E7EB] bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B3C91] focus:border-transparent"
+                                            >
+                                                <option value="paystack">Paystack Only</option>
+                                                <option value="flutterwave">Flutterwave Only</option>
+                                                <option value="both">Both Gateways</option>
+                                            </select>
                                         ) : (
                                             <Input
+                                                type={s.type === 'encrypted_string' ? 'password' : 'text'}
                                                 value={formData[s.key] || ''}
                                                 onChange={(e) => setFormData(p => ({ ...p, [s.key]: e.target.value }))}
                                                 className="rounded-xl border-[#E5E7EB] focus:ring-[#0B3C91] h-11"

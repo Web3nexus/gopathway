@@ -21,7 +21,7 @@ class SettingController extends Controller
                 return [
                     'id' => $setting->id,
                     'key' => $setting->key,
-                    'value' => $setting->value,
+                    'value' => $setting->type === 'encrypted_string' && $setting->value ? str_repeat('*', 8) : $setting->value,
                     'label' => $setting->label,
                     'type' => $setting->type,
                     'description' => $setting->description,

@@ -2,6 +2,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { billingService } from '@/services/api/billingService';
 import { Check, Loader2, Zap, Shield, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Pricing() {
@@ -16,9 +17,18 @@ export default function Pricing() {
 
     const plans = planResponse?.data || [];
     const detectedCurrency = planResponse?.detected_currency || 'USD';
+    const activeGateway = planResponse?.gateways?.active || 'paystack';
+
+    const [selectedGateway, setSelectedGateway] = useState<string>('paystack');
+
+    useEffect(() => {
+        if (activeGateway && activeGateway !== 'both') {
+            setSelectedGateway(activeGateway);
+        }
+    }, [activeGateway]);
 
     const subscribeMutation = useMutation({
-        mutationFn: (planId: number) => billingService.subscribe(planId, detectedCurrency),
+        mutationFn: ({ planId, gateway }: { planId: number, gateway: string }) => billingService.subscribe(planId, detectedCurrency, gateway),
         onSuccess: (res: any) => {
             if (res.data?.authorization_url) {
                 window.location.href = res.data.authorization_url;
@@ -73,6 +83,28 @@ export default function Pricing() {
                 <p className="text-[#6B7280] text-lg max-w-2xl mx-auto">
                     Choose the plan that's right for your relocation journey. Unlock expert tools and personalized guidance.
                 </p>
+                
+                {activeGateway === 'both' && (
+                    <div className="mt-8 flex justify-center items-center gap-4 bg-slate-50 p-2 rounded-2xl w-max mx-auto border border-slate-200">
+                        <span className="text-sm font-bold text-slate-500 mr-2">Pay via:</span>
+                        <div className="flex gap-2">
+                            <Button 
+                                variant={selectedGateway === 'paystack' ? 'default' : 'outline'} 
+                                className={selectedGateway === 'paystack' ? 'bg-[#0B3C91] rounded-xl' : 'rounded-xl'}
+                                onClick={() => setSelectedGateway('paystack')}
+                            >
+                                Paystack (Cards/Bank)
+                            </Button>
+                            <Button 
+                                variant={selectedGateway === 'flutterwave' ? 'default' : 'outline'} 
+                                className={selectedGateway === 'flutterwave' ? 'bg-[#0B3C91] rounded-xl' : 'rounded-xl'}
+                                onClick={() => setSelectedGateway('flutterwave')}
+                            >
+                                Flutterwave (Cards/Mobile)
+                            </Button>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className="flex flex-wrap justify-center gap-8 items-start">
@@ -137,7 +169,7 @@ export default function Pricing() {
                             </ul>
 
                             <Button
-                                onClick={() => subscribeMutation.mutate(plan.id)}
+                                onClick={() => subscribeMutation.mutate({ planId: plan.id, gateway: selectedGateway })}
                                 disabled={subscribeMutation.isPending || isFree}
                                 className={`w-full py-6 rounded-2xl font-bold text-lg transition-all duration-300 ${plan.highlight
                                     ? 'bg-[#0B3C91] hover:bg-[#0A2A66] text-white shadow-lg shadow-blue-200'
@@ -156,10 +188,11 @@ export default function Pricing() {
             <div className="mt-20 border-t border-[#E5E7EB] pt-12 flex flex-col md:flex-row items-center justify-between gap-8 bg-slate-50/50 p-10 rounded-3xl">
                 <div>
                     <h4 className="text-lg font-bold text-[#1A1A1A] mb-1">Secure Payment Processing</h4>
-                    <p className="text-sm text-[#6B7280]">We process all payments securely via Paystack. Your payment data is never stored on our servers.</p>
+                    <p className="text-sm text-[#6B7280]">We process all payments securely. Your payment data is never stored on our servers.</p>
                 </div>
                 <div className="flex items-center gap-3 text-sm font-bold text-slate-400">
-                    <Shield className="w-5 h-5" /> Powered by Paystack
+                    <Shield className="w-5 h-5" /> 
+                    {selectedGateway === 'flutterwave' ? 'Powered by Flutterwave' : 'Powered by Paystack'}
                 </div>
             </div>
         </div >

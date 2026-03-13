@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Models\Setting;
 
 class PaystackService
 {
@@ -12,7 +13,8 @@ class PaystackService
 
     public function __construct()
     {
-        $this->secretKey = config('services.paystack.secret_key') ?? env('PAYSTACK_SECRET_KEY', '');
+        $dbKey = Setting::where('key', 'paystack_secret_key')->value('value');
+        $this->secretKey = $dbKey ?: (config('services.paystack.secret_key') ?? env('PAYSTACK_SECRET_KEY', ''));
     }
 
     /**

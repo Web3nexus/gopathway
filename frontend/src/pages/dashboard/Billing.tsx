@@ -11,10 +11,17 @@ export default function Billing() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const reference = searchParams.get('reference');
+    const transactionId = searchParams.get('transaction_id');
+    const gateway = searchParams.get('gateway');
 
     useEffect(() => {
-        if (reference) {
-            billingService.verifyPayment(reference)
+        if (reference || transactionId) {
+            const params: any = {};
+            if (reference) params.reference = reference;
+            if (transactionId) params.transaction_id = transactionId;
+            if (gateway) params.gateway = gateway;
+
+            billingService.verifyPayment(params)
                 .then(() => {
                     toast({ title: 'Payment Verified!', description: 'Your subscription is now active.' });
                     navigate('/billing', { replace: true });
@@ -27,7 +34,7 @@ export default function Billing() {
                     });
                 });
         }
-    }, [reference]);
+    }, [reference, transactionId, gateway]);
 
     const { data: subscription, isLoading: subLoading } = useQuery({
         queryKey: ['current-subscription'],

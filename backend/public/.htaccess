@@ -18,7 +18,15 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Handle API routes first
+    RewriteCond %{REQUEST_URI} ^/api/ [OR]
+    RewriteCond %{REQUEST_URI} ^/sanctum/ [OR]
+    RewriteCond %{REQUEST_URI} ^/storage/
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+    # SPA routing: if not a file/directory, serve index.html or fallback to index.php
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]

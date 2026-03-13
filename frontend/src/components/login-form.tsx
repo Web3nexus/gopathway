@@ -56,10 +56,13 @@ export function LoginForm({
 
       // Check for admin role
       const isAdmin = user?.roles?.some((role: any) => role.name === 'admin');
+      
+      // Use window.location.href for a full page reload to ensure 
+      // the session cookie is properly established before ProtectedRoute checks auth
       if (isAdmin) {
-        navigate('/securegate');
+        window.location.href = '/securegate';
       } else {
-        navigate('/dashboard');
+        window.location.href = '/dashboard';
       }
     } catch (error: any) {
       toast({

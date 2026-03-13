@@ -55,7 +55,23 @@ export default function RelocationHub() {
         );
     }
 
-    const kits = kitsResponse?.data || [];
+    interface KitItem {
+        id: number;
+        title: string;
+        description: string;
+        content: string;
+        is_premium: boolean;
+    }
+
+    interface Kit {
+        id: number;
+        title: string;
+        description: string;
+        is_premium: boolean;
+        items: KitItem[];
+    }
+
+    const kits: Kit[] = kitsResponse?.data || [];
 
     return (
         <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
@@ -106,7 +122,7 @@ export default function RelocationHub() {
                             No preparation kits are currently available for this destination.
                         </div>
                     ) : (
-                        kits.map((kit: any) => {
+                        kits.map((kit) => {
                             const isExpanded = expandedKits.includes(kit.id);
                             const isLocked = kit.is_premium && !canAccessFeature('relocation-hub');
 
@@ -170,7 +186,7 @@ export default function RelocationHub() {
                                                 </div>
                                             ) : (
                                                 <ul className="divide-y divide-border">
-                                                    {kit.items?.map((item: any) => {
+                                                    {kit.items?.map((item) => {
                                                         const itemLocked = item.is_premium && !canAccessFeature('relocation-hub');
                                                         return (
                                                             <li key={item.id} className="p-6 pl-8 flex gap-4 hover:bg-white transition-colors">

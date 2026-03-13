@@ -70,9 +70,9 @@ class PathwayController extends Controller
                     'cost_templates' => $pathway->visaType->costTemplates,
                 ] : null,
                 'labels' => [
-                    'risk_level' => \App\Models\Setting::where('key', 'label_pathway_risk_level')->value('value') ?? 'Risk Level',
-                    'progress' => \App\Models\Setting::where('key', 'label_pathway_progress')->value('value') ?? 'Progress',
-                    'roadmap' => \App\Models\Setting::where('key', 'label_pathway_roadmap')->value('value') ?? 'Your Roadmap',
+                    'risk_level' => \App\Helpers\SettingHelper::get('label_pathway_risk_level', 'Risk Level'),
+                    'progress' => \App\Helpers\SettingHelper::get('label_pathway_progress', 'Progress'),
+                    'roadmap' => \App\Helpers\SettingHelper::get('label_pathway_roadmap', 'Your Roadmap'),
                 ],
             ],
             'projection' => $this->savingsService->getProjection($pathway),

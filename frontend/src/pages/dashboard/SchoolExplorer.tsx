@@ -10,6 +10,8 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useFeatures } from '@/hooks/useFeatures';
+import { Lock, Sparkles } from 'lucide-react';
 
 const DEGREE_COLORS: Record<string, string> = {
     certificate: 'bg-slate-100 text-slate-700',
@@ -29,7 +31,47 @@ const ADMISSION_STAGES = [
     { key: 'travel', label: 'Book & Travel', icon: '✈️', description: 'Arrange flights, accommodation, and health insurance.' },
 ];
 
+interface SchoolProgram {
+    id: number;
+    name: string;
+    degree_type: string;
+    field_of_study?: string;
+    duration_years?: number;
+    tuition_per_year?: number;
+    currency?: string;
+    application_deadline?: string;
+    intake_periods?: string[];
+    ielts_min?: number;
+    toefl_min?: number;
+    pte_min?: number;
+    min_gpa?: number;
+    admission_requirements?: string[];
+}
+
+interface School {
+    id: number;
+    name: string;
+    location?: string;
+    type?: string;
+    ranking?: string;
+    description?: string;
+    website?: string;
+    application_portal?: string;
+    program_count?: number;
+    programs?: SchoolProgram[];
+}
+
+interface SchoolApplication {
+    id: number;
+    school_id: number;
+    status: string;
+    school?: School;
+    program?: SchoolProgram;
+    completed_at?: string;
+}
+
 export default function SchoolExplorer() {
+    const { getFeatureAccess } = useFeatures();
     const { data: dashboard } = useDashboard();
     const queryClient = useQueryClient();
 
@@ -60,19 +102,19 @@ export default function SchoolExplorer() {
     });
 
     const saveMutation = useMutation({
-        mutationFn: (data: any) => api.post('/api/v1/school-applications', data),
+        mutationFn: (data: { school_id: number; status: string }) => api.post('/api/v1/school-applications', data),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['school-applications'] }),
     });
 
-    const schools: any[] = schoolsData || [];
+    const schools: School[] = schoolsData || [];
 
     const filtered = schools.filter(s => {
         const matchSearch = !search || s.name.toLowerCase().includes(search.toLowerCase()) || s.location?.toLowerCase().includes(search.toLowerCase());
-        const matchDegree = degreeFilter === 'all' || s.programs?.some((p: any) => p.degree_type === degreeFilter);
+        const matchDegree = degreeFilter === 'all' || s.programs?.some((p) => p.degree_type === degreeFilter);
         return matchSearch && matchDegree;
     });
 
-    const isApplied = (schoolId: number) => myApplications?.some((a: any) => a.school_id === schoolId);
+    const isApplied = (schoolId: number) => myApplications?.some((a: SchoolApplication) => a.school_id === schoolId);
 
     if (!countryId) {
         return (
@@ -117,6 +159,29 @@ export default function SchoolExplorer() {
                 ))}
             </div>
 
+            <div className="relative">
+                {getFeatureAccess('SCHOOL_EXPLORER') === 'locked' && (
+                    <div className="absolute inset-0 z-20 backdrop-blur-[6px] bg-white/40 flex items-center justify-center rounded-[32px] border border-blue-50 shadow-inner min-h-[400px]">
+                        <div className="bg-white/95 p-10 rounded-[40px] shadow-2xl border border-indigo-100 text-center max-w-md mx-4 transform transition-all hover:scale-[1.01]">
+                            <div className="h-20 w-20 bg-indigo-50 rounded-[28px] flex items-center justify-center mx-auto mb-6 rotate-3">
+                                <Lock className="h-10 w-10 text-indigo-600" />
+                            </div>
+                            <h2 className="text-2xl font-black text-slate-900 mb-3 tracking-tight">Premium School Explorer</h2>
+                            <p className="text-slate-500 mb-8 leading-relaxed">
+                                Access our curated database of <strong className="text-indigo-600">universities, visa requirements, and admission roadmaps</strong> for your chosen destination.
+                            </p>
+                            <Link to="/pricing">
+                                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-2xl h-14 font-bold shadow-lg shadow-indigo-100 group">
+                                    Unlock Full Access
+                                    <Sparkles className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+                )}
+
+                <div className={cn("transition-all duration-500", getFeatureAccess('SCHOOL_EXPLORER') === 'locked' && "opacity-40 grayscale-[0.8] blur-[2px] pointer-events-none select-none max-h-[600px] overflow-hidden")}>
+
             {/* ── Schools Tab ── */}
             {activeTab === 'schools' && (
                 <div className="space-y-6">
@@ -150,7 +215,7 @@ export default function SchoolExplorer() {
                             No schools found for your search.
                         </div>
                     ) : (
-                        filtered.map((school: any) => {
+                        filtered.map((school) => {
                             const isOpen = expandedSchool === school.id;
                             const applied = isApplied(school.id);
 
@@ -219,7 +284,7 @@ export default function SchoolExplorer() {
                                                 {school.programs?.length === 0 ? (
                                                     <p className="p-6 text-sm text-slate-400">No programs available yet.</p>
                                                 ) : (
-                                                    school.programs?.map((prog: any) => {
+                                                    school.programs?.map((prog) => {
                                                         const progOpen = expandedProgram === prog.id;
                                                         return (
                                                             <div key={prog.id}>
@@ -257,7 +322,7 @@ export default function SchoolExplorer() {
                                                                         {prog.application_deadline && (
                                                                             <InfoBlock icon={<Clock className="w-4 h-4 text-rose-500" />} label="Deadline" value={prog.application_deadline} />
                                                                         )}
-                                                                        {prog.intake_periods?.length > 0 && (
+                                                                        {prog.intake_periods && prog.intake_periods.length > 0 && (
                                                                             <InfoBlock icon={<Award className="w-4 h-4 text-indigo-500" />} label="Intake" value={prog.intake_periods.join(', ')} />
                                                                         )}
                                                                         {prog.ielts_min && (
@@ -272,7 +337,7 @@ export default function SchoolExplorer() {
                                                                         {prog.min_gpa && (
                                                                             <InfoBlock icon={<Star className="w-4 h-4 text-amber-500" />} label="Min GPA" value={`${prog.min_gpa} / 4.0`} />
                                                                         )}
-                                                                        {prog.admission_requirements?.length > 0 && (
+                                                                        {prog.admission_requirements && prog.admission_requirements.length > 0 && (
                                                                             <div className="sm:col-span-2">
                                                                                 <p className="text-xs font-semibold text-slate-500 uppercase mb-2">Requirements</p>
                                                                                 <ul className="space-y-1">
@@ -399,7 +464,7 @@ export default function SchoolExplorer() {
                         <div className="bg-white rounded-2xl border p-6">
                             <h3 className="font-bold text-foreground mb-4">🏫 My School Applications</h3>
                             <div className="space-y-3">
-                                {myApplications.map((app: any) => (
+                                {myApplications.map((app: SchoolApplication) => (
                                     <div key={app.id} className="flex items-center justify-between p-4 rounded-xl bg-slate-50 border">
                                         <div>
                                             <p className="font-semibold text-sm">{app.school?.name}</p>
@@ -415,6 +480,8 @@ export default function SchoolExplorer() {
                     )}
                 </div>
             )}
+                </div>
+            </div>
         </div>
     );
 }

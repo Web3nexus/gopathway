@@ -61,6 +61,18 @@ class FeatureSeeder extends Seeder
                 'description' => 'Guided wizard to generate a professional Statement of Purpose.',
                 'is_premium' => true,
             ],
+            [
+                'name' => 'School Explorer',
+                'slug' => 'school-explorer',
+                'description' => 'Explore universities, programs and visa requirements for students.',
+                'is_premium' => true,
+            ],
+            [
+                'name' => 'Settlement Checklist',
+                'slug' => 'settlement-checklist',
+                'description' => 'A personalized guide for your first week, month and year in a new country.',
+                'is_premium' => true,
+            ],
         ];
 
         foreach ($features as $feature) {

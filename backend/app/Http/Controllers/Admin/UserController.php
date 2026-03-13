@@ -92,38 +92,29 @@ class UserController extends Controller
      */
     public function impersonate(Request $request, User $user): JsonResponse
     {
-        // Get current admin from the request (stateful Sanctum sets $request->user())
-        $admin = $request->user();
+        $admin = Auth::user();
 
-        if (!$admin) {
-            return response()->json(['message' => 'Unauthorized.'], 403);
+        if (!$admin || !$admin->hasRole('admin')) {
+            return response()->json(['message' => 'Admin authorization required.'], 403);
         }
 
         if ($user->hasRole('admin')) {
             return response()->json(['message' => 'Cannot impersonate another admin.'], 403);
         }
 
+        if ($user->id === $admin->id) {
+            return response()->json(['message' => 'You are already logged in as this user.'], 422);
+        }
+
         // Store admin ID in session for restoration
-        session(['admin_impersonator' => $admin->id]);
+        $request->session()->put('admin_impersonator', $admin->id);
 
-        // Switch the session to the target user. 
-        // We use the 'web' guard explicitly. If it's being proxied by Sanctum to a RequestGuard,
-        // we can try to access the underlying session-based guard or use the AuthManager.
-        $guard = Auth::guard('web');
-
-        if (method_exists($guard, 'login')) {
-            $guard->login($user);
-        }
-        else {
-            // Fallback for cases where the guard is proxied/replaced (e.g. by Sanctum)
-            Auth::login($user);
-        }
-
-        $request->session()->regenerate();
+        // Switch to target user via session guard
+        Auth::guard('web')->login($user);
 
         return response()->json([
             'user' => $user->load('roles'),
-            'message' => "Now impersonating {$user->name}.",
+            'message' => "Now impersonating {$user->name}. Redirecting...",
         ]);
     }
 
@@ -132,7 +123,7 @@ class UserController extends Controller
      */
     public function leaveImpersonation(Request $request): JsonResponse
     {
-        $adminId = session('admin_impersonator');
+        $adminId = $request->session()->get('admin_impersonator');
 
         if (!$adminId) {
             return response()->json(['message' => 'No active impersonation session.'], 404);
@@ -144,19 +135,11 @@ class UserController extends Controller
             return response()->json(['message' => 'Original admin account not found.'], 404);
         }
 
-        // Clear the impersonation flag
-        session()->forget('admin_impersonator');
+        // Clear the impersonation flag FIRST
+        $request->session()->forget('admin_impersonator');
 
         // Log back in as admin
-        $guard = Auth::guard('web');
-        if (method_exists($guard, 'login')) {
-            $guard->login($admin);
-        }
-        else {
-            Auth::login($admin);
-        }
-
-        $request->session()->regenerate();
+        Auth::guard('web')->login($admin);
 
         return response()->json([
             'user' => $admin->load('roles'),

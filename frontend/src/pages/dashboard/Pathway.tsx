@@ -12,8 +12,36 @@ import { useToast } from '@/hooks/use-toast';
 import { useFeatures } from '@/hooks/useFeatures';
 import { financeService } from '@/services/api/financeService';
 import { FinancingCard } from '@/components/dashboard/FinancingCard';
+import { cn } from '@/lib/utils';
 
 // Standalone Risk Components removed as they are now integrated into the header
+
+interface TimelineStep {
+    id: number;
+    title: string;
+    description?: string;
+    status: 'pending' | 'completed';
+    completed_at?: string;
+}
+
+interface CostTemplate {
+    id: number;
+    category: string;
+    item: string;
+    min_cost: number | string;
+    max_cost: number | string;
+    currency: string;
+}
+
+interface FinancingProvider {
+    id: number;
+    name: string;
+    provider_type: string;
+    website: string;
+    description: string;
+    rating: number;
+    logo_url?: string;
+}
 
 export default function Pathway() {
     const { toast } = useToast();
@@ -101,7 +129,7 @@ export default function Pathway() {
         onError: () => toast({ title: 'Could not reset pathway.', variant: 'destructive' }),
     });
 
-    const completedSteps = timelineSteps?.filter((s: any) => s.status === 'completed').length || 0;
+    const completedSteps = timelineSteps?.filter((s: TimelineStep) => s.status === 'completed').length || 0;
     const totalSteps = timelineSteps?.length || 0;
     const progressPct = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
 
@@ -199,7 +227,7 @@ export default function Pathway() {
                     {riskReport && (
                         <div className="px-4 py-2 bg-slate-50 flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                                {riskReport.weak_areas?.slice(0, 1).map((area: any, i: number) => (
+                                {riskReport.weak_areas?.slice(0, 1).map((area: { name: string }, i: number) => (
                                     <p key={i} className="text-[10px] font-medium text-slate-500 flex items-center gap-1">
                                         <AlertTriangle className="h-3 w-3 text-amber-500" />
                                         Focus: <span className="font-bold text-slate-700">{area.name}</span>
@@ -223,7 +251,7 @@ export default function Pathway() {
                             <Select value={selectedCountryId} onValueChange={v => { setSelectedCountryId(v); setSelectedVisaId(''); }}>
                                 <SelectTrigger className="rounded-xl"><SelectValue placeholder="Select country" /></SelectTrigger>
                                 <SelectContent className="rounded-xl">
-                                    {countries?.map((c: any) => (
+                                    {countries?.map((c: { id: number; name: string }) => (
                                         <SelectItem key={c.id} value={c.id.toString()}>{c.name}</SelectItem>
                                     ))}
                                 </SelectContent>
@@ -234,7 +262,7 @@ export default function Pathway() {
                             <Select value={selectedVisaId} onValueChange={setSelectedVisaId} disabled={!selectedCountryId}>
                                 <SelectTrigger className="rounded-xl"><SelectValue placeholder={selectedCountryId ? 'Select visa type' : 'Choose a country first'} /></SelectTrigger>
                                 <SelectContent className="rounded-xl">
-                                    {visaTypes?.map((v: any) => (
+                                    {visaTypes?.map((v: { id: number; name: string }) => (
                                         <SelectItem key={v.id} value={v.id.toString()}>{v.name}</SelectItem>
                                     ))}
                                 </SelectContent>
@@ -271,19 +299,47 @@ export default function Pathway() {
                         <div className="text-right">
                             <p className="text-[10px] font-bold uppercase tracking-widest text-[#6B7280] leading-none mb-1">Total Estimated Range</p>
                             <p className="text-xl font-black text-[#0B3C91]">
-                                {pathway.visa_type.cost_templates[0].currency} {pathway.visa_type.cost_templates.reduce((acc: number, curr: any) => acc + Number(curr.min_cost), 0).toLocaleString()} – {pathway.visa_type.cost_templates.reduce((acc: number, curr: any) => acc + Number(curr.max_cost), 0).toLocaleString()}
+                                {getFeatureAccess('cost-planner') === 'active' ? (
+                                    <>
+                                        {pathway.visa_type.cost_templates[0].currency} {pathway.visa_type.cost_templates.reduce((acc: number, curr: CostTemplate) => acc + Number(curr.min_cost), 0).toLocaleString()} – {pathway.visa_type.cost_templates.reduce((acc: number, curr: CostTemplate) => acc + Number(curr.max_cost), 0).toLocaleString()}
+                                    </>
+                                ) : (
+                                    <span className="flex items-center gap-1.5 opacity-40">
+                                        <Lock className="h-4 w-4" /> Locked
+                                    </span>
+                                )}
                             </p>
                         </div>
                     </div>
 
-                    <div className="p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="p-6 relative">
+                        {getFeatureAccess('cost-planner') === 'locked' && (
+                            <div className="absolute inset-0 z-20 bg-white/60 backdrop-blur-[2px] flex items-center justify-center p-6 text-center">
+                                <div className="max-w-xs scale-90 sm:scale-100">
+                                    <div className="h-12 w-12 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-sm">
+                                        <Lock className="h-6 w-6 text-[#0B3C91]" />
+                                    </div>
+                                    <h4 className="font-bold text-[#1A1A1A] mb-1">Cost Breakdown Locked</h4>
+                                    <p className="text-xs text-[#6B7280] mb-4">Upgrade to premium to see detailed budget ranges for this pathway.</p>
+                                    <Link to="/pricing">
+                                        <Button size="sm" className="bg-[#0B3C91] hover:bg-[#0A2A66] text-white rounded-xl font-bold h-9">
+                                            Upgrade now
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className={cn(
+                            "grid grid-cols-1 md:grid-cols-2 gap-6 transition-all duration-300",
+                            getFeatureAccess('cost-planner') === 'locked' && "blur-[4px] select-none pointer-events-none opacity-40"
+                        )}>
                             {/* Group by category for a cleaner view */}
-                            {Array.from(new Set(pathway.visa_type.cost_templates.map((ct: any) => ct.category))).map((category: any) => (
-                                <div key={category} className="space-y-3">
-                                    <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-1">{category}</h4>
+                            {Array.from(new Set(pathway.visa_type.cost_templates.map((ct: CostTemplate) => ct.category))).map((category) => (
+                                <div key={category as string} className="space-y-3">
+                                    <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-1">{category as string}</h4>
                                     <div className="space-y-2">
-                                        {pathway.visa_type.cost_templates.filter((ct: any) => ct.category === category).map((item: any) => (
+                                        {pathway.visa_type.cost_templates.filter((ct: CostTemplate) => ct.category === category).map((item: CostTemplate) => (
                                             <div key={item.id} className="flex items-center justify-between group">
                                                 <div className="flex items-center gap-2">
                                                     <div className="h-1.5 w-1.5 rounded-full bg-blue-400 group-hover:scale-125 transition-transform" />
@@ -345,7 +401,7 @@ export default function Pathway() {
 
                         <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${getFeatureAccess('FINANCE_RECOMMENDATION') === 'locked' ? 'opacity-40 grayscale-[0.5]' : ''}`}>
                             {financeRes?.data?.length > 0 ? (
-                                financeRes.data.map((provider: any) => (
+                                financeRes.data.map((provider: FinancingProvider) => (
                                     <FinancingCard key={provider.id} provider={provider} />
                                 ))
                             ) : (
@@ -384,10 +440,10 @@ export default function Pathway() {
                         </div>
                     ) : timelineSteps?.length > 0 ? (
                         <ol className="divide-y divide-[#E5E7EB]">
-                            {timelineSteps.map((step: any, idx: number) => {
+                            {timelineSteps.map((step: TimelineStep, idx: number) => {
                                 const isComplete = step.status === 'completed';
                                 const isPending = step.status === 'pending';
-                                const nextPending = timelineSteps.find((s: any) => s.status === 'pending');
+                                const nextPending = timelineSteps.find((s: TimelineStep) => s.status === 'pending');
                                 const isNext = nextPending?.id === step.id;
 
                                 return (

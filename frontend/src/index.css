@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 216 33% 97%;
+    /* #F5F7FA */
+    --foreground: 0 0% 10%;
+    /* #1A1A1A */
+
+    --card: 0 0% 100%;
+    /* #FFFFFF */
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --primary: 218 86% 31%;
+    /* Royal Blue #0B3C91 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 13% 91%;
+    --secondary-foreground: 0 0% 10%;
+
+    --muted: 220 13% 91%;
+    --muted-foreground: 220 9% 46%;
+    /* Secondary Text #6B7280 */
+
+    --accent: 194 100% 50%;
+    /* Electric Cyan #00C2FF */
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 91%;
+    /* #E5E7EB */
+    --input: 220 13% 91%;
+    --ring: 218 86% 31%;
+    --radius: 0.75rem;
+    /* modern consistent radius 12px */
+
+    --chart-1: 218 86% 31%;
+    --chart-2: 194 100% 50%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 218 86% 41%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 194 100% 50%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 218 86% 41%;
+
+    --chart-1: 218 86% 41%;
+    --chart-2: 194 100% 50%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+
+  /* Premium Glassmorphism UI Utilities */
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-lg dark:bg-black/40 dark:border-white/10;
+  }
+
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-lg border border-white/40 shadow-sm transition-all duration-300 hover:shadow-md dark:bg-slate-900/60 dark:border-white/10;
+  }
+}

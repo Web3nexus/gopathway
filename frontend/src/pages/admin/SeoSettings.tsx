@@ -165,256 +165,238 @@ export default function SeoSettings() {
     const getAspectRatio = () => {
         if (cropType === 'favicon') return 1; // 1:1
         if (cropType === 'ogImage') return 1.91; // 1200x630
-        return undefined; // Free crop or typical logo ratio
+        return undefined; // Free crop for logo
     };
 
     if (isLoading) return <div className="flex justify-center p-20"><Loader2 className="h-8 w-8 animate-spin text-[#0B3C91]" /></div>;
 
     const renderAssetUpload = (title: string, desc: string, type: 'logo' | 'favicon' | 'ogImage', previewUrl: string, id: string) => (
-        <Card>
-            <CardHeader>
-                <CardTitle className="text-lg">{title}</CardTitle>
-                <CardDescription>{desc}</CardDescription>
+        <Card className="rounded-3xl border-[#E5E7EB] shadow-sm overflow-hidden flex flex-col">
+            <CardHeader className="bg-slate-50/50 border-b border-slate-100 flex-none px-6 py-4">
+                <CardTitle className="text-base font-bold text-[#1A1A1A]">{title}</CardTitle>
+                <CardDescription className="text-xs">{desc}</CardDescription>
             </CardHeader>
-            <CardContent>
-                <div className="flex items-center gap-6">
-                    <div className="w-32 h-32 rounded-xl bg-slate-50 border border-slate-200 border-dashed flex items-center justify-center overflow-hidden">
-                        {previewUrl ? (
-                            <img src={previewUrl} alt={title} className="max-w-full max-h-full object-contain" />
-                        ) : (
-                            <ImageIcon className="w-8 h-8 text-slate-300" />
-                        )}
-                    </div>
-                    <div>
-                        <input
-                            type="file"
-                            id={id}
-                            className="hidden"
-                            accept="image/*"
-                            onChange={(e) => onFileSelect(e, type)}
-                        />
-                        <Label htmlFor={id} className="cursor-pointer">
-                            <div className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#0B3C91] hover:bg-[#0B3C91]/90 text-white h-10 px-4 py-2">
-                                <Upload className="w-4 h-4 mr-2" />
-                                Upload & Crop
-                            </div>
-                        </Label>
-                    </div>
+            <CardContent className="p-6 flex flex-col items-center justify-center flex-grow space-y-4">
+                <div className={`relative group w-full ${type === 'favicon' ? 'aspect-square max-w-[120px]' : type === 'ogImage' ? 'aspect-[1.91/1]' : 'aspect-video'} rounded-2xl bg-white border border-slate-200 border-dashed flex items-center justify-center overflow-hidden transition-all hover:border-[#0B3C91]/50 shadow-inner`}>
+                    {previewUrl ? (
+                        <img src={previewUrl} alt={title} className="max-w-full max-h-full object-contain p-2" />
+                    ) : (
+                        <div className="flex flex-col items-center gap-2 text-slate-400">
+                            <ImageIcon className="w-8 h-8 opacity-20" />
+                            <span className="text-[10px] uppercase font-black tracking-widest opacity-40">No Image</span>
+                        </div>
+                    )}
+                </div>
+                
+                <div className="w-full">
+                    <input
+                        type="file"
+                        id={id}
+                        className="hidden"
+                        accept="image/*"
+                        onChange={(e) => onFileSelect(e, type)}
+                    />
+                    <Label htmlFor={id} className="cursor-pointer w-full">
+                        <div className="w-full flex items-center justify-center rounded-xl text-sm font-bold transition-all bg-white border border-[#E5E7EB] hover:border-[#0B3C91] hover:text-[#0B3C91] h-11 px-4 shadow-sm active:scale-95">
+                            <Upload className="w-4 h-4 mr-2" />
+                            Manage Asset
+                        </div>
+                    </Label>
                 </div>
             </CardContent>
         </Card>
     );
 
     return (
-        <div className="max-w-5xl mx-auto p-6 space-y-8 pb-32">
-            <div>
-                <h1 className="text-3xl font-black text-[#1A1A1A] tracking-tight">SEO & Branding Settings</h1>
-                <p className="text-[#6B7280]">Manage global meta tags, site logo, and social sharing banners.</p>
+        <div className="max-w-full mx-auto p-4 md:p-8 space-y-8 pb-32">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h1 className="text-4xl font-black text-[#1A1A1A] tracking-tight">SEO & Branding</h1>
+                    <p className="text-[#6B7280] text-lg mt-1">Configure your global identity, search presence, and legal compliance.</p>
+                </div>
+                <div className="flex gap-3">
+                    <Button 
+                        onClick={handleTextSave} 
+                        disabled={updateSettingsMutation.isPending}
+                        className="bg-[#0B3C91] hover:bg-[#0B3C91]/90 text-white rounded-xl h-12 px-8 font-bold flex items-center gap-2 shadow-lg shadow-blue-900/10"
+                    >
+                        {updateSettingsMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                        Save All Changes
+                    </Button>
+                </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-6">
-                    <Card>
-                        <CardHeader>
+            {/* Branding Section - Now at the Top and Full Width */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {renderAssetUpload("Site Logo", "Navbar & emails.", "logo", logoUrl, "upload-logo")}
+                {renderAssetUpload("Favicon", "Browser tab (1:1).", "favicon", faviconUrl, "upload-favicon")}
+                {renderAssetUpload("Social Banner", "OG Image (1.91:1).", "ogImage", ogImageUrl, "upload-og")}
+            </div>
+
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+                {/* Left Column - SEO & Compliance */}
+                <div className="xl:col-span-4 space-y-8">
+                    <Card className="rounded-3xl border-[#E5E7EB] shadow-sm overflow-hidden">
+                        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
                             <CardTitle className="text-xl flex items-center gap-2">
-                                <Globe className="w-5 h-5 text-[#0B3C91]" /> Global Meta Tags
+                                <Globe className="w-5 h-5 text-[#0B3C91]" /> Search Visibility
                             </CardTitle>
-                            <CardDescription>
-                                These tags are used by search engines to understand your site, and appear when linking your site anywhere online.
-                            </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-4">
+                        <CardContent className="p-6 space-y-5">
                             <div className="space-y-2">
-                                <Label>Site Meta Title (Recommended: 50-60 characters)</Label>
+                                <Label className="text-sm font-bold">Meta Title</Label>
                                 <Input 
+                                    className="rounded-xl h-11 border-slate-200"
                                     value={metaTitle} 
                                     onChange={(e) => setMetaTitle(e.target.value)} 
                                     placeholder="GoPathway - Immigration Made Easy" 
                                 />
-                                <div className="text-xs text-right text-slate-400">{metaTitle.length} chars</div>
+                                <div className="flex justify-between text-[10px] uppercase font-bold tracking-wider">
+                                    <span className={metaTitle.length > 60 ? "text-red-500" : "text-slate-400"}>Recommended: 50-60</span>
+                                    <span className="text-slate-500">{metaTitle.length} chars</span>
+                                </div>
                             </div>
                             <div className="space-y-2">
-                                <Label>Site Meta Description (Recommended: max 160 characters)</Label>
+                                <Label className="text-sm font-bold">Meta Description</Label>
                                 <Textarea 
+                                    className="rounded-xl border-slate-200 min-h-[120px] resize-none"
                                     value={metaDesc} 
                                     onChange={(e) => setMetaDesc(e.target.value)} 
-                                    placeholder="A concise summary of your platform..."
-                                    className="h-24"
+                                    placeholder="A concise summary of your platform for search engines..."
                                 />
-                                <div className="text-xs text-right text-slate-400">{metaDesc.length} chars</div>
+                                <div className="flex justify-between text-[10px] uppercase font-bold tracking-wider">
+                                    <span className={metaDesc.length > 160 ? "text-red-500" : "text-slate-400"}>Max: 160</span>
+                                    <span className="text-slate-500">{metaDesc.length} chars</span>
+                                </div>
                             </div>
 
-                            <div className="space-y-2 pt-2 border-t">
-                                <Label>Google Analytics Measurement ID (GA4)</Label>
+                            <div className="pt-4 border-t border-slate-100">
+                                <Label className="text-sm font-bold block mb-2">Google Analytics (GA4)</Label>
                                 <Input 
+                                    className="rounded-xl h-11 border-slate-200 font-mono"
                                     value={gaId} 
                                     onChange={(e) => setGaId(e.target.value)} 
                                     placeholder="G-XXXXXXXXXX" 
                                 />
-                                <p className="text-xs text-slate-400">Leave empty to disable tracking.</p>
+                                <p className="text-[11px] text-slate-400 mt-2">Required for traffic tracking and reporting.</p>
                             </div>
-
-                            <Button className="w-full bg-[#0B3C91] hover:bg-[#0B3C91]/90" onClick={handleTextSave} disabled={updateSettingsMutation.isPending}>
-                                {updateSettingsMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                                Save Text Settings
-                            </Button>
                         </CardContent>
                     </Card>
-                </div>
 
-                <div className="space-y-6">
-                    <Card>
-                        <CardHeader>
+                    <Card className="rounded-3xl border-[#E5E7EB] shadow-sm overflow-hidden">
+                        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
                             <CardTitle className="text-xl flex items-center gap-2">
-                                <ShieldCheck className="w-5 h-5 text-[#0B3C91]" /> Compliance & Legal
+                                <ShieldCheck className="w-5 h-5 text-[#0B3C91]" /> Compliance & Security
                             </CardTitle>
-                            <CardDescription>
-                                Manage cookie consent and legal document links.
-                            </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="cookie-enable">Enable Cookie Consent Banner</Label>
+                        <CardContent className="p-6 space-y-6">
+                            <div className="flex items-center justify-between p-4 bg-blue-50/50 rounded-2xl border border-blue-100">
+                                <div>
+                                    <Label className="font-bold block">Cookie Banner</Label>
+                                    <p className="text-xs text-blue-600/80">Show GDRP consent banner.</p>
+                                </div>
                                 <input 
                                     type="checkbox" 
-                                    id="cookie-enable"
+                                    className="h-6 w-6 rounded-lg border-slate-300 text-[#0B3C91] focus:ring-[#0B3C91]"
                                     checked={cookieConsentEnabled}
                                     onChange={(e) => setCookieConsentEnabled(e.target.checked)}
-                                    className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"
                                 />
                             </div>
                             
                             <div className="space-y-2">
-                                <Label>Cookie Consent Message</Label>
+                                <Label className="text-sm font-bold">Banner Message</Label>
                                 <Textarea 
+                                    className="rounded-xl border-slate-200 h-20"
                                     value={cookieConsentMessage} 
                                     onChange={(e) => setCookieConsentMessage(e.target.value)} 
                                     placeholder="We use cookies to enhance your experience..."
-                                    className="h-20"
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-4 pt-4 border-t border-slate-100">
                                 <div className="space-y-2">
-                                    <Label>Privacy Policy URL</Label>
-                                    <Input 
-                                        value={privacyPolicyUrl} 
-                                        onChange={(e) => setPrivacyPolicyUrl(e.target.value)} 
-                                        placeholder="/privacy-policy" 
-                                    />
+                                    <Label className="text-sm font-bold">Privacy Policy URL</Label>
+                                    <Input value={privacyPolicyUrl} onChange={(e) => setPrivacyPolicyUrl(e.target.value)} placeholder="/privacy-policy" className="rounded-xl" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Terms of Service URL</Label>
-                                    <Input 
-                                        value={termsServiceUrl} 
-                                        onChange={(e) => setTermsServiceUrl(e.target.value)} 
-                                        placeholder="/terms-of-service" 
-                                    />
+                                    <Label className="text-sm font-bold">Terms of Service URL</Label>
+                                    <Input value={termsServiceUrl} onChange={(e) => setTermsServiceUrl(e.target.value)} placeholder="/terms-of-service" className="rounded-xl" />
                                 </div>
                             </div>
 
-                            <div className="space-y-4 pt-4 border-t">
-                                <h3 className="text-sm font-bold flex items-center gap-2">
-                                    <ShieldCheck className="w-4 h-4 text-orange-500" /> Cloudflare Turnstile
+                            <div className="space-y-4 pt-4 border-t border-slate-100">
+                                <h3 className="text-sm font-bold flex items-center gap-2 text-orange-600">
+                                    <ShieldCheck className="w-4 h-4" /> BOT Protection
                                 </h3>
                                 <div className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label>Turnstile Site Key</Label>
-                                        <Input 
-                                            value={turnstileSiteKey} 
-                                            onChange={(e) => setTurnstileSiteKey(e.target.value)} 
-                                            placeholder="1x00000000000000000000AA" 
-                                        />
+                                        <Label className="text-[11px] uppercase font-bold text-slate-500">Cloudflare Site Key</Label>
+                                        <Input value={turnstileSiteKey} onChange={(e) => setTurnstileSiteKey(e.target.value)} placeholder="1x000..." className="rounded-xl font-mono text-xs" />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label>Turnstile Secret Key</Label>
-                                        <SensitiveInput
-                                            settingKey="turnstile_secret_key"
-                                            value={turnstileSecretKey} 
-                                            onChange={(val) => setTurnstileSecretKey(val)} 
-                                            placeholder="••••••••••••••••••••••••••••" 
-                                        />
+                                        <Label className="text-[11px] uppercase font-bold text-slate-500">Cloudflare Secret Key</Label>
+                                        <SensitiveInput settingKey="turnstile_secret_key" value={turnstileSecretKey} onChange={(val) => setTurnstileSecretKey(val)} className="rounded-xl font-mono text-xs" />
                                     </div>
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
+                </div>
 
-                    {renderAssetUpload("Site Logo", "The primary logo shown in the navbar.", "logo", logoUrl, "upload-logo")}
-                    {renderAssetUpload("Favicon", "The small 1:1 icon in the browser tab (must be square).", "favicon", faviconUrl, "upload-favicon")}
-                    {renderAssetUpload("Open Graph Image", "The banner image shown when sharing links on social media (1.91:1 ratio recommended).", "ogImage", ogImageUrl, "upload-og")}
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-xl">Page Content</CardTitle>
-                            <CardDescription>Manage the long-form content for legal and documentation pages (HTML supported).</CardDescription>
+                {/* Right Column - Rich Text Editors */}
+                <div className="xl:col-span-8 space-y-8">
+                    <Card className="rounded-3xl border-[#E5E7EB] shadow-sm overflow-hidden">
+                        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
+                            <CardTitle className="text-xl">Legal & Documentation Pages</CardTitle>
+                            <CardDescription>Use the rich text editor below to manage internal page contents.</CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="space-y-2">
-                                <Label>Privacy Policy Content</Label>
-                                <div className="bg-white rounded-xl overflow-hidden border border-slate-200 quill-editor-wrapper">
-                                    <ReactQuill 
-                                        theme="snow" 
-                                        value={privacyPolicyContent} 
-                                        onChange={setPrivacyPolicyContent}
-                                        modules={{
-                                            toolbar: [
-                                                [{ 'header': [1, 2, 3, false] }],
-                                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                                                [{'list': 'ordered'}, {'list': 'bullet'}],
-                                                ['link', 'clean']
-                                            ],
-                                        }}
-                                        className="h-[300px] mb-12"
-                                    />
+                        <CardContent className="p-0">
+                            <div className="divide-y divide-slate-100">
+                                <div className="p-8 space-y-4">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <Label className="text-lg font-black text-[#1A1A1A]">Privacy Policy</Label>
+                                        <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black uppercase rounded-full">Rich Text Enabled</span>
+                                    </div>
+                                    <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 quill-editor-wrapper shadow-inner">
+                                        <ReactQuill theme="snow" value={privacyPolicyContent} onChange={setPrivacyPolicyContent} modules={{ toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link', 'clean']] }} className="h-[350px] mb-12" />
+                                    </div>
+                                </div>
+                                
+                                <div className="p-8 space-y-4">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <Label className="text-lg font-black text-[#1A1A1A]">Terms of Service</Label>
+                                        <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black uppercase rounded-full">Rich Text Enabled</span>
+                                    </div>
+                                    <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 quill-editor-wrapper shadow-inner">
+                                        <ReactQuill theme="snow" value={termsServiceContent} onChange={setTermsServiceContent} modules={{ toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link', 'clean']] }} className="h-[350px] mb-12" />
+                                    </div>
+                                </div>
+
+                                <div className="p-8 space-y-4">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <Label className="text-lg font-black text-[#1A1A1A]">System Documentation</Label>
+                                        <span className="px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-black uppercase rounded-full">Admin Guide</span>
+                                    </div>
+                                    <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 quill-editor-wrapper shadow-inner">
+                                        <ReactQuill theme="snow" value={documentationContent} onChange={setDocumentationContent} modules={{ toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link', 'clean']] }} className="h-[450px] mb-12" />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <Label>Terms of Service Content</Label>
-                                <div className="bg-white rounded-xl overflow-hidden border border-slate-200 quill-editor-wrapper">
-                                    <ReactQuill 
-                                        theme="snow" 
-                                        value={termsServiceContent} 
-                                        onChange={setTermsServiceContent}
-                                        modules={{
-                                            toolbar: [
-                                                [{ 'header': [1, 2, 3, false] }],
-                                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                                                [{'list': 'ordered'}, {'list': 'bullet'}],
-                                                ['link', 'clean']
-                                            ],
-                                        }}
-                                        className="h-[300px] mb-12"
-                                    />
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <Label>Documentation Content</Label>
-                                <div className="bg-white rounded-xl overflow-hidden border border-slate-200 quill-editor-wrapper">
-                                    <ReactQuill 
-                                        theme="snow" 
-                                        value={documentationContent} 
-                                        onChange={setDocumentationContent}
-                                        modules={{
-                                            toolbar: [
-                                                [{ 'header': [1, 2, 3, false] }],
-                                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                                                [{'list': 'ordered'}, {'list': 'bullet'}],
-                                                ['link', 'clean']
-                                            ],
-                                        }}
-                                        className="h-[400px] mb-12"
-                                    />
-                                </div>
-                            </div>
-                            <Button className="w-full bg-[#0B3C91] hover:bg-[#0B3C91]/90" onClick={handleTextSave} disabled={updateSettingsMutation.isPending}>
-                                {updateSettingsMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                                Save Page Contents
-                            </Button>
                         </CardContent>
                     </Card>
                 </div>
             </div>
+
+            <ImageCropper
+                open={isCropperOpen}
+                onOpenChange={setIsCropperOpen}
+                imageSrc={cropImageSrc}
+                aspectRatio={getAspectRatio()}
+                onCropComplete={handleCropComplete}
+            />
+        </div>
+    );
+}
 
             <ImageCropper
                 open={isCropperOpen}

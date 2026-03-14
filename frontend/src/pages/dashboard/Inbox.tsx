@@ -15,8 +15,14 @@ import {
     User,
     Trash2,
     Zap,
-    ShieldCheck
+    ShieldCheck,
+    DollarSign,
+    AlertCircle
 } from 'lucide-react';
+import { useMutation } from '@tanstack/react-query';
+import { useToast } from '@/hooks/use-toast';
+import { professionalService } from '@/services/api/professionalService';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useSearchParams, Link } from 'react-router-dom';
@@ -72,6 +78,44 @@ export default function Inbox() {
     const [newMessage, setNewMessage] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const sendMessageMutation = useSendMessage();
+    const { toast } = useToast();
+
+    // Payment state
+    const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+    const [paymentAmount, setPaymentAmount] = useState('');
+    const [paymentDescription, setPaymentDescription] = useState('');
+
+    const initPaymentMutation = useMutation({
+        mutationFn: professionalService.initializePayment,
+        onSuccess: (res: any) => {
+            if (res.gateway === 'flutterwave') {
+                window.location.href = res.data.data.link;
+            } else {
+                window.location.href = res.data.data.authorization_url;
+            }
+        },
+        onError: (error: any) => {
+            toast({
+                title: 'Payment Failed',
+                description: error.response?.data?.message || 'Failed to initialize payment.',
+                variant: 'destructive',
+            });
+        }
+    });
+
+    const handlePayExpert = () => {
+        let expertId = typeof selectedConversationId === 'number' && Array.isArray(conversations) 
+            ? conversations.find((c: any) => c.id === selectedConversationId)?.other_user?.id 
+            : parseInt(presetRecipientId || '0');
+
+        if (!expertId) return;
+
+        initPaymentMutation.mutate({
+            expert_id: expertId,
+            amount: parseFloat(paymentAmount),
+            description: paymentDescription || 'Expert Consultation Services',
+        });
+    };
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -326,6 +370,54 @@ export default function Inbox() {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="flex items-center gap-3">
+                                    {!isAiSelected && (
+                                        <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
+                                            <DialogTrigger asChild>
+                                                <Button className="bg-[#10B981] hover:bg-[#059669] text-white font-bold h-9 px-4 rounded-lg hidden sm:flex">
+                                                    <DollarSign className="h-4 w-4 mr-2" /> Pay Expert
+                                                </Button>
+                                            </DialogTrigger>
+                                            <DialogContent className="sm:max-w-[425px] rounded-3xl">
+                                                <DialogHeader>
+                                                    <DialogTitle className="text-2xl font-black">Pay Expert</DialogTitle>
+                                                    <DialogDescription>
+                                                        Pay securely via Pathway. 100% buyer protection applied.
+                                                    </DialogDescription>
+                                                </DialogHeader>
+                                                <div className="grid gap-4 py-4">
+                                                    <div className="space-y-2">
+                                                        <label className="text-sm font-bold">Amount (USD)</label>
+                                                        <Input 
+                                                            type="number" 
+                                                            min="1" 
+                                                            placeholder="0.00" 
+                                                            value={paymentAmount}
+                                                            onChange={(e) => setPaymentAmount(e.target.value)}
+                                                            className="rounded-xl h-12"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-sm font-bold">Reason for Payment</label>
+                                                        <Input 
+                                                            placeholder="e.g. Document review, Consultation fee..."
+                                                            value={paymentDescription}
+                                                            onChange={(e) => setPaymentDescription(e.target.value)}
+                                                            className="rounded-xl h-12"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <Button 
+                                                    className="w-full bg-[#0B3C91] hover:bg-[#0B3C91]/90 font-bold h-12 rounded-xl"
+                                                    onClick={handlePayExpert}
+                                                    disabled={initPaymentMutation.isPending || !paymentAmount}
+                                                >
+                                                    {initPaymentMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Confirm & Proceed to Payment'}
+                                                </Button>
+                                            </DialogContent>
+                                        </Dialog>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Messages */}
@@ -454,6 +546,19 @@ export default function Inbox() {
                                     <p className="text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-4">
                                         {isAiSelected ? 'GoPathway AI is highly accurate but check important facts.' : 'Priority Expert Support Active'}
                                     </p>
+                                    {/(whatsapp|wa\.me|telegram|t\.me|ig|instagram|facebook|twitter|x\b|\+?[0-9]{10,})/i.test(newMessage) && !isAiSelected && (
+                                        <motion.div 
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3"
+                                        >
+                                            <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+                                            <p className="text-xs text-amber-900 font-medium leading-relaxed">
+                                                <strong className="font-bold block text-amber-700 mb-0.5">Security Warning</strong>
+                                                For your protection, please keep all communication and payments within GoPathway. Sharing external contact details or paying outside the platform violates our terms and removes buyer protection.
+                                            </p>
+                                        </motion.div>
+                                    )}
                                 </div>
                             </div>
                         </>

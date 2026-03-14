@@ -33,6 +33,7 @@ export function AdminSidebar() {
         { name: 'School Management', path: '/admin/schools', icon: GraduationCap },
         { name: 'Residency & Career', path: '/admin/career', icon: Briefcase },
         { name: 'User Management', path: '/admin/users', icon: Users },
+        { name: 'Expert Payouts', path: '/admin/expert-withdrawals', icon: DollarSign },
         { name: 'Support Messages', path: '/admin/support', icon: FileText },
         { name: 'General Settings', path: '/admin/settings', icon: Settings },
     ];

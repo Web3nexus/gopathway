@@ -104,4 +104,9 @@ export const adminService = {
     createCvTemplate: (data: any) => api.post('/api/v1/admin/cv-templates', data).then(r => r.data.data),
     updateCvTemplate: (id: number, data: any) => api.put(`/api/v1/admin/cv-templates/${id}`, data).then(r => r.data.data),
     deleteCvTemplate: (id: number) => api.delete(`/api/v1/admin/cv-templates/${id}`).then(r => r.data.data),
+    getExpertWithdrawals: () =>
+        api.get('/api/v1/admin/expert-withdrawals').then(r => r.data),
+
+    reviewExpertWithdrawal: (id: number, data: { status: string; admin_notes?: string }) =>
+        api.post(`/api/v1/admin/expert-withdrawals/${id}/review`, data).then(r => r.data),
 };

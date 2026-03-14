@@ -32,6 +32,7 @@ use App\Http\Controllers\SubscriptionPlanController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Admin\SupportManagementController;
+use App\Http\Controllers\Api\ExpertPaymentController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -177,6 +178,14 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/messages/{id}', [MessageController::class , 'show']);
             Route::post('/messages', [MessageController::class , 'store']);
 
+            // Expert Payments
+            Route::prefix('expert-payments')->group(function () {
+                Route::post('/initialize', [ExpertPaymentController::class, 'initializePayment']);
+                Route::get('/verify', [ExpertPaymentController::class, 'verifyPayment']);
+                Route::get('/stats', [ExpertPaymentController::class, 'expertStats']);
+                Route::post('/withdraw', [ExpertPaymentController::class, 'requestWithdrawal']);
+            });
+
             // AI Chat
             Route::get('/ai-chats', [\App\Http\Controllers\Api\AiChatController::class , 'index']);
             Route::post('/ai-chats', [\App\Http\Controllers\Api\AiChatController::class , 'store']);
@@ -237,6 +246,10 @@ Route::group(['prefix' => 'v1'], function () {
                     // Professional Verifications
                     Route::get('verifications', [AdminVerificationController::class , 'index']);
                     Route::post('verifications/{id}/review', [AdminVerificationController::class , 'review']);
+
+                    // Expert Withdrawals
+                    Route::get('expert-withdrawals', [\App\Http\Controllers\Admin\AdminExpertWithdrawalController::class , 'index']);
+                    Route::post('expert-withdrawals/{id}/review', [\App\Http\Controllers\Admin\AdminExpertWithdrawalController::class , 'review']);
 
                     // Feature Management
                     Route::get('features', [AdminFeatureController::class , 'index']);

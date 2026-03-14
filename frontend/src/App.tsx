@@ -42,6 +42,8 @@ import DocumentManagement from '@/pages/admin/DocumentManagement';
 import ProfessionalVerification from '@/pages/admin/ProfessionalVerification';
 import ProfessionalOnboarding from '@/pages/professional/Onboarding';
 import ProfessionalDashboard from '@/pages/professional/Dashboard';
+import ProfessionalEarnings from '@/pages/professional/EarningsDashboard';
+import ExpertWithdrawals from '@/pages/admin/ExpertWithdrawals';
 import UserManagement from '@/pages/admin/UserManagement';
 import PlanManagement from '@/pages/admin/PlanManagement';
 import GeneralSettings from '@/pages/admin/GeneralSettings';
@@ -95,6 +97,7 @@ function App() {
                   <Route path="/admin/features" element={<FeatureManagement />} />
                   <Route path="/admin/verifications" element={<ProfessionalVerification />} />
                   <Route path="/admin/users" element={<UserManagement />} />
+                  <Route path="/admin/expert-withdrawals" element={<ExpertWithdrawals />} />
                   <Route path="/admin/plans" element={<PlanManagement />} />
                   <Route path="/admin/referrals" element={<ReferralManagement />} />
                   <Route path="/admin/bookings" element={<BookingManagement />} />
@@ -136,6 +139,7 @@ function App() {
                   {/* Professional Specific Routes */}
                   <Route path="/professional/onboarding" element={<ProfessionalOnboarding />} />
                   <Route path="/professional/dashboard" element={<ProfessionalDashboard />} />
+                  <Route path="/professional/earnings" element={<ProfessionalEarnings />} />
                 </Route>
               </Route>
             </Routes>

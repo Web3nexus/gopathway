@@ -13,4 +13,13 @@ export const professionalService = {
 
     updateProfile: (data: any) =>
         api.put('/api/v1/professionals/profile', data).then(r => r.data),
+
+    getEarnings: () =>
+        api.get('/api/v1/expert-payments/stats').then(r => r.data),
+
+    requestWithdrawal: (data: any) =>
+        api.post('/api/v1/expert-payments/withdraw', data).then(r => r.data),
+
+    initializePayment: (data: any) =>
+        api.post('/api/v1/expert-payments/initialize', data).then(r => r.data),
 };

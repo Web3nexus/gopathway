@@ -13,17 +13,25 @@ class MessageController extends Controller
     public function index()
     {
         $userId = Auth::id();
+        $isExpert = Auth::user()->hasRole('Professional');
+
         $conversations = Conversation::where('user_one_id', $userId)
             ->orWhere('user_two_id', $userId)
             ->with(['userOne', 'userTwo', 'lastMessage'])
             ->get()
-            ->map(function ($conversation) use ($userId) {
+            ->map(function ($conversation) use ($userId, $isExpert) {
                 $otherUser = $conversation->user_one_id === $userId ? $conversation->userTwo : $conversation->userOne;
+                
+                $name = $otherUser->name;
+                if ($isExpert && !$otherUser->hasRole('Professional')) {
+                    $name = $this->maskName($otherUser->first_name ?? $name);
+                }
+
                 return [
                     'id' => $conversation->id,
                     'other_user' => [
                         'id' => $otherUser->id,
-                        'name' => $otherUser->name,
+                        'name' => $name,
                     ],
                     'last_message' => $conversation->lastMessage,
                     'updated_at' => $conversation->updated_at,
@@ -47,6 +55,18 @@ class MessageController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
+        $isExpert = Auth::user()->hasRole('Professional');
+
+        $messages = $messages->map(function ($message) use ($isExpert) {
+            $sender = $message->sender;
+            if ($isExpert && $sender->id !== Auth::id() && !$sender->hasRole('Professional')) {
+                $sender->name = $this->maskName($sender->first_name ?? $sender->name);
+                unset($sender->first_name);
+                unset($sender->last_name);
+            }
+            return $message;
+        });
+
         // Mark as read
         $conversation->messages()
             ->where('sender_id', '!=', Auth::id())
@@ -54,6 +74,12 @@ class MessageController extends Controller
             ->update(['is_read' => true]);
 
         return response()->json(['data' => $messages]);
+    }
+
+    private function maskName($name)
+    {
+        if (!$name || strlen($name) <= 2) return $name;
+        return mb_substr($name, 0, 2) . str_repeat('*', max(1, strlen($name) - 3)) . mb_substr($name, -1);
     }
 
     public function store(Request $request)

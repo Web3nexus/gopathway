@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom';
-import { Home, Compass, Folder, Calculator, Settings, HelpCircle, FileText, CreditCard, MessageSquare, Lock, Sparkles, Scale, Share2, GraduationCap, Map, Briefcase } from 'lucide-react';
+import { Home, Compass, Folder, Calculator, Settings, HelpCircle, FileText, CreditCard, MessageSquare, Lock, Sparkles, Scale, Share2, GraduationCap, Map, Briefcase, DollarSign } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { useFeatures } from '@/hooks/useFeatures';
@@ -22,6 +22,7 @@ export function Sidebar() {
         { name: 'Compare Countries', path: '/compare', icon: Scale },
         { name: 'Experts', path: '/experts', icon: FileText },
         { name: 'Messaging', path: '/dashboard/messages', icon: MessageSquare, slug: 'messaging' },
+        ...(user?.roles?.some((role: any) => role.name === 'Professional') ? [{ name: 'Earnings', path: '/professional/earnings', icon: DollarSign }] : []),
         { name: 'Referral Program', path: '/dashboard/referrals', icon: Share2 },
         { name: 'Billing', path: '/billing', icon: CreditCard },
         { name: 'Settings', path: '/dashboard/settings', icon: Settings },

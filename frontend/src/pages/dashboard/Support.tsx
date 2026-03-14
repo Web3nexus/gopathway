@@ -5,6 +5,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import api from '@/lib/api';
+import { Turnstile } from '@marsidev/react-turnstile';
+import { useQuery } from '@tanstack/react-query';
+import { publicService } from '@/services/api/publicService';
 
 const faqs = [
     {
@@ -47,8 +50,16 @@ const guides = [
 export default function Support() {
     const { toast } = useToast();
     const [openFaq, setOpenFaq] = useState<number | null>(0);
-    const [contactForm, setContactForm] = useState({ subject: '', message: '' });
+    const [contactForm, setContactForm] = useState({ subject: '', message: '', cf_turnstile_response: '' });
     const [sending, setSending] = useState(false);
+
+    const { data: settingsData } = useQuery({
+        queryKey: ['public-settings'],
+        queryFn: publicService.getSettings,
+        staleTime: 1000 * 60 * 60,
+    });
+
+    const turnstileSiteKey = settingsData?.data?.turnstile_site_key;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -60,13 +71,14 @@ export default function Support() {
         try {
             await api.post('/api/v1/support', {
                 subject: contactForm.subject,
-                message: contactForm.message
+                message: contactForm.message,
+                cf_turnstile_response: contactForm.cf_turnstile_response
             });
             toast({ 
                 title: 'Message sent!', 
                 description: 'Our support team will respond within 24 hours.' 
             });
-            setContactForm({ subject: '', message: '' });
+            setContactForm({ subject: '', message: '', cf_turnstile_response: '' });
         } catch (error: any) {
             console.error('Support error:', error);
             toast({ 
@@ -168,6 +180,16 @@ export default function Support() {
                                 required
                             />
                         </div>
+
+                        {turnstileSiteKey && (
+                            <div className="flex justify-start py-2">
+                                <Turnstile 
+                                    siteKey={turnstileSiteKey} 
+                                    onSuccess={(token: string) => setContactForm({ ...contactForm, cf_turnstile_response: token })}
+                                />
+                            </div>
+                        )}
+
                         <Button type="submit" disabled={sending} className="bg-[#0B3C91] hover:bg-[#0A2A66] text-white rounded-xl font-bold px-8">
                             {sending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                             {sending ? 'Sending...' : 'Send Message'}

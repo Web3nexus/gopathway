@@ -32,6 +32,7 @@ class ExpertPaymentController extends Controller
             'currency' => 'nullable|string|size:3',
             'gateway' => 'nullable|string|in:paystack,flutterwave',
             'description' => 'required|string|max:255',
+            'cf_turnstile_response' => ['sometimes', new \App\Rules\Turnstile()],
         ]);
 
         $user = $request->user();

@@ -23,6 +23,10 @@ export default function SeoSettings() {
     const [cookieConsentMessage, setCookieConsentMessage] = useState('');
     const [privacyPolicyUrl, setPrivacyPolicyUrl] = useState('');
     const [termsServiceUrl, setTermsServiceUrl] = useState('');
+
+    // Security
+    const [turnstileSiteKey, setTurnstileSiteKey] = useState('');
+    const [turnstileSecretKey, setTurnstileSecretKey] = useState('');
     
     const [logoUrl, setLogoUrl] = useState('');
     const [faviconUrl, setFaviconUrl] = useState('');
@@ -55,6 +59,9 @@ export default function SeoSettings() {
             setCookieConsentMessage(getSettingValue('cookie_consent_message') || '');
             setPrivacyPolicyUrl(getSettingValue('privacy_policy_url') || '');
             setTermsServiceUrl(getSettingValue('terms_service_url') || '');
+
+            setTurnstileSiteKey(getSettingValue('turnstile_site_key') || '');
+            setTurnstileSecretKey(getSettingValue('turnstile_secret_key') || '');
 
             setLogoUrl(getSettingValue('site_logo') || '');
             setFaviconUrl(getSettingValue('site_favicon') || '');
@@ -94,6 +101,11 @@ export default function SeoSettings() {
         formData.append('settings[5][value]', privacyPolicyUrl);
         formData.append('settings[6][key]', 'terms_service_url');
         formData.append('settings[6][value]', termsServiceUrl);
+        
+        formData.append('settings[7][key]', 'turnstile_site_key');
+        formData.append('settings[7][value]', turnstileSiteKey);
+        formData.append('settings[8][key]', 'turnstile_secret_key');
+        formData.append('settings[8][value]', turnstileSecretKey);
 
         updateSettingsMutation.mutate(formData);
     };
@@ -280,6 +292,31 @@ export default function SeoSettings() {
                                         onChange={(e) => setTermsServiceUrl(e.target.value)} 
                                         placeholder="/terms-of-service" 
                                     />
+                                </div>
+                            </div>
+
+                            <div className="space-y-4 pt-4 border-t">
+                                <h3 className="text-sm font-bold flex items-center gap-2">
+                                    <ShieldCheck className="w-4 h-4 text-orange-500" /> Cloudflare Turnstile
+                                </h3>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label>Turnstile Site Key</Label>
+                                        <Input 
+                                            value={turnstileSiteKey} 
+                                            onChange={(e) => setTurnstileSiteKey(e.target.value)} 
+                                            placeholder="1x00000000000000000000AA" 
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Turnstile Secret Key</Label>
+                                        <Input 
+                                            type="password"
+                                            value={turnstileSecretKey} 
+                                            onChange={(e) => setTurnstileSecretKey(e.target.value)} 
+                                            placeholder="••••••••••••••••••••••••••••" 
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </CardContent>

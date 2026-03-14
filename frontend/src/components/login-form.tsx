@@ -12,6 +12,9 @@ import { authService } from "@/lib/auth"
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate, Link } from "react-router-dom"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { Turnstile } from "@marsidev/react-turnstile"
+import { publicService } from "@/services/api/publicService"
+import { useQuery } from "@tanstack/react-query"
 import {
   Form,
   FormControl,
@@ -23,6 +26,7 @@ import {
 const formSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(1, 'Password is required'),
+  cf_turnstile_response: z.string().optional(),
 });
 
 export function LoginForm({
@@ -37,8 +41,16 @@ export function LoginForm({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: '', password: '', cf_turnstile_response: '' },
   });
+
+  const { data: settingsData } = useQuery({
+    queryKey: ['public-settings'],
+    queryFn: publicService.getSettings,
+    staleTime: 1000 * 60 * 60,
+  });
+
+  const turnstileSiteKey = settingsData?.data?.turnstile_site_key;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -145,6 +157,17 @@ export function LoginForm({
               </FormItem>
             )}
           />
+
+          {turnstileSiteKey && (
+            <div className="flex justify-center flex-col gap-2">
+              <Turnstile 
+                siteKey={turnstileSiteKey} 
+                onSuccess={(token: string) => form.setValue('cf_turnstile_response', token)}
+              />
+              <FormMessage>{form.formState.errors.cf_turnstile_response?.message}</FormMessage>
+            </div>
+          )}
+
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? 'Logging in...' : 'Login'}
           </Button>

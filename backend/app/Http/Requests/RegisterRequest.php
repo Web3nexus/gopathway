@@ -18,6 +18,7 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
             'ref' => ['nullable', 'string', 'exists:users,referral_code'],
+            'cf_turnstile_response' => ['sometimes', new \App\Rules\Turnstile()],
         ];
     }
 }

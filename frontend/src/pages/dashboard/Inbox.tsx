@@ -28,6 +28,8 @@ import { Input } from '@/components/ui/input';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useFeatures } from '@/hooks/useFeatures';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Turnstile } from '@marsidev/react-turnstile';
+import { publicService } from '@/services/api/publicService';
 
 const formatDate = (dateString: string) => {
     if (!dateString) return '';
@@ -84,6 +86,15 @@ export default function Inbox() {
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
     const [paymentAmount, setPaymentAmount] = useState('');
     const [paymentDescription, setPaymentDescription] = useState('');
+    const [turnstileToken, setTurnstileToken] = useState('');
+
+    const { data: settingsData } = useQuery({
+        queryKey: ['public-settings'],
+        queryFn: publicService.getSettings,
+        staleTime: 1000 * 60 * 60,
+    });
+
+    const turnstileSiteKey = settingsData?.data?.turnstile_site_key;
 
     const initPaymentMutation = useMutation({
         mutationFn: professionalService.initializePayment,
@@ -114,6 +125,7 @@ export default function Inbox() {
             expert_id: expertId,
             amount: parseFloat(paymentAmount),
             description: paymentDescription || 'Expert Consultation Services',
+            cf_turnstile_response: turnstileToken,
         });
     };
 
@@ -406,6 +418,15 @@ export default function Inbox() {
                                                             className="rounded-xl h-12"
                                                         />
                                                     </div>
+                                                    
+                                                    {turnstileSiteKey && (
+                                                        <div className="flex justify-center py-2">
+                                                            <Turnstile 
+                                                                siteKey={turnstileSiteKey} 
+                                                                onSuccess={(token: string) => setTurnstileToken(token)}
+                                                            />
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <Button 
                                                     className="w-full bg-[#0B3C91] hover:bg-[#0B3C91]/90 font-bold h-12 rounded-xl"

@@ -23,6 +23,7 @@ class SupportController extends Controller
         $request->validate([
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
+            'cf_turnstile_response' => ['sometimes', new \App\Rules\Turnstile()],
         ]);
 
         $user = Auth::user();

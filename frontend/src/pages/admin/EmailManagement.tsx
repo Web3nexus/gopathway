@@ -164,7 +164,7 @@ export default function EmailManagement() {
                                             <Label className="text-xs font-bold uppercase tracking-wider text-[#6B7280]">
                                                 {s.label}
                                             </Label>
-                                            <Info className="w-3 h-3 text-[#9CA3AF]" title={s.description} />
+                                            <Info className="w-3 h-3 text-[#9CA3AF]" aria-label={s.description} />
                                         </div>
                                         {s.type === 'encrypted_string' ? (
                                             <SensitiveInput

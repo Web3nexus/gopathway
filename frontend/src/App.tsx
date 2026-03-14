@@ -72,10 +72,10 @@ function App() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <GlobalSeo />
-        <GoogleAnalytics />
-        <CookieConsent />
         <BrowserRouter>
+          <GlobalSeo />
+          <GoogleAnalytics />
+          <CookieConsent />
           <CurrencyProvider>
             <Routes>
               {/* Auth Pages */}

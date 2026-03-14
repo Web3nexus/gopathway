@@ -18,9 +18,9 @@ export default function GeneralSettings() {
     });
 
     useEffect(() => {
-        if (settingsData) {
+        if (settingsData?.data) {
             const initial: Record<string, any> = {};
-            Object.values(settingsData).forEach((group: any) => {
+            Object.values(settingsData.data).forEach((group: any) => {
                 if (Array.isArray(group)) {
                     group.forEach((s: any) => {
                         initial[s.key] = s.value;
@@ -54,7 +54,7 @@ export default function GeneralSettings() {
         return <div className="flex justify-center p-20"><Loader2 className="h-8 w-8 animate-spin text-[#0B3C91]" /></div>;
     }
 
-    const groups = settingsData || {};
+    const groups = settingsData?.data || {};
 
     const getIcon = (groupName: string) => {
         switch (groupName) {

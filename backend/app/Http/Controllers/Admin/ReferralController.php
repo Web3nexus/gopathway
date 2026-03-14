@@ -52,4 +52,14 @@ class ReferralController extends Controller
 
         return response()->json(['message' => 'Commission marked as paid.']);
     }
+
+    public function triggerPayout(Request $request, ReferralCommission $commission, \App\Services\PayoutService $payoutService)
+    {
+        try {
+            $payoutService->processCommissionPayout($commission);
+            return response()->json(['message' => 'Payout initiated successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Payout initiation failed: ' . $e->getMessage()], 400);
+        }
+    }
 }

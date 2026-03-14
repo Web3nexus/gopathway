@@ -68,6 +68,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::post('/webhooks/paystack', [WebhookController::class , 'handle']);
     Route::post('/webhooks/flutterwave', [WebhookController::class , 'handleFlutterwave']);
+    Route::post('/webhooks/flutterwave/transfer', [WebhookController::class , 'handleFlutterwaveTransfer']);
 
     Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 
@@ -171,6 +172,7 @@ Route::group(['prefix' => 'v1'], function () {
 
             // Referral System
             Route::get('/referral/stats', [\App\Http\Controllers\Api\ReferralController::class , 'index']);
+            Route::get('/referral/banks', [\App\Http\Controllers\Api\ReferralController::class , 'getBanks']);
             Route::get('/referral/history', [\App\Http\Controllers\Api\ReferralController::class , 'history']);
             Route::put('/referral/payout', [\App\Http\Controllers\Api\ReferralController::class , 'updatePayout']);
 
@@ -284,6 +286,7 @@ Route::group(['prefix' => 'v1'], function () {
                     Route::put('users/{user}/commission-rate', [\App\Http\Controllers\Admin\ReferralController::class , 'updateRate']);
                     Route::get('referrals/commissions', [\App\Http\Controllers\Admin\ReferralController::class , 'commissions']);
                     Route::post('referrals/commissions/{commission}/pay', [\App\Http\Controllers\Admin\ReferralController::class , 'markAsPaid']);
+                    Route::post('referrals/commissions/{commission}/trigger-payout', [\App\Http\Controllers\Admin\ReferralController::class , 'triggerPayout']);
                     Route::get('bookings', [\App\Http\Controllers\BookingController::class , 'adminIndex']);
 
                     // Post-Arrival Career & Residency Management

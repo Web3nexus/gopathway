@@ -175,4 +175,35 @@ class WebhookController extends Controller
         $referralService = app(\App\Services\ReferralService::class);
         $referralService->recordPayment($user, $data['amount'], $data['tx_ref'] ?? 'FW-WEBHOOK');
     }
+    public function handleFlutterwaveTransfer(Request $request)
+    {
+        $signature = $request->header('verif-hash');
+        $secretHash = Setting::where('key', 'flutterwave_secret_key')->value('value') ?: env('FLUTTERWAVE_SECRET_HASH', '');
+
+        if (!$signature || $signature !== $secretHash) {
+            Log::warning('Flutterwave Transfer Webhook Signature Mismatch');
+            return response()->json(['message' => 'Invalid signature'], 400);
+        }
+
+        $data = $request->input('data');
+        $status = $data['status'];
+        $reference = $data['reference'];
+
+        Log::info('Flutterwave Transfer Webhook Received', ['status' => $status, 'reference' => $reference]);
+
+        $commission = \App\Models\ReferralCommission::where('payout_reference', $reference)->first();
+
+        if ($commission) {
+            if ($status === 'SUCCESSFUL') {
+                $commission->update(['status' => 'paid']);
+            } elseif ($status === 'FAILED') {
+                $commission->update([
+                    'status' => 'pending', // Reset to pending or add a 'failed' state
+                    'payout_error' => $data['complete_message'] ?? 'Transfer failed'
+                ]);
+            }
+        }
+
+        return response()->json(['status' => 'success']);
+    }
 }

@@ -48,4 +48,56 @@ class FlutterwaveService
         Log::error('Flutterwave Verification Failed', ['transaction_id' => $transactionId, 'response' => $response->json()]);
         return null;
     }
+
+    /**
+     * Get real-time FX rate.
+     */
+    public function getFxRate(string $from, string $to, float $amount = 1)
+    {
+        $response = Http::withToken($this->secretKey)
+            ->post("{$this->baseUrl}/transfers/rates", [
+                'from' => $from,
+                'to' => $to,
+                'amount' => $amount
+            ]);
+
+        if ($response->successful()) {
+            return $response->json()['data'];
+        }
+
+        Log::error('Flutterwave FX Rate Fetch Failed', ['from' => $from, 'to' => $to, 'response' => $response->json()]);
+        return null;
+    }
+
+    /**
+     * Get list of banks for a country.
+     */
+    public function getBanks(string $countryCode)
+    {
+        $response = Http::withToken($this->secretKey)
+            ->get("{$this->baseUrl}/banks/{$countryCode}");
+
+        if ($response->successful()) {
+            return $response->json()['data'];
+        }
+
+        Log::error('Flutterwave Bank Fetch Failed', ['country' => $countryCode, 'response' => $response->json()]);
+        return [];
+    }
+
+    /**
+     * Initiate a transfer/payout.
+     */
+    public function initiateTransfer(array $data)
+    {
+        $response = Http::withToken($this->secretKey)
+            ->post("{$this->baseUrl}/transfers", $data);
+
+        if ($response->successful()) {
+            return $response->json()['data'];
+        }
+
+        Log::error('Flutterwave Transfer Failed', ['data' => $data, 'response' => $response->json()]);
+        throw new \Exception($response->json()['message'] ?? 'Flutterwave transfer failed');
+    }
 }

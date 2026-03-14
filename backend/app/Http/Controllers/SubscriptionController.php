@@ -199,8 +199,15 @@ class SubscriptionController extends Controller
             $amount = $plan->prices[$targetCurrency];
         }
         elseif ($targetCurrency !== 'USD') {
-            $rate = $this->currencyService->getRateFor($targetCurrency);
-            $amount = $plan->price * $rate;
+            // Try to get dynamic rate from Flutterwave for precision
+            $fxRateData = $this->flutterwaveService->getFxRate('USD', $targetCurrency, $plan->price);
+            if ($fxRateData && isset($fxRateData['to'][0]['rate'])) {
+                $rate = $fxRateData['to'][0]['rate'];
+                $amount = $plan->price * $rate;
+            } else {
+                $rate = $this->currencyService->getRateFor($targetCurrency);
+                $amount = $plan->price * $rate;
+            }
         }
 
         $gatewayChoice = $validated['gateway'] ?? Setting::where('key', 'payment_gateway_active')->value('value') ?? 'paystack';

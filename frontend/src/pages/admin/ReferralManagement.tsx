@@ -33,6 +33,18 @@ export default function ReferralManagement() {
         },
     });
 
+    const triggerPayoutMutation = useMutation({
+        mutationFn: (commissionId: number) =>
+            api.post(`/api/v1/admin/referrals/commissions/${commissionId}/trigger-payout`),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin-commissions'] });
+            toast({ title: "Initiated", description: "Automated payout sequence started." });
+        },
+        onError: (err: any) => {
+            toast({ title: "Failed", description: err.response?.data?.message || "Could not initiate payout", variant: 'destructive' });
+        }
+    });
+
     const markAsPaidMutation = useMutation({
         mutationFn: (commissionId: number) =>
             api.post(`/api/v1/admin/referrals/commissions/${commissionId}/pay`),
@@ -209,13 +221,29 @@ export default function ReferralManagement() {
                                     <td className="px-8 py-4 text-slate-500">{new Date(row.created_at).toLocaleDateString()}</td>
                                     <td className="px-8 py-4 text-right">
                                         {row.status === 'pending' && (
-                                            <Button
-                                                size="sm"
-                                                className="bg-green-600 hover:bg-green-700 rounded-xl font-bold"
-                                                onClick={() => markAsPaidMutation.mutate(row.id)}
-                                            >
-                                                Mark Paid
-                                            </Button>
+                                            <div className="flex justify-end gap-2">
+                                                {row.referrer?.payout_method === 'bank' && (
+                                                    <Button
+                                                        size="sm"
+                                                        className="bg-blue-600 hover:bg-blue-700 rounded-xl font-bold"
+                                                        onClick={() => triggerPayoutMutation.mutate(row.id)}
+                                                        disabled={triggerPayoutMutation.isPending}
+                                                    >
+                                                        {triggerPayoutMutation.isPending ? 'Initiating...' : 'Pay via Flutterwave'}
+                                                    </Button>
+                                                )}
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    className="rounded-xl font-bold"
+                                                    onClick={() => markAsPaidMutation.mutate(row.id)}
+                                                >
+                                                    Mark Paid
+                                                </Button>
+                                            </div>
+                                        )}
+                                        {row.status === 'processing' && (
+                                            <span className="text-xs text-blue-600 font-bold animate-pulse">Processing...</span>
                                         )}
                                     </td>
                                 </tr>

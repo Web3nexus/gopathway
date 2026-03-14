@@ -15,7 +15,9 @@ export default function Referrals() {
     const queryClient = useQueryClient();
     const [payoutMethod, setPayoutMethod] = useState('paypal');
     const [payoutDetails, setPayoutDetails] = useState<Record<string, string>>({});
-    const [bankCountry, setBankCountry] = useState('nigeria');
+    const [bankCountry, setBankCountry] = useState('NG');
+    const [supportedBanks, setSupportedBanks] = useState<any[]>([]);
+    const [loadingBanks, setLoadingBanks] = useState(false);
 
     const { data: stats, isLoading: loadingStats } = useQuery({
         queryKey: ['referral-stats'],
@@ -27,10 +29,24 @@ export default function Referrals() {
             setPayoutMethod(stats.payout_method || 'paypal');
             if (stats.payout_details) {
                 setPayoutDetails(stats.payout_details);
-                setBankCountry(stats.payout_details.country === 'nigeria' ? 'nigeria' : 'international');
+                setBankCountry(stats.payout_details.country || 'NG');
+            }
+            if (stats.supported_banks) {
+                setSupportedBanks(stats.supported_banks);
             }
         }
     }, [stats]);
+
+    useEffect(() => {
+        if (payoutMethod === 'bank') {
+            setLoadingBanks(true);
+            api.get(`/api/v1/referral/banks?country=${bankCountry}`)
+                .then(res => {
+                    setSupportedBanks(res.data);
+                })
+                .finally(() => setLoadingBanks(false));
+        }
+    }, [bankCountry, payoutMethod]);
 
     const { data: history } = useQuery({
         queryKey: ['referral-history'],
@@ -44,8 +60,8 @@ export default function Referrals() {
         if (payoutMethod === 'paypal') return !!payoutDetails.email;
         if (payoutMethod === 'bank') {
             const base = payoutDetails.account_name && payoutDetails.bank_name && payoutDetails.account_number && payoutDetails.country;
-            if (bankCountry === 'international') return !!base && !!payoutDetails.swift_bic;
-            return !!base;
+            if (bankCountry !== 'NG') return !!base && !!payoutDetails.swift_bic;
+            return !!base && !!payoutDetails.bank_code;
         }
         return false;
     };
@@ -53,7 +69,7 @@ export default function Referrals() {
     const updatePayoutMutation = useMutation({
         mutationFn: () => api.put('/api/v1/referral/payout', {
             payout_method: payoutMethod,
-            payout_details: { ...payoutDetails, country: bankCountry === 'nigeria' ? 'nigeria' : (payoutDetails.country || '') }
+            payout_details: { ...payoutDetails, country: bankCountry }
         }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['referral-stats'] });
@@ -184,9 +200,27 @@ export default function Referrals() {
                 {payoutMethod === 'bank' && (
                     <div className="mt-4 space-y-4">
                         <div className="flex gap-2">
-                            <button onClick={() => setBankCountry('nigeria')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold border transition-all ${bankCountry === 'nigeria' ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-500 hover:border-slate-300'}`}>🇳🇬 Nigerian Bank</button>
-                            <button onClick={() => setBankCountry('international')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold border transition-all ${bankCountry === 'international' ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-500 hover:border-slate-300'}`}>🌍 International Bank</button>
+                            <button onClick={() => setBankCountry('NG')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold border transition-all ${bankCountry === 'NG' ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-500 hover:border-slate-300'}`}>🇳🇬 Nigerian Bank</button>
+                            <button onClick={() => setBankCountry('US')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold border transition-all ${bankCountry !== 'NG' ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-500 hover:border-slate-300'}`}>🌍 International Bank</button>
                         </div>
+                        {bankCountry !== 'NG' && (
+                            <div className="space-y-2 max-w-xs">
+                                <Label>Country</Label>
+                                <Select value={bankCountry} onValueChange={setBankCountry}>
+                                    <SelectTrigger className="h-11 rounded-xl">
+                                        <SelectValue placeholder="Select Country" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="US">United States</SelectItem>
+                                        <SelectItem value="GB">United Kingdom</SelectItem>
+                                        <SelectItem value="CA">Canada</SelectItem>
+                                        <SelectItem value="GH">Ghana</SelectItem>
+                                        <SelectItem value="KE">Kenya</SelectItem>
+                                        <SelectItem value="ZA">South Africa</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label>Account Name <span className="text-red-500">*</span></Label>
@@ -194,20 +228,33 @@ export default function Referrals() {
                             </div>
                             <div className="space-y-2">
                                 <Label>Bank Name <span className="text-red-500">*</span></Label>
-                                <Input value={payoutDetails.bank_name || ''} onChange={e => setDetail('bank_name', e.target.value)} placeholder={bankCountry === 'nigeria' ? 'e.g. First Bank, GTBank' : 'e.g. Barclays, Chase'} className="h-11 rounded-xl" />
+                                {supportedBanks.length > 0 ? (
+                                    <Select 
+                                        value={payoutDetails.bank_code || ''} 
+                                        onValueChange={code => {
+                                            const bank = supportedBanks.find(b => b.code === code);
+                                            setPayoutDetails(prev => ({ ...prev, bank_code: code, bank_name: bank?.name || '' }));
+                                        }}
+                                    >
+                                        <SelectTrigger className="h-11 rounded-xl">
+                                            <SelectValue placeholder={loadingBanks ? "Loading banks..." : "Select Bank"} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {supportedBanks.map(bank => (
+                                                <SelectItem key={bank.id} value={bank.code}>{bank.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                ) : (
+                                    <Input value={payoutDetails.bank_name || ''} onChange={e => setDetail('bank_name', e.target.value)} placeholder="e.g. Barclays, Chase" className="h-11 rounded-xl" />
+                                )}
                             </div>
                             <div className="space-y-2">
                                 <Label>Account Number <span className="text-red-500">*</span></Label>
-                                <Input value={payoutDetails.account_number || ''} onChange={e => setDetail('account_number', e.target.value)} placeholder={bankCountry === 'nigeria' ? '10-digit NUBAN number' : 'Your account number'} className="h-11 rounded-xl" />
+                                <Input value={payoutDetails.account_number || ''} onChange={e => setDetail('account_number', e.target.value)} placeholder={bankCountry === 'NG' ? '10-digit NUBAN number' : 'Your account number'} className="h-11 rounded-xl" />
                             </div>
-                            {bankCountry === 'international' && (
-                                <div className="space-y-2">
-                                    <Label>Bank Country <span className="text-red-500">*</span></Label>
-                                    <Input value={payoutDetails.country || ''} onChange={e => setDetail('country', e.target.value)} placeholder="e.g. United Kingdom" className="h-11 rounded-xl" />
-                                </div>
-                            )}
                         </div>
-                        {bankCountry === 'international' && (
+                        {bankCountry !== 'NG' && (
                             <div className="space-y-4 pt-4 border-t border-slate-100">
                                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">International Transfer Details</p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

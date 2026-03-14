@@ -26,7 +26,14 @@ class ReferralController extends Controller
             'commission_rate' => $user->commission_rate,
             'payout_method' => $user->payout_method,
             'payout_details' => $user->payout_details,
+            'supported_banks' => (new \App\Services\FlutterwaveService())->getBanks($user->payout_details['country'] ?? 'NG')
         ]);
+    }
+
+    public function getBanks(Request $request, \App\Services\FlutterwaveService $flutterwave)
+    {
+        $country = $request->query('country', 'NG');
+        return response()->json($flutterwave->getBanks($country));
     }
 
     public function updatePayout(Request $request)
@@ -39,6 +46,7 @@ class ReferralController extends Controller
             // Bank – common fields
             'payout_details.account_name' => 'required_if:payout_method,bank|nullable|string|max:255',
             'payout_details.bank_name' => 'required_if:payout_method,bank|nullable|string|max:255',
+            'payout_details.bank_code' => 'required_if:payout_method,bank|nullable|string|max:20',
             'payout_details.account_number' => 'required_if:payout_method,bank|nullable|string|max:50',
             'payout_details.country' => 'required_if:payout_method,bank|nullable|string|max:100',
             // International extras

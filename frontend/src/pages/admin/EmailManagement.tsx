@@ -41,8 +41,10 @@ export default function EmailManagement() {
                 adminService.getEmailTemplates()
             ]);
             
-            // Filter only Email group settings
-            const emailSettings = settingsRes.data.filter((s: any) => s.group === 'Email');
+            // Extract Email group settings from the grouped object
+            const groupedSettings = settingsRes.data || {};
+            const emailSettings = groupedSettings.Email || [];
+            
             setSettings(emailSettings);
             setTemplates(templatesRes);
 

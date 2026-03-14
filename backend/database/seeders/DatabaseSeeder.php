@@ -13,10 +13,13 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call(RoleSeeder::class);
-        $this->call(CleanupSeeder::class);
-        $this->call(CountrySeeder::class);
-        $this->call(PathwayExpansionSeeder::class);
+        $this->call([
+            RoleSeeder::class,
+            SettingSeeder::class,
+            MailSettingsSeeder::class,
+            EmailTemplateSeeder::class,
+            SubscriptionPlanSeeder::class,
+        ]);
         $this->call(ComprehensiveRealisticCostSeeder::class);
 
 

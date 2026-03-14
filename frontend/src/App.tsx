@@ -16,6 +16,8 @@ import PublicPricing from '@/pages/public/Pricing';
 import Privacy from '@/pages/public/Privacy';
 import Terms from '@/pages/public/Terms';
 import Documentation from '@/pages/public/Documentation';
+import Status from '@/pages/public/Status';
+import NotFound from '@/pages/error/NotFound';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import ProfileSetup from '@/pages/dashboard/ProfileSetup';
 import Pathway from '@/pages/dashboard/Pathway';
@@ -94,7 +96,11 @@ function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/documentation" element={<Documentation />} />
+            <Route path="/status" element={<Status />} />
           </Route>
+          
+          {/* Catch-all 404 Route */}
+          <Route path="*" element={<NotFound />} />
 
           {/* Admin Routes */}
           <Route element={<AdminRoute />}>

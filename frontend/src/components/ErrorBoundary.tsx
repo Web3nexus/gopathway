@@ -1,4 +1,5 @@
 import React, { Component, type ErrorInfo, type ReactNode } from "react";
+import ErrorPage from "@/pages/error/ErrorPage";
 
 interface Props {
     children: ReactNode;
@@ -24,30 +25,12 @@ class ErrorBoundary extends Component<Props, State> {
     }
 
     public render() {
-        if (this.state.hasError) {
+        if (this.state.hasError && this.state.error) {
             return (
-                <div className="min-h-screen flex items-center justify-center bg-white p-6">
-                    <div className="max-w-md w-full text-center space-y-4">
-                        <div className="h-16 w-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
-                        </div>
-                        <h1 className="text-2xl font-bold text-slate-900">Something went wrong</h1>
-                        <p className="text-slate-600">
-                            The application encountered an unexpected error.
-                        </p>
-                        <div className="bg-slate-50 p-4 rounded-lg text-left overflow-auto max-h-40">
-                            <code className="text-xs text-red-500 whitespace-pre-wrap">
-                                {this.state.error?.toString()}
-                            </code>
-                        </div>
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="w-full py-3 bg-[#0B3C91] text-white rounded-xl font-bold hover:bg-[#1A1A1A] transition-colors"
-                        >
-                            Reload Page
-                        </button>
-                    </div>
-                </div>
+                <ErrorPage 
+                    error={this.state.error} 
+                    resetErrorBoundary={() => this.setState({ hasError: false, error: null })} 
+                />
             );
         }
 

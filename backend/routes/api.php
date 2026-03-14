@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Admin\SupportManagementController;
 use App\Http\Controllers\Api\ExpertPaymentController;
 use App\Http\Controllers\Api\SeoController;
+use App\Http\Controllers\HealthController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     // Public Settings
     Route::get('/settings', [SeoController::class , 'publicSettings']);
+    Route::get('/health', [HealthController::class, 'check']);
 
     // Public — Countries & Visa Types
     Route::get('/countries', [CountryController::class , 'index']);

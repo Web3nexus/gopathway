@@ -46,10 +46,7 @@ export const adminService = {
     impersonate: (userId: number) => api.post(`/api/v1/admin/users/${userId}/impersonate`).then(r => r.data),
     leaveImpersonation: () => api.post('/api/v1/admin/leave-impersonation').then(r => r.data),
 
-    // General Settings
-    getSettings: () => api.get('/api/v1/admin/settings').then(r => r.data.data),
-    updateSettings: (settings: { key: string; value: any }[]) =>
-        api.post('/api/v1/admin/settings', { settings }).then(r => r.data),
+
 
     // Subscription Plans
     getSubscriptionPlans: () => api.get('/api/v1/admin/subscription-plans').then(r => r.data.data),
@@ -109,4 +106,10 @@ export const adminService = {
 
     reviewExpertWithdrawal: (id: number, data: { status: string; admin_notes?: string }) =>
         api.post(`/api/v1/admin/expert-withdrawals/${id}/review`, data).then(r => r.data),
+
+    // General Settings
+    getSettings: () => api.get('/api/v1/admin/settings').then(r => r.data),
+    updateSettings: (settings: { key: string; value: any }[]) =>
+        api.post('/api/v1/admin/settings', { settings }).then(r => r.data),
+    uploadSettings: (data: FormData) => api.post('/api/v1/admin/settings', data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data),
 };

@@ -46,8 +46,19 @@ class SettingController extends Controller
         ]);
 
         foreach ($validated['settings'] as $item) {
+            $value = $item['value'];
+            
+            // Handle file uploads
+            if ($value instanceof \Illuminate\Http\UploadedFile) {
+                // Store file in public disk, under 'settings' directory
+                $path = $value->store('settings', 'public');
+                $value = '/storage/' . $path;
+            } elseif (is_bool($value)) {
+                $value = $value ? '1' : '0';
+            }
+
             Setting::where('key', $item['key'])->update([
-                'value' => is_bool($item['value']) ? ($item['value'] ? '1' : '0') : $item['value']
+                'value' => $value
             ]);
         }
 

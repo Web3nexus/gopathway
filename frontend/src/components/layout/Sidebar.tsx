@@ -4,10 +4,21 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { useFeatures } from '@/hooks/useFeatures';
 
+import { useQuery } from '@tanstack/react-query';
+import { publicService } from '@/services/api/publicService';
+
 export function Sidebar() {
     const { user } = useAuth();
     const { canAccessFeature } = useFeatures();
     const isAdmin = user?.roles?.some((role: any) => role.name === 'admin');
+
+    const { data: settingsData } = useQuery({
+        queryKey: ['public-settings'],
+        queryFn: publicService.getSettings,
+        staleTime: 1000 * 60 * 60,
+    });
+    const logoUrl = settingsData?.data?.site_logo;
+
     const routes = [
         { name: 'Dashboard', path: '/dashboard', icon: Home },
         { name: 'Pathway Planner', path: '/pathway', icon: Compass },
@@ -32,9 +43,13 @@ export function Sidebar() {
     return (
         <div className="w-64 h-full hidden lg:flex flex-col overflow-y-auto border-r bg-white/60 backdrop-blur-xl dark:bg-black/40 z-20">
             <div className="p-6">
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                    GoPathway
-                </h2>
+                {logoUrl ? (
+                    <img src={logoUrl} alt="GoPathway" className="h-8 object-contain" />
+                ) : (
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        GoPathway
+                    </h2>
+                )}
             </div>
 
             <nav className="flex-1 px-4 space-y-2 mt-4">

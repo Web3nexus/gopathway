@@ -33,6 +33,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Admin\SupportManagementController;
 use App\Http\Controllers\Api\ExpertPaymentController;
+use App\Http\Controllers\Api\SeoController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,9 @@ use Illuminate\Support\Facades\Route;
 // ──────────────────────────────────────────────────────────────
 Route::group(['prefix' => 'v1'], function () {
 
+    // Public Settings
+    Route::get('/settings', [SeoController::class , 'publicSettings']);
+
     // Public — Countries & Visa Types
     Route::get('/countries', [CountryController::class , 'index']);
     Route::get('/countries/scores', [CountryScoreController::class , 'index']);
@@ -48,6 +52,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/countries/{country}/visa-types', [VisaTypeController::class , 'byCountry']);
     Route::get('/plans', [SubscriptionController::class , 'plans']);
     Route::get('/blog', [BlogController::class , 'index']);
+    
+    // SEO & Sitemap
+    Route::get('/sitemap.xml', [SeoController::class , 'sitemap']);
+    Route::get('/robots.txt', [SeoController::class , 'robots']);
     Route::get('/blog/{slug}', [BlogController::class , 'show']);
 
     // Auth (Sanctum stateful handled by bootstrap/app.php middleware)

@@ -55,12 +55,14 @@ import RelocationManagement from '@/pages/admin/RelocationManagement';
 import SettlementManagement from '@/pages/admin/SettlementManagement';
 import SchoolManagement from '@/pages/admin/SchoolManagement';
 import CareerManagement from '@/pages/admin/CareerManagement';
+import SeoSettings from '@/pages/admin/SeoSettings';
 import SupportManagement from '@/pages/admin/SupportManagement';
 import SchoolExplorer from '@/pages/dashboard/SchoolExplorer';
 import ExpertMarketplace from '@/pages/marketplace/ExpertMarketplace';
 import ErrorBoundary from './components/ErrorBoundary';
 
 import { CurrencyProvider } from '@/contexts/CurrencyContext';
+import { GlobalSeo } from '@/components/GlobalSeo';
 
 const queryClient = new QueryClient();
 
@@ -68,6 +70,7 @@ function App() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
+        <GlobalSeo />
         <BrowserRouter>
           <CurrencyProvider>
             <Routes>
@@ -107,6 +110,7 @@ function App() {
                   <Route path="/admin/schools" element={<SchoolManagement />} />
                   <Route path="/admin/career" element={<CareerManagement />} />
                   <Route path="/admin/support" element={<SupportManagement />} />
+                  <Route path="/admin/seo-settings" element={<SeoSettings />} />
                   <Route path="/admin/settings" element={<GeneralSettings />} />
                 </Route>
               </Route>

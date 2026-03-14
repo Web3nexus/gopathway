@@ -144,7 +144,7 @@ export default function Dashboard() {
                             </h3>
                         </div>
                         <div className="p-6">
-                            {summary?.recent_notifications?.length > 0 ? (
+                            {Array.isArray(summary?.recent_notifications) && summary.recent_notifications.length > 0 ? (
                                 <ul className="space-y-4">
                                     {summary.recent_notifications.map((notif: any) => (
                                         <li key={notif.id} className="flex gap-4 items-start pb-4 border-b border-[#E5E7EB] last:border-0 last:pb-0">

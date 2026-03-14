@@ -57,7 +57,7 @@ export default function Recommendations() {
             </div>
 
             <div className="grid grid-cols-1 gap-6">
-                {recommendations.map((rec: any) => (
+                {(Array.isArray(recommendations) ? recommendations : []).map((rec: any) => (
                     <div key={rec.visa_type.id} className="group bg-white rounded-2xl border border-[#E5E7EB] hover:border-[#00C2FF] hover:shadow-xl hover:shadow-blue-50/50 transition-all duration-300 overflow-hidden">
                         <div className="p-6 md:p-8">
                             <div className="flex flex-col md:flex-row gap-6 md:gap-8">
@@ -145,7 +145,7 @@ export default function Recommendations() {
                                                 <AlertCircle className="w-4 h-4" /> Recommendation to improve match
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                                {rec.improvements.map((imp: string, i: number) => (
+                                                {(Array.isArray(rec.improvements) ? rec.improvements : []).map((imp: string, i: number) => (
                                                     <div key={i} className="flex items-start gap-2 text-xs text-amber-900/80">
                                                         <div className="h-1.5 w-1.5 rounded-full bg-amber-400 mt-1 shrink-0" />
                                                         {imp}

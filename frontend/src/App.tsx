@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { AdminLayout } from '@/layouts/AdminLayout';
@@ -71,12 +71,13 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <GlobalSeo />
-        <GoogleAnalytics />
-        <CookieConsent />
-        <CurrencyProvider>
-          <Routes>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <GlobalSeo />
+          <GoogleAnalytics />
+          <CookieConsent />
+          <CurrencyProvider>
+            <Routes>
               {/* Auth Pages */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -149,10 +150,11 @@ function App() {
                   <Route path="/professional/earnings" element={<ProfessionalEarnings />} />
                 </Route>
               </Route>
-          </Routes>
-        </CurrencyProvider>
-        <Toaster />
-      </QueryClientProvider>
+            </Routes>
+          </CurrencyProvider>
+        </QueryClientProvider>
+      </BrowserRouter>
+      <Toaster />
     </ErrorBoundary>
   );
 }

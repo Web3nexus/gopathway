@@ -63,6 +63,8 @@ import ErrorBoundary from './components/ErrorBoundary';
 
 import { CurrencyProvider } from '@/contexts/CurrencyContext';
 import { GlobalSeo } from '@/components/GlobalSeo';
+import { GoogleAnalytics } from '@/components/GoogleAnalytics';
+import { CookieConsent } from '@/components/CookieConsent';
 
 const queryClient = new QueryClient();
 
@@ -71,6 +73,8 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <GlobalSeo />
+        <GoogleAnalytics />
+        <CookieConsent />
         <BrowserRouter>
           <CurrencyProvider>
             <Routes>

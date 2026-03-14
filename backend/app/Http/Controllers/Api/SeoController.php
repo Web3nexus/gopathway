@@ -20,6 +20,11 @@ class SeoController extends Controller
             'site_logo',
             'site_favicon',
             'support_email',
+            'google_analytics_id',
+            'cookie_consent_enabled',
+            'cookie_consent_message',
+            'privacy_policy_url',
+            'terms_service_url',
         ];
 
         $settings = \App\Models\Setting::whereIn('key', $keys)->pluck('value', 'key');

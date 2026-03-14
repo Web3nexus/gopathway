@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { adminService } from '@/services/api/adminService';
 import { useToast } from '@/hooks/use-toast';
-import { Globe, Image as ImageIcon, Loader2, Save, Upload } from 'lucide-react';
+import { Globe, Image as ImageIcon, Loader2, Save, Upload, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,6 +16,13 @@ export default function SeoSettings() {
 
     const [metaTitle, setMetaTitle] = useState('');
     const [metaDesc, setMetaDesc] = useState('');
+    const [gaId, setGaId] = useState('');
+    
+    // Compliance
+    const [cookieConsentEnabled, setCookieConsentEnabled] = useState(false);
+    const [cookieConsentMessage, setCookieConsentMessage] = useState('');
+    const [privacyPolicyUrl, setPrivacyPolicyUrl] = useState('');
+    const [termsServiceUrl, setTermsServiceUrl] = useState('');
     
     const [logoUrl, setLogoUrl] = useState('');
     const [faviconUrl, setFaviconUrl] = useState('');
@@ -42,6 +49,13 @@ export default function SeoSettings() {
 
             setMetaTitle(getSettingValue('site_meta_title') || '');
             setMetaDesc(getSettingValue('site_meta_description') || '');
+            setGaId(getSettingValue('google_analytics_id') || '');
+            
+            setCookieConsentEnabled(getSettingValue('cookie_consent_enabled') === '1' || getSettingValue('cookie_consent_enabled') === true);
+            setCookieConsentMessage(getSettingValue('cookie_consent_message') || '');
+            setPrivacyPolicyUrl(getSettingValue('privacy_policy_url') || '');
+            setTermsServiceUrl(getSettingValue('terms_service_url') || '');
+
             setLogoUrl(getSettingValue('site_logo') || '');
             setFaviconUrl(getSettingValue('site_favicon') || '');
             setOgImageUrl(getSettingValue('site_og_image') || '');
@@ -69,6 +83,17 @@ export default function SeoSettings() {
         formData.append('settings[0][value]', metaTitle);
         formData.append('settings[1][key]', 'site_meta_description');
         formData.append('settings[1][value]', metaDesc);
+        formData.append('settings[2][key]', 'google_analytics_id');
+        formData.append('settings[2][value]', gaId);
+        
+        formData.append('settings[3][key]', 'cookie_consent_enabled');
+        formData.append('settings[3][value]', cookieConsentEnabled ? '1' : '0');
+        formData.append('settings[4][key]', 'cookie_consent_message');
+        formData.append('settings[4][value]', cookieConsentMessage);
+        formData.append('settings[5][key]', 'privacy_policy_url');
+        formData.append('settings[5][value]', privacyPolicyUrl);
+        formData.append('settings[6][key]', 'terms_service_url');
+        formData.append('settings[6][value]', termsServiceUrl);
 
         updateSettingsMutation.mutate(formData);
     };
@@ -188,6 +213,17 @@ export default function SeoSettings() {
                                 />
                                 <div className="text-xs text-right text-slate-400">{metaDesc.length} chars</div>
                             </div>
+
+                            <div className="space-y-2 pt-2 border-t">
+                                <Label>Google Analytics Measurement ID (GA4)</Label>
+                                <Input 
+                                    value={gaId} 
+                                    onChange={(e) => setGaId(e.target.value)} 
+                                    placeholder="G-XXXXXXXXXX" 
+                                />
+                                <p className="text-xs text-slate-400">Leave empty to disable tracking.</p>
+                            </div>
+
                             <Button className="w-full bg-[#0B3C91] hover:bg-[#0B3C91]/90" onClick={handleTextSave} disabled={updateSettingsMutation.isPending}>
                                 {updateSettingsMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                                 Save Text Settings
@@ -197,6 +233,58 @@ export default function SeoSettings() {
                 </div>
 
                 <div className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-xl flex items-center gap-2">
+                                <ShieldCheck className="w-5 h-5 text-[#0B3C91]" /> Compliance & Legal
+                            </CardTitle>
+                            <CardDescription>
+                                Manage cookie consent and legal document links.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="cookie-enable">Enable Cookie Consent Banner</Label>
+                                <input 
+                                    type="checkbox" 
+                                    id="cookie-enable"
+                                    checked={cookieConsentEnabled}
+                                    onChange={(e) => setCookieConsentEnabled(e.target.checked)}
+                                    className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"
+                                />
+                            </div>
+                            
+                            <div className="space-y-2">
+                                <Label>Cookie Consent Message</Label>
+                                <Textarea 
+                                    value={cookieConsentMessage} 
+                                    onChange={(e) => setCookieConsentMessage(e.target.value)} 
+                                    placeholder="We use cookies to enhance your experience..."
+                                    className="h-20"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label>Privacy Policy URL</Label>
+                                    <Input 
+                                        value={privacyPolicyUrl} 
+                                        onChange={(e) => setPrivacyPolicyUrl(e.target.value)} 
+                                        placeholder="/privacy-policy" 
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Terms of Service URL</Label>
+                                    <Input 
+                                        value={termsServiceUrl} 
+                                        onChange={(e) => setTermsServiceUrl(e.target.value)} 
+                                        placeholder="/terms-of-service" 
+                                    />
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
                     {renderAssetUpload("Site Logo", "The primary logo shown in the navbar.", "logo", logoUrl, "upload-logo")}
                     {renderAssetUpload("Favicon", "The small 1:1 icon in the browser tab (must be square).", "favicon", faviconUrl, "upload-favicon")}
                     {renderAssetUpload("Open Graph Image", "The banner image shown when sharing links on social media (1.91:1 ratio recommended).", "ogImage", ogImageUrl, "upload-og")}

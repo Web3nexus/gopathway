@@ -91,8 +91,8 @@ export function PublicLayout() {
                         <div>
                             <h4 className="font-semibold mb-3 text-sm tracking-wider uppercase text-gray-400">Legal</h4>
                             <ul className="space-y-2 text-sm text-gray-300">
-                                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+                                <li><Link to={settings.privacy_policy_url || "/privacy-policy"} className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                                <li><Link to={settings.terms_service_url || "/terms-of-service"} className="hover:text-white transition-colors">Terms of Service</Link></li>
                             </ul>
                         </div>
                     </div>

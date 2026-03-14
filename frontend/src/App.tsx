@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Routes, Route } from 'react-router-dom';
 import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { AdminLayout } from '@/layouts/AdminLayout';
 import { PublicLayout } from '@/layouts/PublicLayout';
@@ -66,95 +65,91 @@ import { GlobalSeo } from '@/components/GlobalSeo';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import { CookieConsent } from '@/components/CookieConsent';
 
-const queryClient = new QueryClient();
+
 
 function App() {
   return (
     <ErrorBoundary>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <GlobalSeo />
-          <GoogleAnalytics />
-          <CookieConsent />
-          <CurrencyProvider>
-            <Routes>
-              {/* Auth Pages */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+      <GlobalSeo />
+      <GoogleAnalytics />
+      <CookieConsent />
+      <CurrencyProvider>
+        <Routes>
+          {/* Auth Pages */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-              {/* Public Marketing Pages */}
-              <Route element={<PublicLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/countries" element={<Countries />} />
-                <Route path="/countries/:id" element={<CountryDetail />} />
-                <Route path="/blog" element={<BlogList />} />
-                <Route path="/blog/:slug" element={<BlogPostView />} />
-                <Route path="/pricing" element={<PublicPricing />} />
-              </Route>
+          {/* Public Marketing Pages */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/countries" element={<Countries />} />
+            <Route path="/countries/:id" element={<CountryDetail />} />
+            <Route path="/blog" element={<BlogList />} />
+            <Route path="/blog/:slug" element={<BlogPostView />} />
+            <Route path="/pricing" element={<PublicPricing />} />
+          </Route>
 
-              {/* Admin Routes */}
-              <Route element={<AdminRoute />}>
-                <Route element={<AdminLayout />}>
-                  <Route path="/securegate" element={<AdminDashboard />} />
-                  <Route path="/admin/countries" element={<CountryManagement />} />
-                  <Route path="/admin/visas" element={<VisaManagement />} />
-                  <Route path="/admin/costs" element={<CostManagement />} />
-                  <Route path="/admin/roadmaps" element={<TimelineManagement />} />
-                  <Route path="/admin/documents" element={<DocumentManagement />} />
-                  <Route path="/admin/features" element={<FeatureManagement />} />
-                  <Route path="/admin/verifications" element={<ProfessionalVerification />} />
-                  <Route path="/admin/users" element={<UserManagement />} />
-                  <Route path="/admin/expert-withdrawals" element={<ExpertWithdrawals />} />
-                  <Route path="/admin/plans" element={<PlanManagement />} />
-                  <Route path="/admin/referrals" element={<ReferralManagement />} />
-                  <Route path="/admin/bookings" element={<BookingManagement />} />
-                  <Route path="/admin/blog" element={<BlogManagement />} />
-                  <Route path="/admin/relocation" element={<RelocationManagement />} />
-                  <Route path="/admin/settlement" element={<SettlementManagement />} />
-                  <Route path="/admin/schools" element={<SchoolManagement />} />
-                  <Route path="/admin/career" element={<CareerManagement />} />
-                  <Route path="/admin/support" element={<SupportManagement />} />
-                  <Route path="/admin/seo-settings" element={<SeoSettings />} />
-                  <Route path="/admin/settings" element={<GeneralSettings />} />
-                </Route>
-              </Route>
+          {/* Admin Routes */}
+          <Route element={<AdminRoute />}>
+            <Route element={<AdminLayout />}>
+              <Route path="/securegate" element={<AdminDashboard />} />
+              <Route path="/admin/countries" element={<CountryManagement />} />
+              <Route path="/admin/visas" element={<VisaManagement />} />
+              <Route path="/admin/costs" element={<CostManagement />} />
+              <Route path="/admin/roadmaps" element={<TimelineManagement />} />
+              <Route path="/admin/documents" element={<DocumentManagement />} />
+              <Route path="/admin/features" element={<FeatureManagement />} />
+              <Route path="/admin/verifications" element={<ProfessionalVerification />} />
+              <Route path="/admin/users" element={<UserManagement />} />
+              <Route path="/admin/expert-withdrawals" element={<ExpertWithdrawals />} />
+              <Route path="/admin/plans" element={<PlanManagement />} />
+              <Route path="/admin/referrals" element={<ReferralManagement />} />
+              <Route path="/admin/bookings" element={<BookingManagement />} />
+              <Route path="/admin/blog" element={<BlogManagement />} />
+              <Route path="/admin/relocation" element={<RelocationManagement />} />
+              <Route path="/admin/settlement" element={<SettlementManagement />} />
+              <Route path="/admin/schools" element={<SchoolManagement />} />
+              <Route path="/admin/career" element={<CareerManagement />} />
+              <Route path="/admin/support" element={<SupportManagement />} />
+              <Route path="/admin/seo-settings" element={<SeoSettings />} />
+              <Route path="/admin/settings" element={<GeneralSettings />} />
+            </Route>
+          </Route>
 
-              {/* Protected User Routes */}
-              <Route element={<ProtectedRoute />}>
-                <Route element={<DashboardLayout />}>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/dashboard/referrals" element={<Referrals />} />
-                  <Route path="/profile/setup" element={<ProfileSetup />} />
-                  <Route path="/pathway" element={<Pathway />} />
-                  <Route path="/recommendations" element={<Recommendations />} />
-                  <Route path="/cost" element={<CostPlanner />} />
-                  <Route path="/documents" element={<DocumentVault />} />
-                  <Route path="/pricing" element={<Pricing />} />
-                  <Route path="/billing" element={<Billing />} />
-                  <Route path="/experts" element={<ExpertMarketplace />} />
-                  <Route path="/dashboard/settings" element={<Settings />} />
-                  <Route path="/support" element={<Support />} />
-                  <Route path="/dashboard/messages" element={<Inbox />} />
-                  <Route path="/sop-builder" element={<SopBuilder />} />
-                  <Route path="/relocation-hub" element={<RelocationHub />} />
-                  <Route path="/school-explorer" element={<SchoolExplorer />} />
-                  <Route path="/compare" element={<CountryComparison />} />
-                  <Route path="/strategy-comparison" element={<StrategyComparison />} />
-                  <Route path="/job-search" element={<JobSearchKit />} />
-                  <Route path="/cv-builder" element={<CvBuilder />} />
-                  <Route path="/residency" element={<ResidencyTracker />} />
+          {/* Protected User Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/referrals" element={<Referrals />} />
+              <Route path="/profile/setup" element={<ProfileSetup />} />
+              <Route path="/pathway" element={<Pathway />} />
+              <Route path="/recommendations" element={<Recommendations />} />
+              <Route path="/cost" element={<CostPlanner />} />
+              <Route path="/documents" element={<DocumentVault />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/billing" element={<Billing />} />
+              <Route path="/experts" element={<ExpertMarketplace />} />
+              <Route path="/dashboard/settings" element={<Settings />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/dashboard/messages" element={<Inbox />} />
+              <Route path="/sop-builder" element={<SopBuilder />} />
+              <Route path="/relocation-hub" element={<RelocationHub />} />
+              <Route path="/school-explorer" element={<SchoolExplorer />} />
+              <Route path="/compare" element={<CountryComparison />} />
+              <Route path="/strategy-comparison" element={<StrategyComparison />} />
+              <Route path="/job-search" element={<JobSearchKit />} />
+              <Route path="/cv-builder" element={<CvBuilder />} />
+              <Route path="/residency" element={<ResidencyTracker />} />
 
-                  {/* Professional Specific Routes */}
-                  <Route path="/professional/onboarding" element={<ProfessionalOnboarding />} />
-                  <Route path="/professional/dashboard" element={<ProfessionalDashboard />} />
-                  <Route path="/professional/earnings" element={<ProfessionalEarnings />} />
-                </Route>
-              </Route>
-            </Routes>
-          </CurrencyProvider>
-        </QueryClientProvider>
-      </BrowserRouter>
-      <Toaster />
+              {/* Professional Specific Routes */}
+              <Route path="/professional/onboarding" element={<ProfessionalOnboarding />} />
+              <Route path="/professional/dashboard" element={<ProfessionalDashboard />} />
+              <Route path="/professional/earnings" element={<ProfessionalEarnings />} />
+            </Route>
+          </Route>
+        </Routes>
+        <Toaster />
+      </CurrencyProvider>
     </ErrorBoundary>
   );
 }

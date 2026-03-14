@@ -11,7 +11,7 @@ export default defineConfig({
   },
   build: {
     outDir: "../backend/public",
-    emptyOutDir: false,
+    emptyOutDir: true,
   },
   server: {
     proxy: {

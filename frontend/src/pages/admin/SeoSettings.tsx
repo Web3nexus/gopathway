@@ -23,6 +23,9 @@ export default function SeoSettings() {
     const [cookieConsentMessage, setCookieConsentMessage] = useState('');
     const [privacyPolicyUrl, setPrivacyPolicyUrl] = useState('');
     const [termsServiceUrl, setTermsServiceUrl] = useState('');
+    const [privacyPolicyContent, setPrivacyPolicyContent] = useState('');
+    const [termsServiceContent, setTermsServiceContent] = useState('');
+    const [documentationContent, setDocumentationContent] = useState('');
 
     // Security
     const [turnstileSiteKey, setTurnstileSiteKey] = useState('');
@@ -59,6 +62,10 @@ export default function SeoSettings() {
             setCookieConsentMessage(getSettingValue('cookie_consent_message') || '');
             setPrivacyPolicyUrl(getSettingValue('privacy_policy_url') || '');
             setTermsServiceUrl(getSettingValue('terms_service_url') || '');
+
+            setPrivacyPolicyContent(getSettingValue('privacy_policy_content') || '');
+            setTermsServiceContent(getSettingValue('terms_service_content') || '');
+            setDocumentationContent(getSettingValue('documentation_content') || '');
 
             setTurnstileSiteKey(getSettingValue('turnstile_site_key') || '');
             setTurnstileSecretKey(getSettingValue('turnstile_secret_key') || '');
@@ -106,6 +113,13 @@ export default function SeoSettings() {
         formData.append('settings[7][value]', turnstileSiteKey);
         formData.append('settings[8][key]', 'turnstile_secret_key');
         formData.append('settings[8][value]', turnstileSecretKey);
+        
+        formData.append('settings[9][key]', 'privacy_policy_content');
+        formData.append('settings[9][value]', privacyPolicyContent);
+        formData.append('settings[10][key]', 'terms_service_content');
+        formData.append('settings[10][value]', termsServiceContent);
+        formData.append('settings[11][key]', 'documentation_content');
+        formData.append('settings[11][value]', documentationContent);
 
         updateSettingsMutation.mutate(formData);
     };
@@ -325,6 +339,31 @@ export default function SeoSettings() {
                     {renderAssetUpload("Site Logo", "The primary logo shown in the navbar.", "logo", logoUrl, "upload-logo")}
                     {renderAssetUpload("Favicon", "The small 1:1 icon in the browser tab (must be square).", "favicon", faviconUrl, "upload-favicon")}
                     {renderAssetUpload("Open Graph Image", "The banner image shown when sharing links on social media (1.91:1 ratio recommended).", "ogImage", ogImageUrl, "upload-og")}
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-xl">Page Content</CardTitle>
+                            <CardDescription>Manage the long-form content for legal and documentation pages (HTML supported).</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="space-y-2">
+                                <Label>Privacy Policy Content</Label>
+                                <Textarea value={privacyPolicyContent} onChange={e => setPrivacyPolicyContent(e.target.value)} className="min-h-[200px]" />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Terms of Service Content</Label>
+                                <Textarea value={termsServiceContent} onChange={e => setTermsServiceContent(e.target.value)} className="min-h-[200px]" />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Documentation & Features Content</Label>
+                                <Textarea value={documentationContent} onChange={e => setDocumentationContent(e.target.value)} className="min-h-[200px]" />
+                            </div>
+                            <Button className="w-full bg-[#0B3C91] hover:bg-[#0B3C91]/90" onClick={handleTextSave} disabled={updateSettingsMutation.isPending}>
+                                {updateSettingsMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                                Save Page Contents
+                            </Button>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
 

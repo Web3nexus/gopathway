@@ -26,6 +26,9 @@ class SeoController extends Controller
             'privacy_policy_url',
             'terms_service_url',
             'turnstile_site_key',
+            'privacy_policy_content',
+            'terms_service_content',
+            'documentation_content',
         ];
 
         $settings = \App\Models\Setting::whereIn('key', $keys)->pluck('value', 'key');

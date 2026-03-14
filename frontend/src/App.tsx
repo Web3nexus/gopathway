@@ -13,6 +13,9 @@ import BlogPostView from '@/pages/public/BlogPostView';
 import Countries from '@/pages/public/Countries';
 import CountryDetail from '@/pages/public/CountryDetail';
 import PublicPricing from '@/pages/public/Pricing';
+import Privacy from '@/pages/public/Privacy';
+import Terms from '@/pages/public/Terms';
+import Documentation from '@/pages/public/Documentation';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import ProfileSetup from '@/pages/dashboard/ProfileSetup';
 import Pathway from '@/pages/dashboard/Pathway';
@@ -87,6 +90,9 @@ function App() {
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPostView />} />
             <Route path="/pricing" element={<PublicPricing />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/documentation" element={<Documentation />} />
           </Route>
 
           {/* Admin Routes */}

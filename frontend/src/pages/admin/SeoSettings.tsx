@@ -5,12 +5,14 @@ import { useToast } from '@/hooks/use-toast';
 import { Globe, Image as ImageIcon, Loader2, Save, Upload, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+
 import { Label } from '@/components/ui/label';
 import { ImageCropper } from '@/components/ui/ImageCropper';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { SensitiveInput } from '@/components/ui/SensitiveInput';
 import { Copy } from 'lucide-react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function SeoSettings() {
     const { toast } = useToast();
@@ -350,15 +352,60 @@ export default function SeoSettings() {
                         <CardContent className="space-y-6">
                             <div className="space-y-2">
                                 <Label>Privacy Policy Content</Label>
-                                <Textarea value={privacyPolicyContent} onChange={e => setPrivacyPolicyContent(e.target.value)} className="min-h-[200px]" />
+                                <div className="bg-white rounded-xl overflow-hidden border border-slate-200 quill-editor-wrapper">
+                                    <ReactQuill 
+                                        theme="snow" 
+                                        value={privacyPolicyContent} 
+                                        onChange={setPrivacyPolicyContent}
+                                        modules={{
+                                            toolbar: [
+                                                [{ 'header': [1, 2, 3, false] }],
+                                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                                [{'list': 'ordered'}, {'list': 'bullet'}],
+                                                ['link', 'clean']
+                                            ],
+                                        }}
+                                        className="h-[300px] mb-12"
+                                    />
+                                </div>
                             </div>
                             <div className="space-y-2">
                                 <Label>Terms of Service Content</Label>
-                                <Textarea value={termsServiceContent} onChange={e => setTermsServiceContent(e.target.value)} className="min-h-[200px]" />
+                                <div className="bg-white rounded-xl overflow-hidden border border-slate-200 quill-editor-wrapper">
+                                    <ReactQuill 
+                                        theme="snow" 
+                                        value={termsServiceContent} 
+                                        onChange={setTermsServiceContent}
+                                        modules={{
+                                            toolbar: [
+                                                [{ 'header': [1, 2, 3, false] }],
+                                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                                [{'list': 'ordered'}, {'list': 'bullet'}],
+                                                ['link', 'clean']
+                                            ],
+                                        }}
+                                        className="h-[300px] mb-12"
+                                    />
+                                </div>
                             </div>
                             <div className="space-y-2">
-                                <Label>Documentation & Features Content</Label>
-                                <Textarea value={documentationContent} onChange={e => setDocumentationContent(e.target.value)} className="min-h-[200px]" />
+                                <Label>Documentation Content</Label>
+                                <div className="bg-white rounded-xl overflow-hidden border border-slate-200 quill-editor-wrapper">
+                                    <ReactQuill 
+                                        theme="snow" 
+                                        value={documentationContent} 
+                                        onChange={setDocumentationContent}
+                                        modules={{
+                                            toolbar: [
+                                                [{ 'header': [1, 2, 3, false] }],
+                                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                                [{'list': 'ordered'}, {'list': 'bullet'}],
+                                                ['link', 'clean']
+                                            ],
+                                        }}
+                                        className="h-[400px] mb-12"
+                                    />
+                                </div>
                             </div>
                             <Button className="w-full bg-[#0B3C91] hover:bg-[#0B3C91]/90" onClick={handleTextSave} disabled={updateSettingsMutation.isPending}>
                                 {updateSettingsMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}

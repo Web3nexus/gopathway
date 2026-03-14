@@ -93,7 +93,7 @@ export function PublicLayout() {
                             <ul className="space-y-2 text-sm text-gray-300">
                                 <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
                                 <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-                                <li><Link to="/documentation" className="hover:text-white transition-colors text-blue-400">Documentation & Features</Link></li>
+                                <li><Link to="/documentation" className="hover:text-white transition-colors text-blue-400">Documentation</Link></li>
                             </ul>
                         </div>
                     </div>

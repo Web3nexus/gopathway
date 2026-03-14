@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
+import { SensitiveInput } from '@/components/ui/SensitiveInput';
+import { Copy } from 'lucide-react';
 
 export default function GeneralSettings() {
     const { toast } = useToast();
@@ -117,9 +119,15 @@ export default function GeneralSettings() {
                                                 <option value="flutterwave">Flutterwave Only</option>
                                                 <option value="both">Both Gateways</option>
                                             </select>
+                                        ) : s.type === 'encrypted_string' ? (
+                                            <SensitiveInput
+                                                settingKey={s.key}
+                                                value={formData[s.key] || ''}
+                                                onChange={(val) => setFormData(p => ({ ...p, [s.key]: val }))}
+                                            />
                                         ) : (
                                             <Input
-                                                type={s.type === 'encrypted_string' ? 'password' : 'text'}
+                                                type="text"
                                                 value={formData[s.key] || ''}
                                                 onChange={(e) => setFormData(p => ({ ...p, [s.key]: e.target.value }))}
                                                 className="rounded-xl border-[#E5E7EB] focus:ring-[#0B3C91] h-11"
@@ -128,6 +136,51 @@ export default function GeneralSettings() {
                                     </div>
                                 </div>
                             ))}
+
+                            {groupName === 'payment' && (
+                                <div className="mt-8 pt-8 border-t border-slate-100">
+                                    <h4 className="text-sm font-bold text-[#1A1A1A] mb-4">Webhook Callback URLs</h4>
+                                    <p className="text-xs text-[#6B7280] mb-6">
+                                        Copy these URLs and paste them into your Payment Provider's dashboard under Webhook/Callback settings.
+                                    </p>
+                                    <div className="space-y-4">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                            <span className="text-xs font-bold text-[#6B7280]">Paystack Webhook</span>
+                                            <div className="md:col-span-2 flex gap-2">
+                                                <Input readOnly value={`${window.location.origin}/api/v1/webhooks/paystack`} className="bg-slate-50 text-xs font-mono h-9" />
+                                                <Button 
+                                                    variant="outline" 
+                                                    size="sm" 
+                                                    className="h-9 px-3"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(`${window.location.origin}/api/v1/webhooks/paystack`);
+                                                        toast({ title: 'Paystack webhook URL copied' });
+                                                    }}
+                                                >
+                                                    <Copy className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                            <span className="text-xs font-bold text-[#6B7280]">Flutterwave Webhook</span>
+                                            <div className="md:col-span-2 flex gap-2">
+                                                <Input readOnly value={`${window.location.origin}/api/v1/webhooks/flutterwave`} className="bg-slate-50 text-xs font-mono h-9" />
+                                                <Button 
+                                                    variant="outline" 
+                                                    size="sm" 
+                                                    className="h-9 px-3"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(`${window.location.origin}/api/v1/webhooks/flutterwave`);
+                                                        toast({ title: 'Flutterwave webhook URL copied' });
+                                                    }}
+                                                >
+                                                    <Copy className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}
@@ -135,3 +188,4 @@ export default function GeneralSettings() {
         </div>
     );
 }
+

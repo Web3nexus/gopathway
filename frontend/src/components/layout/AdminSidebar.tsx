@@ -13,7 +13,9 @@ import {
     BookOpen,
     CheckSquare,
     GraduationCap,
-    Briefcase
+    Briefcase,
+    MessageSquare,
+    Mail
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -34,8 +36,9 @@ export function AdminSidebar() {
         { name: 'Residency & Career', path: '/admin/career', icon: Briefcase },
         { name: 'User Management', path: '/admin/users', icon: Users },
         { name: 'Expert Payouts', path: '/admin/expert-withdrawals', icon: DollarSign },
-        { name: 'Support Messages', path: '/admin/support', icon: FileText },
+        { name: 'Support Messages', path: '/admin/support', icon: MessageSquare },
         { name: 'SEO & Branding', path: '/admin/seo-settings', icon: Globe },
+        { name: 'Email Management', path: '/admin/email-management', icon: Mail },
         { name: 'General Settings', path: '/admin/settings', icon: Settings },
     ];
 

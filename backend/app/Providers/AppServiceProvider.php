@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Apply dynamic mail configuration from settings
+        \App\Services\MailConfigService::apply();
+
         // Define Rate Limiters
         RateLimiter::for('login', function (Request $request) {
             return Limit::perMinute(5)->by($request->ip());

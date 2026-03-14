@@ -112,4 +112,11 @@ export const adminService = {
     updateSettings: (settings: { key: string; value: any }[]) =>
         api.post('/api/v1/admin/settings', { settings }).then(r => r.data),
     uploadSettings: (data: FormData) => api.post('/api/v1/admin/settings', data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data),
+    revealSetting: (key: string, password: string) => api.post('/api/v1/admin/settings/reveal', { key, password }).then(r => r.data),
+
+    // Email Management
+    getEmailTemplates: () => api.get('/api/v1/admin/email-templates').then(r => r.data.data),
+    updateEmailTemplate: (id: number, data: { subject: string; content: string }) => 
+        api.put(`/api/v1/admin/email-templates/${id}`, data).then(r => r.data.data),
+    testMailConnection: () => api.post('/api/v1/admin/mail-settings/test').then(r => r.data),
 };

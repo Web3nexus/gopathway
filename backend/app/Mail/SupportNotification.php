@@ -33,9 +33,13 @@ class SupportNotification extends Mailable
      */
     public function envelope(): Envelope
     {
-        $subject = $this->type === 'new_support_ticket' 
-            ? "[Support] New Message: " . ($this->messageObj->conversation->subject ?? 'No Subject')
-            : "Re: [Support] " . ($this->messageObj->conversation->subject ?? 'Support Message');
+        $templateKey = $this->type === 'new_support_ticket' ? 'support_notification_admin' : 'support_notification_user';
+        $template = \App\Models\EmailTemplate::where('key', $templateKey)->first();
+
+        $subject = $template ? $template->subject : ($this->type === 'new_support_ticket' ? '[Support] New Message' : 'Re: [Support]');
+        
+        // Replace placeholders in subject
+        $subject = str_replace('{{subject}}', $this->messageObj->conversation->subject ?? 'Support Message', $subject);
 
         return new Envelope(
             subject: $subject,
@@ -47,8 +51,29 @@ class SupportNotification extends Mailable
      */
     public function content(): Content
     {
+        $templateKey = $this->type === 'new_support_ticket' ? 'support_notification_admin' : 'support_notification_user';
+        $template = \App\Models\EmailTemplate::where('key', $templateKey)->first();
+
+        $content = $template ? $template->content : 'You have a new support message.';
+        
+        // Replace common placeholders
+        $placeholders = [
+            '{{user_name}}' => $this->type === 'new_support_ticket' ? $this->sender->name : $this->sender->name,
+            '{{user_email}}' => $this->sender->email,
+            '{{subject}}' => $this->messageObj->conversation->subject ?? 'N/A',
+            '{{message_body}}' => $this->messageObj->body,
+            '{{button_url}}' => config('app.frontend_url') . ($this->type === 'new_support_ticket' ? '/admin/support' : '/support'),
+        ];
+
+        foreach ($placeholders as $key => $value) {
+            $content = str_replace($key, $value, $content);
+        }
+
         return new Content(
-            markdown: 'emails.support.notification',
+            markdown: 'emails.dynamic',
+            with: [
+                'body' => $content,
+            ],
         );
     }
 

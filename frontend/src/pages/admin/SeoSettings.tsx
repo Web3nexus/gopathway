@@ -9,6 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { ImageCropper } from '@/components/ui/ImageCropper';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { SensitiveInput } from '@/components/ui/SensitiveInput';
+import { Copy } from 'lucide-react';
 
 export default function SeoSettings() {
     const { toast } = useToast();
@@ -324,10 +326,10 @@ export default function SeoSettings() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label>Turnstile Secret Key</Label>
-                                        <Input 
-                                            type="password"
+                                        <SensitiveInput
+                                            settingKey="turnstile_secret_key"
                                             value={turnstileSecretKey} 
-                                            onChange={(e) => setTurnstileSecretKey(e.target.value)} 
+                                            onChange={(val) => setTurnstileSecretKey(val)} 
                                             placeholder="••••••••••••••••••••••••••••" 
                                         />
                                     </div>

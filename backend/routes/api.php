@@ -268,6 +268,14 @@ Route::group(['prefix' => 'v1'], function () {
                     // General Settings
                     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class , 'index']);
                     Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class , 'update']);
+                    Route::post('settings/reveal', [\App\Http\Controllers\Admin\SettingController::class , 'reveal']);
+
+                    // Email Templates
+                    Route::apiResource('email-templates', \App\Http\Controllers\Admin\EmailTemplateController::class)->only(['index', 'show', 'update']);
+
+                    // Mail Settings
+                    Route::post('mail-settings/test', [\App\Http\Controllers\Admin\MailSettingsController::class, 'testConnection']);
+
 
                     // Referral Management
                     Route::get('referrals', [\App\Http\Controllers\Admin\ReferralController::class , 'index']);

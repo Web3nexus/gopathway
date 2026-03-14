@@ -66,4 +66,31 @@ class SettingController extends Controller
             'message' => 'Settings updated successfully.'
         ]);
     }
+    
+    /**
+     * Reveal an encrypted setting value.
+     */
+    public function reveal(Request $request): JsonResponse
+    {
+        $request->validate([
+            'key' => 'required|string|exists:settings,key',
+            'password' => 'required|string',
+        ]);
+
+        $user = $request->user();
+
+        if (!\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Invalid password.'], 403);
+        }
+
+        $setting = Setting::where('key', $request->key)->firstOrFail();
+
+        if ($setting->type !== 'encrypted_string') {
+            return response()->json(['message' => 'This setting is not encrypted.'], 400);
+        }
+
+        return response()->json([
+            'value' => $setting->value
+        ]);
+    }
 }

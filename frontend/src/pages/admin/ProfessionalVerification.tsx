@@ -24,10 +24,11 @@ export default function ProfessionalVerification() {
     const queryClient = useQueryClient();
     const [searchTerm, setSearchTerm] = useState('');
 
-    const { data: requests, isLoading } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ['admin-verification-requests'],
         queryFn: () => api.get('/api/v1/admin/verifications').then(r => r.data),
     });
+    const requests = Array.isArray(data) ? data : [];
 
     const verifyMutation = useMutation({
         mutationFn: ({ id, status, notes }: { id: number; status: string; notes?: string }) =>
@@ -40,7 +41,7 @@ export default function ProfessionalVerification() {
 
     if (isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="animate-spin" /></div>;
 
-    const filteredRequests = requests?.filter((r: any) =>
+    const filteredRequests = requests.filter((r: any) =>
         r.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         r.user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );

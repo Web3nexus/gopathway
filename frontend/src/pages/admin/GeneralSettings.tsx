@@ -21,9 +21,11 @@ export default function GeneralSettings() {
         if (settingsData) {
             const initial: Record<string, any> = {};
             Object.values(settingsData).forEach((group: any) => {
-                group.forEach((s: any) => {
-                    initial[s.key] = s.value;
-                });
+                if (Array.isArray(group)) {
+                    group.forEach((s: any) => {
+                        initial[s.key] = s.value;
+                    });
+                }
             });
             setFormData(initial);
         }
@@ -91,7 +93,7 @@ export default function GeneralSettings() {
                             <h3 className="font-bold text-[#1A1A1A] capitalize">{groupName} Settings</h3>
                         </div>
                         <div className="p-8 space-y-6">
-                            {groupSettings.map((s: any) => (
+                            {Array.isArray(groupSettings) && groupSettings.map((s: any) => (
                                 <div key={s.key} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start pb-6 border-b border-slate-100 last:border-0 last:pb-0">
                                     <div className="md:col-span-1">
                                         <label className="text-sm font-bold text-[#1A1A1A] block mb-1">{s.label}</label>

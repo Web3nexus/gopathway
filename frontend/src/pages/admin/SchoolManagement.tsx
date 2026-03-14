@@ -32,15 +32,17 @@ export default function SchoolManagement() {
         description: ''
     });
 
-    const { data: countriesData } = useQuery({
+    const { data: countriesRaw } = useQuery({
         queryKey: ['admin-countries'],
         queryFn: () => api.get('/api/v1/countries').then(res => res.data.data)
     });
+    const countriesData = Array.isArray(countriesRaw) ? countriesRaw : [];
 
-    const { data: schoolsData, isLoading } = useQuery({
+    const { data: schoolsRaw, isLoading } = useQuery({
         queryKey: ['admin-schools', selectedCountry],
         queryFn: () => adminService.getSchools({ country_id: selectedCountry || undefined })
     });
+    const schoolsData = Array.isArray(schoolsRaw) ? schoolsRaw : [];
 
     const mutation = useMutation({
         mutationFn: (data: any) => {

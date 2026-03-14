@@ -50,16 +50,18 @@ export default function CareerManagement() {
         is_active: true
     });
 
-    const { data: countriesData } = useQuery({
+    const { data: countriesRaw } = useQuery({
         queryKey: ['admin-countries'],
         queryFn: () => api.get('/api/v1/countries').then(res => res.data.data)
     });
+    const countriesData = Array.isArray(countriesRaw) ? countriesRaw : [];
 
-    const { data: platforms, isLoading: loadingPlatforms } = useQuery({
+    const { data: platformsRaw, isLoading: loadingPlatforms } = useQuery({
         queryKey: ['admin-job-platforms', selectedCountry],
         queryFn: () => adminService.getJobPlatforms(selectedCountry!),
         enabled: !!selectedCountry
     });
+    const platforms = Array.isArray(platformsRaw) ? platformsRaw : [];
 
     const { data: rules, isLoading: loadingRules } = useQuery({
         queryKey: ['admin-residency-rules', selectedCountry],
@@ -67,11 +69,12 @@ export default function CareerManagement() {
         enabled: !!selectedCountry
     });
 
-    const { data: templates, isLoading: loadingTemplates } = useQuery({
+    const { data: templatesRaw, isLoading: loadingTemplates } = useQuery({
         queryKey: ['admin-cv-templates', selectedCountry],
         queryFn: () => api.get(`/api/v1/cv-templates/${selectedCountry}`).then(res => res.data.data),
         enabled: !!selectedCountry
     });
+    const templates = Array.isArray(templatesRaw) ? templatesRaw : [];
 
     // Mutations
     const platformMutation = useMutation({

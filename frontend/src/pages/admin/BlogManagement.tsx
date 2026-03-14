@@ -56,7 +56,7 @@ export default function BlogManagement() {
         queryFn: fetchAdminPosts
     });
 
-    const posts = response?.data || [];
+    const posts = Array.isArray(response?.data) ? response.data : [];
 
     const mutation = useMutation({
         mutationFn: (data: any) => {

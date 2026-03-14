@@ -30,10 +30,11 @@ export default function CountryManagement() {
         is_active: true
     });
 
-    const { data: countries = [], isLoading } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ['admin-countries'],
         queryFn: adminService.getCountries
     });
+    const countries = Array.isArray(data) ? data : [];
 
     const mutation = useMutation({
         mutationFn: (data: any) => {

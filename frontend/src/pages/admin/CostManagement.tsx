@@ -42,12 +42,13 @@ export default function CostManagement() {
         pathway_id: null
     });
 
-    const { data: countries = [] } = useQuery({
+    const { data: countriesRaw } = useQuery({
         queryKey: ['admin-countries'],
         queryFn: adminService.getCountries
     });
+    const countries = Array.isArray(countriesRaw) ? countriesRaw : [];
 
-    const { data: visas = [] } = useQuery({
+    const { data: visasRaw } = useQuery({
         queryKey: ['admin-visas', selectedCountryId],
         queryFn: () => {
             if (selectedCountryId === 'all') return [];
@@ -55,8 +56,9 @@ export default function CostManagement() {
         },
         enabled: selectedCountryId !== 'all'
     });
+    const visas = Array.isArray(visasRaw) ? visasRaw : [];
 
-    const { data: costs = [], isLoading } = useQuery({
+    const { data: costsRaw, isLoading } = useQuery({
         queryKey: ['admin-costs', selectedCountryId, selectedVisaId],
         queryFn: () => adminService.getCostItems({
             country_id: selectedCountryId === 'all' ? undefined : selectedCountryId,
@@ -64,6 +66,7 @@ export default function CostManagement() {
             is_template: true
         })
     });
+    const costs = Array.isArray(costsRaw) ? costsRaw : [];
 
     const mutation = useMutation({
         mutationFn: (data: any) => {

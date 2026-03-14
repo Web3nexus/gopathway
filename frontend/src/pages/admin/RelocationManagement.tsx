@@ -43,15 +43,17 @@ export default function RelocationManagement() {
         order: 0
     });
 
-    const { data: countries = [] } = useQuery({
+    const { data: countriesData } = useQuery({
         queryKey: ['admin-countries'],
         queryFn: adminService.getCountries
     });
+    const countries = Array.isArray(countriesData) ? countriesData : [];
 
-    const { data: kits = [], isLoading } = useQuery({
+    const { data: kitsData, isLoading } = useQuery({
         queryKey: ['admin-relocation-kits', selectedCountryId],
         queryFn: () => adminService.getRelocationKits(selectedCountryId && selectedCountryId !== 'null' ? { country_id: selectedCountryId } : undefined)
     });
+    const kits = Array.isArray(kitsData) ? kitsData : [];
 
     const kitMutation = useMutation({
         mutationFn: (data: any) => {

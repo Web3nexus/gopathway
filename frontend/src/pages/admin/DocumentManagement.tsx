@@ -35,10 +35,11 @@ export default function DocumentManagement() {
         visa_type_id: ''
     });
 
-    const { data: documentTypes = [], isLoading } = useQuery({
+    const { data: docTypesRaw, isLoading } = useQuery({
         queryKey: ['admin-document-types'],
         queryFn: adminService.getDocumentTypes
     });
+    const documentTypes = Array.isArray(docTypesRaw) ? docTypesRaw : [];
 
     const { data: countriesRes } = useQuery({
         queryKey: ['admin-countries-full'],
@@ -80,7 +81,7 @@ export default function DocumentManagement() {
         }
     });
 
-    const countries = countriesRes || [];
+    const countries = Array.isArray(countriesRes) ? countriesRes : [];
 
     const handleEdit = (type: any) => {
         setEditingType(type);

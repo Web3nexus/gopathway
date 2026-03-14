@@ -28,13 +28,14 @@ export default function SupportManagement() {
     const queryClient = useQueryClient();
 
     // Fetch all support conversations
-    const { data: conversations, isLoading: listLoading } = useQuery({
+    const { data: convosRaw, isLoading: listLoading } = useQuery({
         queryKey: ['admin', 'support'],
         queryFn: async () => {
             const res = await api.get('/api/v1/admin/support');
             return res.data.data;
         }
     });
+    const conversations = Array.isArray(convosRaw) ? convosRaw : [];
 
     // Fetch specific conversation messages
     const { data: detailData, isLoading: detailLoading } = useQuery({

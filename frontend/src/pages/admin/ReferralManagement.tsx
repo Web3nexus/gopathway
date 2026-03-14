@@ -104,7 +104,7 @@ export default function ReferralManagement() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
-                            {referrers?.data?.map((user: any) => (
+                            {Array.isArray(referrers?.data) && referrers.data.map((user: any) => (
                                 <tr key={user.id} className="text-sm hover:bg-slate-50/50 transition-colors">
                                     <td className="px-8 py-4">
                                         <div className="font-bold text-[#1A1A1A]">{user.name}</div>
@@ -171,7 +171,7 @@ export default function ReferralManagement() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
-                            {commissions?.data?.map((row: any) => (
+                            {Array.isArray(commissions?.data) && commissions.data.map((row: any) => (
                                 <tr key={row.id} className="text-sm">
                                     <td className="px-8 py-4">
                                         <div className="font-bold text-[#1A1A1A]">{row.referrer?.name}</div>

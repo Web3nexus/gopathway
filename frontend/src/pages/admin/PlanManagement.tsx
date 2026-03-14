@@ -42,10 +42,11 @@ export default function PlanManagement() {
     });
     const [featureInput, setFeatureInput] = useState('');
 
-    const { data: plans = [], isLoading } = useQuery({
+    const { data: plansRaw, isLoading } = useQuery({
         queryKey: ['admin-subscription-plans'],
         queryFn: adminService.getSubscriptionPlans
     });
+    const plans = Array.isArray(plansRaw) ? plansRaw : [];
 
     const mutation = useMutation({
         mutationFn: (data: any) => {

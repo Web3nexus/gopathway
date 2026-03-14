@@ -13,10 +13,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 export default function BookingManagement() {
-    const { data: bookings, isLoading } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ['admin-bookings'],
         queryFn: () => api.get('/api/v1/admin/bookings').then(res => res.data),
     });
+    const bookings = Array.isArray(data) ? data : [];
 
     if (isLoading) {
         return <div className="p-8 text-center text-slate-500">Loading bookings...</div>;

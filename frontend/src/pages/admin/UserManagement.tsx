@@ -59,7 +59,7 @@ const TABS: { key: TabType; label: string; icon: any }[] = [
 ];
 
 function getRoleType(user: any): TabType {
-    const roles = user.roles?.map((r: any) => r.name) || [];
+    const roles = Array.isArray(user.roles) ? user.roles.map((r: any) => r.name) : [];
     if (roles.includes('admin')) return 'admin';
     if (roles.includes('lawyer')) return 'lawyer';
     if (roles.includes('translator')) return 'translator';
@@ -127,7 +127,7 @@ export default function UserManagement() {
         }),
     });
 
-    const allUsers: any[] = data || [];
+    const allUsers: any[] = Array.isArray(data) ? data : [];
 
     if (isLoading) {
         return (

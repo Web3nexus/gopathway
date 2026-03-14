@@ -122,7 +122,7 @@ export function Header() {
                                     )}
                                 </div>
                                 <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
-                                    {notifications.length === 0 ? (
+                                    {!Array.isArray(notifications) || notifications.length === 0 ? (
                                         <div className="p-6 text-center">
                                             <Bell className="w-8 h-8 text-slate-200 mx-auto mb-2" />
                                             <p className="text-sm text-slate-400">No notifications yet.</p>

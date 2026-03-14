@@ -43,15 +43,17 @@ export default function SettlementManagement() {
         required_documents: [] as string[]
     });
 
-    const { data: countries = [] } = useQuery({
+    const { data: countriesData } = useQuery({
         queryKey: ['admin-countries'],
         queryFn: adminService.getCountries
     });
+    const countries = Array.isArray(countriesData) ? countriesData : [];
 
-    const { data: steps = [], isLoading } = useQuery({
+    const { data: stepsData, isLoading } = useQuery({
         queryKey: ['admin-settlement-steps', selectedCountryId],
         queryFn: () => adminService.getSettlementSteps(selectedCountryId && selectedCountryId !== 'null' ? { country_id: selectedCountryId } : undefined)
     });
+    const steps = Array.isArray(stepsData) ? stepsData : [];
 
     const mutation = useMutation({
         mutationFn: (data: any) => {

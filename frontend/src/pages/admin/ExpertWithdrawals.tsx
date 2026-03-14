@@ -77,7 +77,7 @@ export default function ExpertWithdrawals() {
         );
     }
 
-    const withdrawals = data?.data || [];
+    const withdrawals = Array.isArray(data?.data) ? data.data : [];
 
     return (
         <div className="max-w-7xl mx-auto p-6 space-y-8">

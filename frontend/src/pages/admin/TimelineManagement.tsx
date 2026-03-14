@@ -34,10 +34,11 @@ export default function TimelineManagement() {
         visa_type_id: ''
     });
 
-    const { data: templates = [], isLoading } = useQuery({
+    const { data: templatesRaw, isLoading } = useQuery({
         queryKey: ['admin-timeline-templates'],
         queryFn: adminService.getTimelineTemplates
     });
+    const templates = Array.isArray(templatesRaw) ? templatesRaw : [];
 
     const { data: countriesRes } = useQuery({
         queryKey: ['admin-countries-full'],
@@ -75,7 +76,7 @@ export default function TimelineManagement() {
         }
     });
 
-    const countries = countriesRes || [];
+    const countries = Array.isArray(countriesRes) ? countriesRes : [];
 
     // Group templates by visa type for better organization
     const groupedTemplates = templates.reduce((acc: any, template: any) => {

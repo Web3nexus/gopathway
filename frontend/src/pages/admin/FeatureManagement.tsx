@@ -9,15 +9,17 @@ export default function AdminFeatureManagement() {
     const { toast } = useToast();
     const queryClient = useQueryClient();
 
-    const { data: features = [], isLoading } = useQuery({
+    const { data: featuresRaw, isLoading } = useQuery({
         queryKey: ['admin-features'],
         queryFn: featureService.adminGetFeatures
     });
+    const features = Array.isArray(featuresRaw) ? featuresRaw : [];
 
-    const { data: platformFeatures = [], isLoading: loadingPlatform } = useQuery({
+    const { data: platformsRaw, isLoading: loadingPlatform } = useQuery({
         queryKey: ['admin-platform-features'],
         queryFn: featureService.adminGetPlatformFeatures
     });
+    const platformFeatures = Array.isArray(platformsRaw) ? platformsRaw : [];
 
     const updateFeatureMutation = useMutation({
         mutationFn: ({ id, is_premium }: { id: number, is_premium: boolean }) =>

@@ -40,16 +40,18 @@ export default function VisaManagement() {
         min_funds_required: ''
     });
 
-    const { data: countries = [] } = useQuery({
+    const { data: countriesRaw } = useQuery({
         queryKey: ['admin-countries-slim'],
         queryFn: adminService.getCountries
     });
+    const countries = Array.isArray(countriesRaw) ? countriesRaw : [];
 
-    const { data: visas = [], isLoading } = useQuery({
+    const { data: visasRaw, isLoading } = useQuery({
         queryKey: ['admin-visas', selectedCountryId],
         queryFn: () => adminService.getVisaTypes(selectedCountryId),
         enabled: !!selectedCountryId
     });
+    const visas = Array.isArray(visasRaw) ? visasRaw : [];
 
     const mutation = useMutation({
         mutationFn: (data: any) => {

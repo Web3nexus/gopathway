@@ -303,6 +303,17 @@ class SubscriptionController extends Controller
                     ]);
 
                     $this->referralService->recordPayment($user, $paymentData['amount'], $paymentData['tx_ref']);
+
+                    // Send Subscription Confirmation Email
+                    try {
+                        \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\DynamicEmail('subscription_confirmation', [
+                            'user_name' => $user->name,
+                            'plan_name' => $plan->name,
+                            'billing_url' => config('app.frontend_url') . '/billing',
+                        ]));
+                    } catch (\Exception $e) {
+                        Log::error("Failed to send subscription confirmation email to {$user->email}: " . $e->getMessage());
+                    }
                 });
 
                 return response()->json(['message' => 'Subscription successful']);
@@ -343,6 +354,17 @@ class SubscriptionController extends Controller
                     ]);
 
                     $this->referralService->recordPayment($user, $paymentData['amount'] / 100, $paymentData['reference']);
+
+                    // Send Subscription Confirmation Email
+                    try {
+                        \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\DynamicEmail('subscription_confirmation', [
+                            'user_name' => $user->name,
+                            'plan_name' => $plan->name,
+                            'billing_url' => config('app.frontend_url') . '/billing',
+                        ]));
+                    } catch (\Exception $e) {
+                        Log::error("Failed to send subscription confirmation email to {$user->email}: " . $e->getMessage());
+                    }
                 });
 
                 return response()->json(['message' => 'Subscription successful']);

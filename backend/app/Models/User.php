@@ -186,4 +186,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserActionLog::class);
     }
+
+    /**
+     * Send the password reset notification.
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $resetUrl = config('app.frontend_url') . '/reset-password?token=' . $token . '&email=' . urlencode($this->email);
+        
+        try {
+            \Illuminate\Support\Facades\Mail::to($this->email)->send(new \App\Mail\DynamicEmail('password_reset', [
+                'user_name' => $this->name,
+                'reset_url' => $resetUrl,
+            ]));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Failed to send password reset email to {$this->email}: " . $e->getMessage());
+        }
+    }
 }

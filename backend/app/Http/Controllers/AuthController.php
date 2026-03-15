@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use App\Mail\DynamicEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -27,6 +29,16 @@ class AuthController extends Controller
 
         // Assign default role based on Spatie Permissions setup
         $user->assignRole('user');
+
+        // Send Welcome Email
+        try {
+            Mail::to($user->email)->send(new DynamicEmail('welcome_email', [
+                'user_name' => $user->name,
+                'dashboard_url' => config('app.frontend_url') . '/dashboard',
+            ]));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Failed to send welcome email to {$user->email}: " . $e->getMessage());
+        }
 
         Auth::guard('web')->login($user);
 
@@ -51,6 +63,18 @@ class AuthController extends Controller
             }
 
             $request->session()->regenerate();
+
+            // Send Login Notification Email
+            try {
+                Mail::to($user->email)->send(new DynamicEmail('login_notification', [
+                    'user_name' => $user->name,
+                    'device' => $request->header('User-Agent'),
+                    'time' => now()->format('M d, Y H:i:s'),
+                    'dashboard_url' => config('app.frontend_url') . '/dashboard',
+                ]));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error("Failed to send login notification to {$user->email}: " . $e->getMessage());
+            }
 
             return response()->json([
                 'message' => 'Login successful',

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Bell, Search, User, LogOut, Check, CheckCheck, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -168,8 +169,11 @@ export function Header() {
                     </div>
 
                     <div className="w-px h-6 bg-border mx-1"></div>
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/20">
+                    <Link 
+                        to={user?.roles?.some((role: any) => role.name === 'admin') ? '/admin/profile' : '/dashboard/settings'} 
+                        className="flex items-center gap-2 hover:bg-black/5 dark:hover:bg-white/5 p-1 rounded-full transition-colors group"
+                    >
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/20 group-hover:bg-primary/30 transition-colors">
                             <User className="w-4 h-4 text-primary" />
                         </div>
                         <div className="hidden sm:block text-left mr-2">
@@ -183,17 +187,18 @@ export function Header() {
                             </div>
                             <p className="text-xs text-muted-foreground leading-none capitalize font-medium">{user?.roles?.[0]?.name || 'User'}</p>
                         </div>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            title="Logout"
-                            onClick={() => logout()}
-                            disabled={isLoggingOut}
-                            className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                        >
-                            <LogOut className="w-4 h-4" />
-                        </Button>
-                    </div>
+                    </Link>
+
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        title="Logout"
+                        onClick={() => logout()}
+                        disabled={isLoggingOut}
+                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                    >
+                        <LogOut className="w-4 h-4" />
+                    </Button>
                 </div>
             </header>
         </>

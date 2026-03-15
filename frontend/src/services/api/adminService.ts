@@ -119,4 +119,12 @@ export const adminService = {
     updateEmailTemplate: (id: number, data: { subject: string; content: string }) => 
         api.put(`/api/v1/admin/email-templates/${id}`, data).then(r => r.data.data),
     testMailConnection: () => api.post('/api/v1/admin/mail-settings/test').then(r => r.data),
+
+    // 2FA & Profile
+    get2FASetup: () => api.get('/api/v1/admin/2fa/setup').then(r => r.data),
+    enable2FA: (code: string) => api.post('/api/v1/admin/2fa/enable', { code }).then(r => r.data),
+    disable2FA: (password: string) => api.post('/api/v1/admin/2fa/disable', { password }).then(r => r.data),
+    verify2FA: (code: string) => api.post('/api/v1/admin/2fa/verify', { code }).then(r => r.data),
+    updateAdminProfile: (data: { name: string; email: string }) => api.put('/api/v1/admin/profile', data).then(r => r.data),
+    updatePassword: (data: any) => api.put('/api/v1/auth/password', data).then(r => r.data),
 };

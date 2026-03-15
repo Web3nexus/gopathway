@@ -62,6 +62,7 @@ import CareerManagement from '@/pages/admin/CareerManagement';
 import SeoSettings from '@/pages/admin/SeoSettings';
 import SupportManagement from '@/pages/admin/SupportManagement';
 import EmailManagement from '@/pages/admin/EmailManagement';
+import AdminProfile from '@/pages/admin/AdminProfile';
 import SchoolExplorer from '@/pages/dashboard/SchoolExplorer';
 import ExpertMarketplace from '@/pages/marketplace/ExpertMarketplace';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -127,6 +128,7 @@ function App() {
               <Route path="/admin/seo-settings" element={<SeoSettings />} />
               <Route path="/admin/email-management" element={<EmailManagement />} />
               <Route path="/admin/settings" element={<GeneralSettings />} />
+              <Route path="/admin/profile" element={<AdminProfile />} />
             </Route>
           </Route>
 

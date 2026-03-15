@@ -40,11 +40,21 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         if (Auth::guard('web')->attempt($request->only('email', 'password'))) {
+            $user = Auth::user();
+            
+            if ($user->two_factor_enabled) {
+                return response()->json([
+                    'message' => '2FA code required',
+                    'two_factor_required' => true,
+                    'user' => $user->load('roles') // Still return user info for UI
+                ]);
+            }
+
             $request->session()->regenerate();
 
             return response()->json([
                 'message' => 'Login successful',
-                'user' => Auth::user()->load('roles'),
+                'user' => $user->load('roles'),
                 'is_impersonating' => false
             ]);
         }
@@ -96,5 +106,22 @@ class AuthController extends Controller
         $user->update(['password' => Hash::make($request->password)]);
 
         return response()->json(['message' => 'Password changed successfully.']);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+        ]);
+
+        $user->update($request->only('name', 'email'));
+
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'user' => $user->fresh()->load('roles')
+        ]);
     }
 }

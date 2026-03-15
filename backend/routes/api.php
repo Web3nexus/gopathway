@@ -191,7 +191,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/messages', [MessageController::class , 'store']);
 
             // Expert Payments
-            Route::prefix('expert-payments')->group(function () {
+            Route::group(['prefix' => 'expert-payments'], function () {
                 Route::post('/initialize', [ExpertPaymentController::class, 'initializePayment']);
                 Route::get('/verify', [ExpertPaymentController::class, 'verifyPayment']);
                 Route::get('/stats', [ExpertPaymentController::class, 'expertStats']);
@@ -252,6 +252,17 @@ Route::group(['prefix' => 'v1'], function () {
                     Route::post('users/{user}/remove-premium', [\App\Http\Controllers\Admin\UserController::class , 'removePremium']);
                     Route::post('users/{user}/impersonate', [\App\Http\Controllers\Admin\UserController::class , 'impersonate']);
 
+                    // 2FA Management
+                    Route::get('2fa/setup', [\App\Http\Controllers\Admin\TwoFactorAuthController::class, 'generateSecret']);
+                    Route::post('2fa/enable', [\App\Http\Controllers\Admin\TwoFactorAuthController::class, 'enable']);
+                    Route::post('2fa/verify', [\App\Http\Controllers\Admin\TwoFactorAuthController::class, 'verify']);
+
+                    Route::middleware(['two-factor'])->group(function () {
+                        Route::post('2fa/disable', [\App\Http\Controllers\Admin\TwoFactorAuthController::class, 'disable']);
+                        // User Profile Update
+                        Route::put('profile', [\App\Http\Controllers\AuthController::class, 'updateProfile']);
+                    });
+
                     // Admin Dashboard Stats
                     Route::get('dashboard/stats', [AdminDashboardController::class , 'stats']);
 
@@ -269,10 +280,12 @@ Route::group(['prefix' => 'v1'], function () {
                     Route::get('platform-features', [AdminFeatureController::class , 'indexPlatformFeatures']);
                     Route::put('platform-features/{id}', [AdminFeatureController::class , 'togglePlatformFeature']);
 
-                    // General Settings
-                    Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class , 'index']);
-                    Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class , 'update']);
-                    Route::post('settings/reveal', [\App\Http\Controllers\Admin\SettingController::class , 'reveal']);
+                    // General Settings (Protected by 2FA)
+                    Route::middleware(['two-factor'])->group(function () {
+                        Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class , 'index']);
+                        Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class , 'update']);
+                        Route::post('settings/reveal', [\App\Http\Controllers\Admin\SettingController::class , 'reveal']);
+                    });
 
                     // Email Templates
                     Route::apiResource('email-templates', \App\Http\Controllers\Admin\EmailTemplateController::class)->only(['index', 'show', 'update']);

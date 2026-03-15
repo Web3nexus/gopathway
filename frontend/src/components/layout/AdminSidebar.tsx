@@ -15,7 +15,8 @@ import {
     GraduationCap,
     Briefcase,
     MessageSquare,
-    Mail
+    Mail,
+    User
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -40,6 +41,7 @@ export function AdminSidebar() {
         { name: 'SEO & Branding', path: '/admin/seo-settings', icon: Globe },
         { name: 'Email Management', path: '/admin/email-management', icon: Mail },
         { name: 'General Settings', path: '/admin/settings', icon: Settings },
+        { name: 'My Profile', path: '/admin/profile', icon: User },
     ];
 
     return (

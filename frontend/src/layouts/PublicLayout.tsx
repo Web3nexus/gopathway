@@ -33,9 +33,11 @@ export function PublicLayout() {
                         {logoUrl ? (
                             <img src={logoUrl} alt={siteTitle} className="h-8 object-contain" />
                         ) : (
-                            <div className="h-8 w-8 rounded-lg bg-[#0B3C91] flex items-center justify-center text-white text-sm font-bold">GP</div>
+                            <>
+                                <div className="h-8 w-8 rounded-lg bg-[#0B3C91] flex items-center justify-center text-white text-sm font-bold">GP</div>
+                                {siteTitle}
+                            </>
                         )}
-                        {siteTitle}
                     </Link>
                     <nav className="hidden md:flex items-center gap-6">
                         {navLinks.map(({ to, label }) => (
@@ -69,13 +71,15 @@ export function PublicLayout() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <div className="flex items-center gap-2 font-bold text-lg mb-3">
+                            <div className="flex items-center gap-2 font-bold text-lg mb-3 text-white">
                                 {logoUrl ? (
                                     <img src={logoUrl} alt={siteTitle} className="h-7 object-contain" />
                                 ) : (
-                                    <div className="h-7 w-7 rounded-md bg-[#00C2FF] flex items-center justify-center text-[#0B3C91] text-xs font-bold">GP</div>
+                                    <>
+                                        <div className="h-7 w-7 rounded-md bg-[#00C2FF] flex items-center justify-center text-[#0B3C91] text-xs font-bold">GP</div>
+                                        {siteTitle}
+                                    </>
                                 )}
-                                {siteTitle}
                             </div>
                             <p className="text-sm text-gray-400">Your premium relocation intelligence platform. Plan, track, and execute your global move.</p>
                         </div>

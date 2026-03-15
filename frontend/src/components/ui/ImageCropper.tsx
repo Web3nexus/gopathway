@@ -86,16 +86,16 @@ export function ImageCropper({ open, onOpenChange, imageSrc, aspectRatio, onCrop
                     reject(new Error('Canvas is empty'));
                     return;
                 }
-                const file = new File([blob], fileName, { type: 'image/jpeg' });
+                const file = new File([blob], fileName, { type: 'image/png' });
                 resolve(file);
-            }, 'image/jpeg', 0.95);
+            }, 'image/png');
         });
     };
 
     const handleSave = async () => {
         if (imgRef.current && completedCrop) {
             try {
-                const croppedFile = await getCroppedImg(imgRef.current, completedCrop, 'cropped_image.jpg');
+                const croppedFile = await getCroppedImg(imgRef.current, completedCrop, 'cropped_image.png');
                 onCropComplete(croppedFile);
                 onOpenChange(false);
             } catch (e) {

@@ -177,9 +177,9 @@ export default function SeoSettings() {
                 <CardDescription className="text-xs">{desc}</CardDescription>
             </CardHeader>
             <CardContent className="p-6 flex flex-col items-center justify-center flex-grow space-y-4">
-                <div className={`relative group w-full ${type === 'favicon' ? 'aspect-square max-w-[120px]' : type === 'ogImage' ? 'aspect-[1.91/1]' : 'aspect-video'} rounded-2xl bg-white border border-slate-200 border-dashed flex items-center justify-center overflow-hidden transition-all hover:border-[#0B3C91]/50 shadow-inner`}>
+                <div className={`relative group w-full ${type === 'favicon' ? 'aspect-square max-w-[120px]' : type === 'ogImage' ? 'aspect-[1.91/1]' : 'aspect-video'} rounded-2xl bg-white border border-slate-200 border-dashed flex items-center justify-center overflow-hidden transition-all hover:border-[#0B3C91]/50 shadow-inner card-checkered-bg`}>
                     {previewUrl ? (
-                        <img src={previewUrl} alt={title} className="max-w-full max-h-full object-contain p-2" />
+                        <img src={previewUrl} alt={title} className="max-w-full max-h-full object-contain p-2 relative z-10" />
                     ) : (
                         <div className="flex flex-col items-center gap-2 text-slate-400">
                             <ImageIcon className="w-8 h-8 opacity-20" />
@@ -386,17 +386,6 @@ export default function SeoSettings() {
                     </Card>
                 </div>
             </div>
-
-            <ImageCropper
-                open={isCropperOpen}
-                onOpenChange={setIsCropperOpen}
-                imageSrc={cropImageSrc}
-                aspectRatio={getAspectRatio()}
-                onCropComplete={handleCropComplete}
-            />
-        </div>
-    );
-}
 
             <ImageCropper
                 open={isCropperOpen}

@@ -127,8 +127,8 @@ export function LoginForm({
     toast({ title: 'Info', description: 'Apple login coming soon' });
   };
 
-  const isGoogleEnabled = settings.google_auth_enabled === true || settings.google_auth_enabled === '1';
-  const isAppleEnabled = settings.apple_auth_enabled === true || settings.apple_auth_enabled === '1';
+  const isGoogleEnabled = settingsData?.data?.google_auth_enabled === true || settingsData?.data?.google_auth_enabled === '1';
+  const isAppleEnabled = settingsData?.data?.apple_auth_enabled === true || settingsData?.data?.apple_auth_enabled === '1';
   const showSocial = isGoogleEnabled || isAppleEnabled;
 
   return (

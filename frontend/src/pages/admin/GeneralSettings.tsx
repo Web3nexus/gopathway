@@ -64,7 +64,7 @@ export default function GeneralSettings() {
             case 'appearance': return <Palette className="h-5 w-5" />;
             case 'system': return <ShieldCheck className="h-5 w-5" />;
             case 'payment': return <DollarSign className="h-5 w-5" />;
-            case 'auth': return <ShieldCheck className="h-5 w-5" />;
+            case 'social_auth': return <ShieldCheck className="h-5 w-5" />;
             default: return <Settings className="h-5 w-5" />;
         }
     };
@@ -93,7 +93,7 @@ export default function GeneralSettings() {
                             <div className="h-8 w-8 rounded-lg bg-white border border-[#E5E7EB] flex items-center justify-center text-[#0B3C91]">
                                 {getIcon(groupName)}
                             </div>
-                            <h3 className="font-bold text-[#1A1A1A] capitalize">{groupName} Settings</h3>
+                            <h3 className="font-bold text-[#1A1A1A] capitalize">{groupName === 'social_auth' ? 'Social Authentication' : `${groupName} Settings`}</h3>
                         </div>
                         <div className="p-8 space-y-6">
                             {Array.isArray(groupSettings) && groupSettings.map((s: any) => (
@@ -183,7 +183,7 @@ export default function GeneralSettings() {
                                 </div>
                             )}
 
-                            {groupName === 'auth' && (
+                            {groupName === 'social_auth' && (
                                 <div className="mt-8 pt-8 border-t border-slate-100">
                                     <h4 className="text-sm font-bold text-[#1A1A1A] mb-4">Authorized Redirect URIs</h4>
                                     <p className="text-xs text-[#6B7280] mb-6">

@@ -1,24 +1,37 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, Search, User, LogOut, Check, CheckCheck, Crown } from 'lucide-react';
+import { 
+    Bell, 
+    Search, 
+    User, 
+    LogOut, 
+    Check, 
+    CheckCheck, 
+    Crown,
+    ChevronDown,
+    Settings as SettingsIcon,
+    ShieldAlert,
+    LogOut as LeaveIcon
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { notificationService } from '@/services/api/notificationService';
 import { adminService } from '@/services/api/adminService';
-import { ShieldAlert, LogOut as LeaveIcon } from 'lucide-react';
 
 export function Header() {
     const { user, logout, isLoggingOut, isImpersonating } = useAuth();
     const queryClient = useQueryClient();
     const [isOpen, setIsOpen] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
     const panelRef = useRef<HTMLDivElement>(null);
+    const profileRef = useRef<HTMLDivElement>(null);
 
     const { data: notifData } = useQuery({
         queryKey: ['notifications'],
         queryFn: notificationService.getNotifications,
-        refetchInterval: 30000, // Refetch every 30 seconds
+        refetchInterval: 30000, 
     });
 
     const markReadMutation = useMutation({
@@ -45,11 +58,13 @@ export function Header() {
         }
     });
 
-    // Close panel on outside click
     useEffect(() => {
         const handler = (e: MouseEvent) => {
             if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
                 setIsOpen(false);
+            }
+            if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+                setIsProfileOpen(false);
             }
         };
         document.addEventListener('mousedown', handler);
@@ -92,7 +107,6 @@ export function Header() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    {/* Notification Bell */}
                     <div className="relative" ref={panelRef}>
                         <Button
                             variant="ghost"
@@ -108,7 +122,6 @@ export function Header() {
                             )}
                         </Button>
 
-                        {/* Notification Dropdown */}
                         {isOpen && (
                             <div className="absolute right-0 top-12 w-80 sm:w-96 bg-white dark:bg-slate-900 rounded-2xl border shadow-2xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 ring-1 ring-black/5">
                                 <div className="flex items-center justify-between px-4 py-3 border-b bg-slate-50/80 dark:bg-slate-800/50">
@@ -169,36 +182,64 @@ export function Header() {
                     </div>
 
                     <div className="w-px h-6 bg-border mx-1"></div>
-                    <Link 
-                        to={user?.roles?.some((role: any) => role.name === 'admin') ? '/admin/profile' : '/dashboard/settings'} 
-                        className="flex items-center gap-2 hover:bg-black/5 dark:hover:bg-white/5 p-1 rounded-full transition-colors group"
-                    >
-                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/20 group-hover:bg-primary/30 transition-colors">
-                            <User className="w-4 h-4 text-primary" />
-                        </div>
-                        <div className="hidden sm:block text-left mr-2">
-                            <div className="flex items-center gap-1.5 mb-0.5">
-                                <p className="text-sm font-bold leading-none">{user?.name || 'Loading...'}</p>
-                                {user?.is_premium && (
-                                    <span className="bg-amber-100 text-amber-600 px-1.5 py-0.5 rounded text-[9px] font-black flex items-center gap-0.5 uppercase tracking-tighter ring-1 ring-amber-200">
-                                        <Crown className="h-2.5 w-2.5" /> Premium
-                                    </span>
-                                )}
+                    
+                    <div className="relative" ref={profileRef}>
+                        <button 
+                            onClick={() => setIsProfileOpen(!isProfileOpen)}
+                            className="flex items-center gap-2 hover:bg-black/5 dark:hover:bg-white/5 p-1 rounded-full transition-colors group"
+                        >
+                            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/20 group-hover:bg-primary/30 transition-colors">
+                                <User className="w-4 h-4 text-primary" />
                             </div>
-                            <p className="text-xs text-muted-foreground leading-none capitalize font-medium">{user?.roles?.[0]?.name || 'User'}</p>
-                        </div>
-                    </Link>
+                            <div className="hidden sm:block text-left mr-1">
+                                <div className="flex items-center gap-1.5 mb-0.5">
+                                    <p className="text-sm font-bold leading-none">{user?.name || 'Loading...'}</p>
+                                    {user?.is_premium && (
+                                        <span className="bg-amber-100 text-amber-600 px-1.5 py-0.5 rounded text-[9px] font-black flex items-center gap-0.5 uppercase tracking-tighter ring-1 ring-amber-200">
+                                            <Crown className="h-2.5 w-2.5" />
+                                        </span>
+                                    )}
+                                </div>
+                                <p className="text-xs text-muted-foreground leading-none capitalize font-medium">{user?.roles?.[0]?.name || 'User'}</p>
+                            </div>
+                            <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
+                        </button>
 
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        title="Logout"
-                        onClick={() => logout()}
-                        disabled={isLoggingOut}
-                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                    >
-                        <LogOut className="w-4 h-4" />
-                    </Button>
+                        {isProfileOpen && (
+                            <div className="absolute right-0 top-12 w-56 bg-white dark:bg-slate-900 rounded-2xl border shadow-2xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 ring-1 ring-black/5">
+                                <div className="p-3 border-b">
+                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest px-2 mb-1">Account</p>
+                                    <Link 
+                                        to={user?.roles?.some((role: any) => role.name === 'admin') ? '/admin/profile' : '/dashboard/settings'}
+                                        onClick={() => setIsProfileOpen(false)}
+                                        className="flex items-center gap-2 px-2 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                                    >
+                                        <User className="w-4 h-4" /> My Profile
+                                    </Link>
+                                    <Link 
+                                        to={user?.roles?.some((role: any) => role.name === 'admin') ? '/admin/profile' : '/dashboard/settings'}
+                                        onClick={() => setIsProfileOpen(false)}
+                                        className="flex items-center gap-2 px-2 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                                    >
+                                        <SettingsIcon className="w-4 h-4" /> Settings
+                                    </Link>
+                                </div>
+                                <div className="p-2">
+                                    <button 
+                                        onClick={() => {
+                                            setIsProfileOpen(false);
+                                            logout();
+                                        }}
+                                        disabled={isLoggingOut}
+                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm font-bold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors"
+                                    >
+                                        <LogOut className="w-4 h-4" /> 
+                                        {isLoggingOut ? 'Logging out...' : 'Sign Out'}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </header>
         </>

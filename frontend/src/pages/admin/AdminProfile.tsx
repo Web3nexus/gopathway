@@ -251,6 +251,58 @@ export default function AdminProfile() {
                         </div>
                     </CardContent>
                 </Card>
+
+                {/* Password Change */}
+                <Card className="rounded-3xl border-[#E5E7EB] shadow-sm md:col-span-2">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Lock className="h-5 w-5 text-[#0B3C91]" />
+                            Change Password
+                        </CardTitle>
+                        <CardDescription>Update your account security password.</CardDescription>
+                    </CardHeader>
+                    <form onSubmit={handlePasswordSubmit}>
+                        <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold">Current Password</label>
+                                <Input 
+                                    type="password" 
+                                    value={currentPassword} 
+                                    onChange={(e) => setCurrentPassword(e.target.value)} 
+                                    className="rounded-xl h-11 border-[#E5E7EB]"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold">New Password</label>
+                                <Input 
+                                    type="password" 
+                                    value={newPassword} 
+                                    onChange={(e) => setNewPassword(e.target.value)} 
+                                    className="rounded-xl h-11 border-[#E5E7EB]"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold">Confirm New Password</label>
+                                <Input 
+                                    type="password" 
+                                    value={confirmPassword} 
+                                    onChange={(e) => setConfirmPassword(e.target.value)} 
+                                    className="rounded-xl h-11 border-[#E5E7EB]"
+                                />
+                            </div>
+                        </CardContent>
+                        <CardFooter>
+                            <Button 
+                                type="submit" 
+                                className="w-full bg-[#0B3C91] hover:bg-[#0B3C91]/90 rounded-xl font-bold h-11 gap-2"
+                                disabled={passwordMutation.isPending}
+                            >
+                                {passwordMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
+                                Update Password
+                            </Button>
+                        </CardFooter>
+                    </form>
+                </Card>
             </div>
 
             {/* 2FA Setup Dialog */}

@@ -158,7 +158,7 @@ class SettingSeeder extends Seeder
             [
                 'key' => 'google_auth_enabled',
                 'value' => '0',
-                'group' => 'auth',
+                'group' => 'social_auth',
                 'type' => 'boolean',
                 'label' => 'Google Auth Enabled',
                 'description' => 'Enable/Disable Google login and registration.',
@@ -166,7 +166,7 @@ class SettingSeeder extends Seeder
             [
                 'key' => 'google_client_id',
                 'value' => '',
-                'group' => 'auth',
+                'group' => 'social_auth',
                 'type' => 'string',
                 'label' => 'Google Client ID',
                 'description' => 'Public client ID for Google OAuth.',
@@ -174,7 +174,7 @@ class SettingSeeder extends Seeder
             [
                 'key' => 'google_client_secret',
                 'value' => '',
-                'group' => 'auth',
+                'group' => 'social_auth',
                 'type' => 'encrypted_string',
                 'label' => 'Google Client Secret',
                 'description' => 'Secret key for Google OAuth.',
@@ -182,7 +182,7 @@ class SettingSeeder extends Seeder
             [
                 'key' => 'apple_auth_enabled',
                 'value' => '0',
-                'group' => 'auth',
+                'group' => 'social_auth',
                 'type' => 'boolean',
                 'label' => 'Apple Auth Enabled',
                 'description' => 'Enable/Disable Apple login and registration.',
@@ -190,7 +190,7 @@ class SettingSeeder extends Seeder
             [
                 'key' => 'apple_client_id',
                 'value' => '',
-                'group' => 'auth',
+                'group' => 'social_auth',
                 'type' => 'string',
                 'label' => 'Apple Client ID',
                 'description' => 'Public client ID for Apple OAuth.',
@@ -198,7 +198,7 @@ class SettingSeeder extends Seeder
             [
                 'key' => 'apple_client_secret',
                 'value' => '',
-                'group' => 'auth',
+                'group' => 'social_auth',
                 'type' => 'encrypted_string',
                 'label' => 'Apple Client Secret',
                 'description' => 'Secret key for Apple OAuth.',

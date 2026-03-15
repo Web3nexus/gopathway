@@ -154,6 +154,55 @@ class SettingSeeder extends Seeder
                 'label' => 'Flutterwave Secret Key',
                 'description' => 'Secret API key for Flutterwave.',
             ],
+            // Social Auth
+            [
+                'key' => 'google_auth_enabled',
+                'value' => '0',
+                'group' => 'auth',
+                'type' => 'boolean',
+                'label' => 'Google Auth Enabled',
+                'description' => 'Enable/Disable Google login and registration.',
+            ],
+            [
+                'key' => 'google_client_id',
+                'value' => '',
+                'group' => 'auth',
+                'type' => 'string',
+                'label' => 'Google Client ID',
+                'description' => 'Public client ID for Google OAuth.',
+            ],
+            [
+                'key' => 'google_client_secret',
+                'value' => '',
+                'group' => 'auth',
+                'type' => 'encrypted_string',
+                'label' => 'Google Client Secret',
+                'description' => 'Secret key for Google OAuth.',
+            ],
+            [
+                'key' => 'apple_auth_enabled',
+                'value' => '0',
+                'group' => 'auth',
+                'type' => 'boolean',
+                'label' => 'Apple Auth Enabled',
+                'description' => 'Enable/Disable Apple login and registration.',
+            ],
+            [
+                'key' => 'apple_client_id',
+                'value' => '',
+                'group' => 'auth',
+                'type' => 'string',
+                'label' => 'Apple Client ID',
+                'description' => 'Public client ID for Apple OAuth.',
+            ],
+            [
+                'key' => 'apple_client_secret',
+                'value' => '',
+                'group' => 'auth',
+                'type' => 'encrypted_string',
+                'label' => 'Apple Client Secret',
+                'description' => 'Secret key for Apple OAuth.',
+            ],
         ];
 
         foreach ($settings as $setting) {

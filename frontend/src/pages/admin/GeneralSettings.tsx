@@ -64,6 +64,7 @@ export default function GeneralSettings() {
             case 'appearance': return <Palette className="h-5 w-5" />;
             case 'system': return <ShieldCheck className="h-5 w-5" />;
             case 'payment': return <DollarSign className="h-5 w-5" />;
+            case 'auth': return <ShieldCheck className="h-5 w-5" />;
             default: return <Settings className="h-5 w-5" />;
         }
     };
@@ -172,6 +173,51 @@ export default function GeneralSettings() {
                                                     onClick={() => {
                                                         navigator.clipboard.writeText(`${window.location.origin}/api/v1/webhooks/flutterwave`);
                                                         toast({ title: 'Flutterwave webhook URL copied' });
+                                                    }}
+                                                >
+                                                    <Copy className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {groupName === 'auth' && (
+                                <div className="mt-8 pt-8 border-t border-slate-100">
+                                    <h4 className="text-sm font-bold text-[#1A1A1A] mb-4">Authorized Redirect URIs</h4>
+                                    <p className="text-xs text-[#6B7280] mb-6">
+                                        Copy these URLs and paste them into your Social Auth Provider's dashboard (Google Cloud Console / Apple Developer) under Authorized Redirect URIs.
+                                    </p>
+                                    <div className="space-y-4">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                            <span className="text-xs font-bold text-[#6B7280]">Google Redirect URI</span>
+                                            <div className="md:col-span-2 flex gap-2">
+                                                <Input readOnly value={`${window.location.origin}/api/v1/auth/google/callback`} className="bg-slate-50 text-xs font-mono h-9" />
+                                                <Button 
+                                                    variant="outline" 
+                                                    size="sm" 
+                                                    className="h-9 px-3"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(`${window.location.origin}/api/v1/auth/google/callback`);
+                                                        toast({ title: 'Google redirect URI copied' });
+                                                    }}
+                                                >
+                                                    <Copy className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                                            <span className="text-xs font-bold text-[#6B7280]">Apple Redirect URI</span>
+                                            <div className="md:col-span-2 flex gap-2">
+                                                <Input readOnly value={`${window.location.origin}/api/v1/auth/apple/callback`} className="bg-slate-50 text-xs font-mono h-9" />
+                                                <Button 
+                                                    variant="outline" 
+                                                    size="sm" 
+                                                    className="h-9 px-3"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(`${window.location.origin}/api/v1/auth/apple/callback`);
+                                                        toast({ title: 'Apple redirect URI copied' });
                                                     }}
                                                 >
                                                     <Copy className="h-4 w-4" />

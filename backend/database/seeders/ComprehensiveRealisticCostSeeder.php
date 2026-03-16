@@ -23,9 +23,9 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Application Fee - Skilled Worker", 'amount' => 719, 'currency' => 'GBP', 'description' => '£719 - £1,500 (varies by duration)', 'is_mandatory' => true],
                             ['name' => "Health Surcharge (IHS) - Skilled Worker", 'amount' => 1035, 'currency' => 'GBP', 'description' => '£1,035/year', 'is_mandatory' => true],
                             ['name' => "Biometrics & Admin - Skilled Worker", 'amount' => 19, 'currency' => 'GBP', 'description' => '~£19.20 (UK) or ~£55 (Abroad)', 'is_mandatory' => true],
-                            ['name' => "Language / Med Tests - Skilled Worker", 'amount' => 100, 'currency' => 'GBP', 'description' => 'English: ~£200; TB Test: ~£100', 'is_mandatory' => true],
+                            ['name' => "Language / Med Tests - Skilled Worker", 'amount' => 200, 'currency' => 'GBP', 'description' => 'English: ~£200; TB Test: ~£100', 'is_mandatory' => true],
                             ['name' => "Degree/Skills Eval. - Skilled Worker", 'amount' => 140, 'currency' => 'GBP', 'description' => 'Ecctis (if needed): ~£140', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living/Setup) - Skilled Worker", 'amount' => 28, 'currency' => 'GBP', 'description' => '£1,270 for 28 days', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living/Setup) - Skilled Worker", 'amount' => 1270, 'currency' => 'GBP', 'description' => '£1,270 for 28 days', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -34,15 +34,15 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Application Fee - Student", 'amount' => 490, 'currency' => 'GBP', 'description' => '£490', 'is_mandatory' => true],
                             ['name' => "Health Surcharge (IHS) - Student", 'amount' => 776, 'currency' => 'GBP', 'description' => '£776/year', 'is_mandatory' => true],
                             ['name' => "Biometrics & Admin - Student", 'amount' => 19, 'currency' => 'GBP', 'description' => '~£19.20 (UK) or ~£55 (Abroad)', 'is_mandatory' => true],
-                            ['name' => "Language / Med Tests - Student", 'amount' => 100, 'currency' => 'GBP', 'description' => 'English: ~£200; TB Test: ~£100', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living/Setup) - Student", 'amount' => 9, 'currency' => 'GBP', 'description' => '£1,334/mo (London) or £1,023/mo (Outside) up to 9 mos', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Tuition/Capital) - Student", 'amount' => 1, 'currency' => 'GBP', 'description' => 'Full 1st year tuition', 'is_mandatory' => true],
+                            ['name' => "Language / Med Tests - Student", 'amount' => 200, 'currency' => 'GBP', 'description' => 'English: ~£200; TB Test: ~£100', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living/Setup) - Student", 'amount' => 1334, 'currency' => 'GBP', 'description' => '£1,334/mo (London) or £1,023/mo (Outside) up to 9 mos', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Tuition/Capital) - Student", 'amount' => 15000, 'currency' => 'GBP', 'description' => 'Full 1st year tuition', 'is_mandatory' => true],
                         ]
                     ],
                     [
                         'name' => 'Global Talent',
                         'items' => [
-                            ['name' => "Application Fee - Global Talent", 'amount' => 192, 'currency' => 'GBP', 'description' => '£715 (£192 Approval + £523 Visa)', 'is_mandatory' => true],
+                            ['name' => "Application Fee - Global Talent", 'amount' => 715, 'currency' => 'GBP', 'description' => '£715 (£192 Approval + £523 Visa)', 'is_mandatory' => true],
                             ['name' => "Health Surcharge (IHS) - Global Talent", 'amount' => 1035, 'currency' => 'GBP', 'description' => '£1,035/year', 'is_mandatory' => true],
                             ['name' => "Biometrics & Admin - Global Talent", 'amount' => 19, 'currency' => 'GBP', 'description' => '~£19.20 - £55', 'is_mandatory' => true],
                             ['name' => "Degree/Skills Eval. - Global Talent", 'amount' => 524, 'currency' => 'GBP', 'description' => 'Endorsement Body fee: £524', 'is_mandatory' => true],
@@ -54,7 +54,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Application Fee - Family/Spouse", 'amount' => 1846, 'currency' => 'GBP', 'description' => '£1,846', 'is_mandatory' => true],
                             ['name' => "Health Surcharge (IHS) - Family/Spouse", 'amount' => 1035, 'currency' => 'GBP', 'description' => '£1,035/year', 'is_mandatory' => true],
                             ['name' => "Biometrics & Admin - Family/Spouse", 'amount' => 19, 'currency' => 'GBP', 'description' => '~£19.20 - £55', 'is_mandatory' => true],
-                            ['name' => "Language / Med Tests - Family/Spouse", 'amount' => 100, 'currency' => 'GBP', 'description' => 'English (£150-£200); TB Test (~£100)', 'is_mandatory' => true],
+                            ['name' => "Language / Med Tests - Family/Spouse", 'amount' => 150, 'currency' => 'GBP', 'description' => 'English (£150-£200); TB Test (~£100)', 'is_mandatory' => true],
                             ['name' => "Degree/Skills Eval. - Family/Spouse", 'amount' => 50, 'currency' => 'GBP', 'description' => 'Translations: ~£50-100', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living/Setup) - Family/Spouse", 'amount' => 29000, 'currency' => 'GBP', 'description' => 'Minimum Income Req: £29,000/yr', 'is_mandatory' => true],
                         ]
@@ -67,18 +67,18 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                     [
                         'name' => 'Express Entry (FSW/CEC/FST)',
                         'items' => [
-                            ['name' => "App Fee + Right of PR Fee - Express Entry (FSW/CEC/FST)", 'amount' => 575, 'currency' => 'CAD', 'description' => '$950 App + $575 RPRF (CAD)', 'is_mandatory' => true],
+                            ['name' => "App Fee + Right of PR Fee - Express Entry (FSW/CEC/FST)", 'amount' => 950, 'currency' => 'CAD', 'description' => '$950 App + $575 RPRF (CAD)', 'is_mandatory' => true],
                             ['name' => "Biometrics - Express Entry (FSW/CEC/FST)", 'amount' => 85, 'currency' => 'CAD', 'description' => '$85 CAD', 'is_mandatory' => true],
                             ['name' => "Medical Exam - Express Entry (FSW/CEC/FST)", 'amount' => 200, 'currency' => 'CAD', 'description' => '~$200 CAD', 'is_mandatory' => true],
                             ['name' => "Language Test - Express Entry (FSW/CEC/FST)", 'amount' => 300, 'currency' => 'CAD', 'description' => 'IELTS/CELPIP: ~$300 CAD', 'is_mandatory' => true],
                             ['name' => "Educ. Credential Assess (ECA) - Express Entry (FSW/CEC/FST)", 'amount' => 250, 'currency' => 'CAD', 'description' => 'WES/ICAS: ~$250 CAD', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living/Setup) - Express Entry (FSW/CEC/FST)", 'amount' => 1, 'currency' => 'CAD', 'description' => '~$13,757 CAD for 1 person', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living/Setup) - Express Entry (FSW/CEC/FST)", 'amount' => 13757, 'currency' => 'CAD', 'description' => '~$13,757 CAD for 1 person', 'is_mandatory' => true],
                         ]
                     ],
                     [
                         'name' => 'Provincial Nominee (PNP)',
                         'items' => [
-                            ['name' => "App Fee + Right of PR Fee - Provincial Nominee (PNP)", 'amount' => 250, 'currency' => 'CAD', 'description' => '$950 App + $575 RPRF + Prov Fee ($250-$1,500)', 'is_mandatory' => true],
+                            ['name' => "App Fee + Right of PR Fee - Provincial Nominee (PNP)", 'amount' => 950, 'currency' => 'CAD', 'description' => '$950 App + $575 RPRF + Prov Fee ($250-$1,500)', 'is_mandatory' => true],
                             ['name' => "Biometrics - Provincial Nominee (PNP)", 'amount' => 85, 'currency' => 'CAD', 'description' => '$85 CAD', 'is_mandatory' => true],
                             ['name' => "Medical Exam - Provincial Nominee (PNP)", 'amount' => 200, 'currency' => 'CAD', 'description' => '~$200 CAD', 'is_mandatory' => true],
                             ['name' => "Language Test - Provincial Nominee (PNP)", 'amount' => 300, 'currency' => 'CAD', 'description' => 'IELTS/CELPIP: ~$300 CAD', 'is_mandatory' => true],
@@ -93,7 +93,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Medical Exam - Study Permit", 'amount' => 200, 'currency' => 'CAD', 'description' => '~$200 CAD', 'is_mandatory' => true],
                             ['name' => "Language Test - Study Permit", 'amount' => 300, 'currency' => 'CAD', 'description' => 'IELTS/PTE (varies by school): ~$300 CAD', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living/Setup) - Study Permit", 'amount' => 20635, 'currency' => 'CAD', 'description' => '~$20,635 CAD/year (Base living exp)', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Tuition/Capital) - Study Permit", 'amount' => 1, 'currency' => 'CAD', 'description' => 'Full 1st year tuition', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Tuition/Capital) - Study Permit", 'amount' => 15000, 'currency' => 'CAD', 'description' => 'Full 1st year tuition', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -114,7 +114,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'items' => [
                             ['name' => "Application Fee - Skilled Independent (189/190)", 'amount' => 4640, 'currency' => 'AUD', 'description' => '$4,640 AUD', 'is_mandatory' => true],
                             ['name' => "Biometrics & Admin - Skilled Independent (189/190)", 'amount' => 100, 'currency' => 'AUD', 'description' => '~$100 AUD (Biometrics/Police)', 'is_mandatory' => true],
-                            ['name' => "Language / Med Tests - Skilled Independent (189/190)", 'amount' => 300, 'currency' => 'AUD', 'description' => 'IELTS/PTE: ~$400 AUD; Med: ~$300 AUD', 'is_mandatory' => true],
+                            ['name' => "Language / Med Tests - Skilled Independent (189/190)", 'amount' => 400, 'currency' => 'AUD', 'description' => 'IELTS/PTE: ~$400 AUD; Med: ~$300 AUD', 'is_mandatory' => true],
                             ['name' => "Skills Assessment - Skilled Independent (189/190)", 'amount' => 500, 'currency' => 'AUD', 'description' => '$500 - $1,200 AUD (varies by authority)', 'is_mandatory' => true],
                         ]
                     ],
@@ -134,9 +134,9 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Application Fee - Student (subclass 500)", 'amount' => 710, 'currency' => 'AUD', 'description' => '$710 AUD', 'is_mandatory' => true],
                             ['name' => "Surcharges / Insurance - Student (subclass 500)", 'amount' => 500, 'currency' => 'AUD', 'description' => 'OSHC: ~$500 - $800/year', 'is_mandatory' => true],
                             ['name' => "Biometrics & Admin - Student (subclass 500)", 'amount' => 100, 'currency' => 'AUD', 'description' => '~$100 AUD', 'is_mandatory' => true],
-                            ['name' => "Language / Med Tests - Student (subclass 500)", 'amount' => 300, 'currency' => 'AUD', 'description' => 'IELTS/PTE/TOEFL: ~$400 AUD; Med: ~$300 AUD', 'is_mandatory' => true],
+                            ['name' => "Language / Med Tests - Student (subclass 500)", 'amount' => 400, 'currency' => 'AUD', 'description' => 'IELTS/PTE/TOEFL: ~$400 AUD; Med: ~$300 AUD', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living/Setup) - Student (subclass 500)", 'amount' => 24505, 'currency' => 'AUD', 'description' => 'Minimum $24,505 AUD/year', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Tuition/Capital) - Student (subclass 500)", 'amount' => 1, 'currency' => 'AUD', 'description' => 'Full 1st year tuition', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Tuition/Capital) - Student (subclass 500)", 'amount' => 15000, 'currency' => 'AUD', 'description' => 'Full 1st year tuition', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -157,7 +157,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'items' => [
                             ['name' => "Application Fee - Skilled Migrant Category", 'amount' => 4290, 'currency' => 'NZD', 'description' => '$4,290 NZD', 'is_mandatory' => true],
                             ['name' => "Biometrics & Police Checks - Skilled Migrant Category", 'amount' => 150, 'currency' => 'NZD', 'description' => '~$150 NZD', 'is_mandatory' => true],
-                            ['name' => "Language Test & Medical Exam - Skilled Migrant Category", 'amount' => 300, 'currency' => 'NZD', 'description' => 'IELTS/PTE: ~$400 NZD; Medical: ~$300 NZD', 'is_mandatory' => true],
+                            ['name' => "Language Test & Medical Exam - Skilled Migrant Category", 'amount' => 400, 'currency' => 'NZD', 'description' => 'IELTS/PTE: ~$400 NZD; Medical: ~$300 NZD', 'is_mandatory' => true],
                             ['name' => "Skills Assessment (NZQA) - Skilled Migrant Category", 'amount' => 746, 'currency' => 'NZD', 'description' => 'NZQA Assessment: ~$746 NZD', 'is_mandatory' => true],
                         ]
                     ],
@@ -174,7 +174,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'items' => [
                             ['name' => "Application Fee - Student Visa", 'amount' => 375, 'currency' => 'NZD', 'description' => '$375 NZD', 'is_mandatory' => true],
                             ['name' => "Biometrics & Police Checks - Student Visa", 'amount' => 150, 'currency' => 'NZD', 'description' => '~$150 NZD', 'is_mandatory' => true],
-                            ['name' => "Language Test & Medical Exam - Student Visa", 'amount' => 300, 'currency' => 'NZD', 'description' => 'IELTS/PTE (School req): ~$400 NZD; Med: ~$300', 'is_mandatory' => true],
+                            ['name' => "Language Test & Medical Exam - Student Visa", 'amount' => 400, 'currency' => 'NZD', 'description' => 'IELTS/PTE (School req): ~$400 NZD; Med: ~$300', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living/Setup) - Student Visa", 'amount' => 20000, 'currency' => 'NZD', 'description' => 'Minimum $20,000 NZD/year', 'is_mandatory' => true],
                         ]
                     ],
@@ -197,7 +197,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Visa Application Fee - EU Blue Card (Skilled Worker)", 'amount' => 75, 'currency' => 'EUR', 'description' => '€75 - €100 (varies locally)', 'is_mandatory' => true],
                             ['name' => "Admin / Biometrics / Legalization - EU Blue Card (Skilled Worker)", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Reg./Translation: ~€100-€300', 'is_mandatory' => true],
                             ['name' => "Degree Recognition (ZAB) - EU Blue Card (Skilled Worker)", 'amount' => 200, 'currency' => 'EUR', 'description' => 'ZAB Evaluation: €200', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - EU Blue Card (Skilled Worker)", 'amount' => 45, 'currency' => 'EUR', 'description' => 'Contract covers minimum threshold (~€45k+)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - EU Blue Card (Skilled Worker)", 'amount' => 45000, 'currency' => 'EUR', 'description' => 'Contract covers minimum threshold (~€45k+)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -206,7 +206,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Visa Application Fee - Job Seeker (Opportunity Card)", 'amount' => 75, 'currency' => 'EUR', 'description' => '€75', 'is_mandatory' => true],
                             ['name' => "Health Insurance - Job Seeker (Opportunity Card)", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Required (Private coverage, min €100/mo)', 'is_mandatory' => true],
                             ['name' => "Admin / Biometrics / Legalization - Job Seeker (Opportunity Card)", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Reg./Translation: ~€100', 'is_mandatory' => true],
-                            ['name' => "Language Test - Job Seeker (Opportunity Card)", 'amount' => 1, 'currency' => 'EUR', 'description' => 'A1 DE / B2 EN certificate: ~€150', 'is_mandatory' => true],
+                            ['name' => "Language Test - Job Seeker (Opportunity Card)", 'amount' => 150, 'currency' => 'EUR', 'description' => 'A1 DE / B2 EN certificate: ~€150', 'is_mandatory' => true],
                             ['name' => "Degree Recognition (ZAB) - Job Seeker (Opportunity Card)", 'amount' => 200, 'currency' => 'EUR', 'description' => 'ZAB Evaluation: €200', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - Job Seeker (Opportunity Card)", 'amount' => 1027, 'currency' => 'EUR', 'description' => '€1,027/month (Blocked Account)', 'is_mandatory' => true],
                         ]
@@ -220,7 +220,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Language Test - Student Visa", 'amount' => 200, 'currency' => 'EUR', 'description' => 'DaF / IELTS: ~€200', 'is_mandatory' => true],
                             ['name' => "Degree Recognition (ZAB) - Student Visa", 'amount' => 75, 'currency' => 'EUR', 'description' => 'Uni-Assist: ~€75/application', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - Student Visa", 'amount' => 11208, 'currency' => 'EUR', 'description' => '€11,208/year (Blocked Account)', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Tuition/Capital) - Student Visa", 'amount' => 150, 'currency' => 'EUR', 'description' => 'Uni Enrollment (~€150-€350/sem)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Tuition/Capital) - Student Visa", 'amount' => 15000, 'currency' => 'EUR', 'description' => 'Uni Enrollment (~€150-€350/sem)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -252,7 +252,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Translation / Legalizations - Student/Orientation Year", 'amount' => 150, 'currency' => 'EUR', 'description' => '~€150', 'is_mandatory' => true],
                             ['name' => "Integration Exam Req. - Student/Orientation Year", 'amount' => 250, 'currency' => 'EUR', 'description' => 'English test (TOEFL/IELTS): ~€250', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - Student/Orientation Year", 'amount' => 1200, 'currency' => 'EUR', 'description' => '~€1,200/month', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Tuition/Capital) - Student/Orientation Year", 'amount' => 1, 'currency' => 'EUR', 'description' => 'Full tuition paid upfront (1st yr)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Tuition/Capital) - Student/Orientation Year", 'amount' => 15000, 'currency' => 'EUR', 'description' => 'Full tuition paid upfront (1st yr)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -262,7 +262,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Health Insurance - Self-Employed/DAFT(US/JP)", 'amount' => 150, 'currency' => 'EUR', 'description' => 'Required (~€150/month)', 'is_mandatory' => true],
                             ['name' => "Translation / Legalizations - Self-Employed/DAFT(US/JP)", 'amount' => 75, 'currency' => 'EUR', 'description' => 'KVK (Chamber of Commerce): ~€75', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - Self-Employed/DAFT(US/JP)", 'amount' => 1500, 'currency' => 'EUR', 'description' => 'Min standard set by IND (~€1,500/mo)', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Tuition/Capital) - Self-Employed/DAFT(US/JP)", 'amount' => 4500, 'currency' => 'EUR', 'description' => '€4,500 Business Capital (DAFT)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Tuition/Capital) - Self-Employed/DAFT(US/JP)", 'amount' => 15000, 'currency' => 'EUR', 'description' => '€4,500 Business Capital (DAFT)', 'is_mandatory' => true],
                         ]
                     ],
                 ]
@@ -284,7 +284,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Application Fee - Job Seeker Visa", 'amount' => 2200, 'currency' => 'SEK', 'description' => '2,200 SEK', 'is_mandatory' => true],
                             ['name' => "Health Insurance / Healthcare - Job Seeker Visa", 'amount' => 500, 'currency' => 'SEK', 'description' => 'Required (Private, ~500 SEK/mo)', 'is_mandatory' => true],
                             ['name' => "Identity / Translations - Job Seeker Visa", 'amount' => 1000, 'currency' => 'SEK', 'description' => 'Appx: 1,000 SEK', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Job Seeker Visa", 'amount' => 9, 'currency' => 'SEK', 'description' => '13,000 SEK/month (up to 9 mo)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Job Seeker Visa", 'amount' => 13000, 'currency' => 'SEK', 'description' => '13,000 SEK/month (up to 9 mo)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -366,8 +366,8 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Health Insurance - Student Visa", 'amount' => 67, 'currency' => 'EUR', 'description' => 'Student insurance (€67/mo)', 'is_mandatory' => true],
                             ['name' => "Legalizations/Translation - Student Visa", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Appx: €100', 'is_mandatory' => true],
                             ['name' => "Language Exam / Deg. Eval - Student Visa", 'amount' => 150, 'currency' => 'EUR', 'description' => 'English/German Cert: ~€150', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Student Visa", 'amount' => 24, 'currency' => 'EUR', 'description' => '€1,217.96/month (If 24+) or ~€672 (If <24)', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Tuition) - Student Visa", 'amount' => 726, 'currency' => 'EUR', 'description' => 'Up to ~€726/semester', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Student Visa", 'amount' => 1217, 'currency' => 'EUR', 'description' => '€1,217.96/month (If 24+) or ~€672 (If <24)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Tuition) - Student Visa", 'amount' => 15000, 'currency' => 'EUR', 'description' => 'Up to ~€726/semester', 'is_mandatory' => true],
                         ]
                     ],
                 ]
@@ -379,7 +379,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'name' => 'Talent Passport (Skilled)',
                         'items' => [
                             ['name' => "App / Residence Fee (Tax) - Talent Passport (Skilled)", 'amount' => 225, 'currency' => 'EUR', 'description' => '€225', 'is_mandatory' => true],
-                            ['name' => "Legalizations/Translations - Talent Passport (Skilled)", 'amount' => 150, 'currency' => 'EUR', 'description' => 'Medical (OFII): €250; Trans: €150', 'is_mandatory' => true],
+                            ['name' => "Legalizations/Translations - Talent Passport (Skilled)", 'amount' => 250, 'currency' => 'EUR', 'description' => 'Medical (OFII): €250; Trans: €150', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - Talent Passport (Skilled)", 'amount' => 42406, 'currency' => 'EUR', 'description' => 'Minimum Gross Salary (€42,406+)', 'is_mandatory' => true],
                         ]
                     ],
@@ -409,7 +409,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                     [
                         'name' => 'Highly Qualified (PAC)',
                         'items' => [
-                            ['name' => "Application/Auth Fees - Highly Qualified (PAC)", 'amount' => 16, 'currency' => 'EUR', 'description' => '~€73 (Auth) + ~€16 (TIE)', 'is_mandatory' => true],
+                            ['name' => "Application/Auth Fees - Highly Qualified (PAC)", 'amount' => 73, 'currency' => 'EUR', 'description' => '~€73 (Auth) + ~€16 (TIE)', 'is_mandatory' => true],
                             ['name' => "Notary / Hague Apostille - Highly Qualified (PAC)", 'amount' => 300, 'currency' => 'EUR', 'description' => 'Translation/Apostille: €300+', 'is_mandatory' => true],
                             ['name' => "TIE / NIE Cards - Highly Qualified (PAC)", 'amount' => 30, 'currency' => 'EUR', 'description' => '~€30', 'is_mandatory' => true],
                         ]
@@ -417,7 +417,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                     [
                         'name' => 'Digital Nomad',
                         'items' => [
-                            ['name' => "Application/Auth Fees - Digital Nomad", 'amount' => 16, 'currency' => 'EUR', 'description' => '~€73 (Auth) + ~€16 (TIE)', 'is_mandatory' => true],
+                            ['name' => "Application/Auth Fees - Digital Nomad", 'amount' => 73, 'currency' => 'EUR', 'description' => '~€73 (Auth) + ~€16 (TIE)', 'is_mandatory' => true],
                             ['name' => "Notary / Hague Apostille - Digital Nomad", 'amount' => 300, 'currency' => 'EUR', 'description' => 'Translation/Apostille: €300+', 'is_mandatory' => true],
                             ['name' => "TIE / NIE Cards - Digital Nomad", 'amount' => 30, 'currency' => 'EUR', 'description' => '~€30', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - Digital Nomad", 'amount' => 200, 'currency' => 'EUR', 'description' => '200% of SMI (~€2,520/month)', 'is_mandatory' => true],
@@ -426,7 +426,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                     [
                         'name' => 'Non-Lucrative (NLV)',
                         'items' => [
-                            ['name' => "Application/Auth Fees - Non-Lucrative (NLV)", 'amount' => 16, 'currency' => 'EUR', 'description' => '~€80 - €140 + ~€16 (TIE)', 'is_mandatory' => true],
+                            ['name' => "Application/Auth Fees - Non-Lucrative (NLV)", 'amount' => 80, 'currency' => 'EUR', 'description' => '~€80 - €140 + ~€16 (TIE)', 'is_mandatory' => true],
                             ['name' => "Notary / Hague Apostille - Non-Lucrative (NLV)", 'amount' => 300, 'currency' => 'EUR', 'description' => 'Translation/Apostille/Med: €300+', 'is_mandatory' => true],
                             ['name' => "TIE / NIE Cards - Non-Lucrative (NLV)", 'amount' => 30, 'currency' => 'EUR', 'description' => '~€30', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - Non-Lucrative (NLV)", 'amount' => 400, 'currency' => 'EUR', 'description' => '400% of IPREM (~€28,800/year)', 'is_mandatory' => true],
@@ -435,7 +435,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                     [
                         'name' => 'Student',
                         'items' => [
-                            ['name' => "Application/Auth Fees - Student", 'amount' => 16, 'currency' => 'EUR', 'description' => '~€80 + ~€16 (TIE)', 'is_mandatory' => true],
+                            ['name' => "Application/Auth Fees - Student", 'amount' => 80, 'currency' => 'EUR', 'description' => '~€80 + ~€16 (TIE)', 'is_mandatory' => true],
                             ['name' => "Notary / Hague Apostille - Student", 'amount' => 150, 'currency' => 'EUR', 'description' => 'Translation/Apostille: €150+', 'is_mandatory' => true],
                             ['name' => "TIE / NIE Cards - Student", 'amount' => 30, 'currency' => 'EUR', 'description' => '~€30', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - Student", 'amount' => 100, 'currency' => 'EUR', 'description' => '100% IPREM (~€600/month)', 'is_mandatory' => true],
@@ -493,7 +493,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Health Insurance - Critical Skills Worker", 'amount' => 500, 'currency' => 'EUR', 'description' => 'Private Policy (~€500+/yr)', 'is_mandatory' => true],
                             ['name' => "Med/Police/Translations - Critical Skills Worker", 'amount' => 100, 'currency' => 'EUR', 'description' => '€100+', 'is_mandatory' => true],
                             ['name' => "IRP Registration - Critical Skills Worker", 'amount' => 300, 'currency' => 'EUR', 'description' => '€300/year', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Critical Skills Worker", 'amount' => 32, 'currency' => 'EUR', 'description' => '>€32K/yr or >€64k/yr Salary', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Critical Skills Worker", 'amount' => 32000, 'currency' => 'EUR', 'description' => '>€32K/yr or >€64k/yr Salary', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -513,7 +513,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Med/Police/Translations - Student", 'amount' => 200, 'currency' => 'EUR', 'description' => 'English Test: ~€200', 'is_mandatory' => true],
                             ['name' => "IRP Registration - Student", 'amount' => 300, 'currency' => 'EUR', 'description' => '€300/year', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - Student", 'amount' => 10000, 'currency' => 'EUR', 'description' => '€10,000/year (minimum)', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Tuition/Capital) - Student", 'amount' => 10, 'currency' => 'EUR', 'description' => 'Full tuition paid (€10k-€25k)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Tuition/Capital) - Student", 'amount' => 15000, 'currency' => 'EUR', 'description' => 'Full tuition paid (€10k-€25k)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -552,7 +552,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "App Fee (UDI) - Job Seeker (Grads)", 'amount' => 6300, 'currency' => 'NOK', 'description' => '6,300 NOK', 'is_mandatory' => true],
                             ['name' => "Health System - Job Seeker (Grads)", 'amount' => 1, 'currency' => 'NOK', 'description' => 'Private Insurance (1 yr)', 'is_mandatory' => true],
                             ['name' => "Legalizations - Job Seeker (Grads)", 'amount' => 500, 'currency' => 'NOK', 'description' => 'Appx: 500 NOK', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Job Seeker (Grads)", 'amount' => 6, 'currency' => 'NOK', 'description' => '258,408 NOK (for 6 months)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Job Seeker (Grads)", 'amount' => 258408, 'currency' => 'NOK', 'description' => '258,408 NOK (for 6 months)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -571,7 +571,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                     [
                         'name' => 'EU Blue Card (Skilled)',
                         'items' => [
-                            ['name' => "Visa + Permit (Permesso) Fee - EU Blue Card (Skilled)", 'amount' => 50, 'currency' => 'EUR', 'description' => '~€116 (€50 visa + €70+ Permit)', 'is_mandatory' => true],
+                            ['name' => "Visa + Permit (Permesso) Fee - EU Blue Card (Skilled)", 'amount' => 116, 'currency' => 'EUR', 'description' => '~€116 (€50 visa + €70+ Permit)', 'is_mandatory' => true],
                             ['name' => "Health Insurance / System - EU Blue Card (Skilled)", 'amount' => 200, 'currency' => 'EUR', 'description' => 'SSN Registration (~€200-700 vol)', 'is_mandatory' => true],
                             ['name' => "Legalization / Apostille / Null - EU Blue Card (Skilled)", 'amount' => 400, 'currency' => 'EUR', 'description' => '*Nulla Osta*/Degree Trans: €400+', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Living) - EU Blue Card (Skilled)", 'amount' => 27000, 'currency' => 'EUR', 'description' => 'Min Salary (~€27,000+/year)', 'is_mandatory' => true],

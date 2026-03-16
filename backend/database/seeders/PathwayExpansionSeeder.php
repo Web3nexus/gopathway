@@ -41,7 +41,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Requirements', 'item' => 'Health Surcharge (IHS)', 'min' => 776, 'max' => 776, 'notes' => '£776/year'],
                             ['category' => 'Requirements', 'item' => 'Biometrics & Admin', 'min' => 19, 'max' => 19, 'notes' => '~£19.20 (UK) or ~£55 (Abroad)'],
                             ['category' => 'Documentation', 'item' => 'Language / Med Tests', 'min' => 200, 'max' => 200, 'notes' => 'English: ~£200; TB Test: ~£100'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living/Setup)', 'min' => 1334, 'max' => 1334, 'notes' => '£1,334/mo (London) or £1,023/mo (Outside) up to 9 mos'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living/Setup)', 'min' => 12006, 'max' => 12006, 'notes' => '£1,334/mo (London) or £1,023/mo (Outside) up to 9 mos'],
                             ['category' => 'Living Costs', 'item' => 'Proof of Funds (Tuition/Capital)', 'min' => 15000, 'max' => 15000, 'notes' => 'Full 1st year tuition'],
                         ]
                     ],
@@ -278,7 +278,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Requirements', 'item' => 'Admin / Biometrics / Legalization', 'min' => 100, 'max' => 100, 'notes' => 'Reg./Translation: ~€100'],
                             ['category' => 'Documentation', 'item' => 'Language Test', 'min' => 1, 'max' => 1, 'notes' => 'A1 DE / B2 EN certificate: ~€150'],
                             ['category' => 'Requirements', 'item' => 'Degree Recognition (ZAB)', 'min' => 200, 'max' => 200, 'notes' => 'ZAB Evaluation: €200'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 1027, 'max' => 1027, 'notes' => '€1,027/month (Blocked Account)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 12324, 'max' => 12324, 'notes' => '€1,027/month (Blocked Account)'],
                         ]
                     ],
                     [
@@ -337,7 +337,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Requirements', 'item' => 'Health Insurance', 'min' => 100, 'max' => 100, 'notes' => 'Required (~€100-150/month)'],
                             ['category' => 'Requirements', 'item' => 'Translation / Legalizations', 'min' => 150, 'max' => 150, 'notes' => '~€150'],
                             ['category' => 'Requirements', 'item' => 'Integration Exam Req.', 'min' => 250, 'max' => 250, 'notes' => 'English test (TOEFL/IELTS): ~€250'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 1200, 'max' => 1200, 'notes' => '~€1,200/month'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 14400, 'max' => 14400, 'notes' => '~€1,200/month'],
                             ['category' => 'Living Costs', 'item' => 'Proof of Funds (Tuition/Capital)', 'min' => 15000, 'max' => 15000, 'notes' => 'Full tuition paid upfront (1st yr)'],
                         ]
                     ],
@@ -351,7 +351,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Fees', 'item' => 'App Fee (IND/MVV)', 'min' => 1529, 'max' => 1529, 'notes' => '€1,529'],
                             ['category' => 'Requirements', 'item' => 'Health Insurance', 'min' => 150, 'max' => 150, 'notes' => 'Required (~€150/month)'],
                             ['category' => 'Requirements', 'item' => 'Translation / Legalizations', 'min' => 75, 'max' => 75, 'notes' => 'KVK (Chamber of Commerce): ~€75'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 1500, 'max' => 1500, 'notes' => 'Min standard set by IND (~€1,500/mo)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 18000, 'max' => 18000, 'notes' => 'Min standard set by IND (~€1,500/mo)'],
                             ['category' => 'Living Costs', 'item' => 'Proof of Funds (Tuition/Capital)', 'min' => 15000, 'max' => 15000, 'notes' => '€4,500 Business Capital (DAFT)'],
                         ]
                     ],
@@ -423,7 +423,7 @@ class PathwayExpansionSeeder extends Seeder
                         'items' => [
                             ['category' => 'Fees', 'item' => 'App Fee (Online/Paper)', 'min' => 380, 'max' => 380, 'notes' => '€380 / €480'],
                             ['category' => 'Requirements', 'item' => 'Legalizations / Biometrics', 'min' => 100, 'max' => 100, 'notes' => 'Document Legalization: €100+'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 3000, 'max' => 3000, 'notes' => 'Min salary requirement (>€3,000/mo)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 36000, 'max' => 36000, 'notes' => 'Min salary requirement (>€3,000/mo)'],
                         ]
                     ],
                     [
@@ -435,7 +435,7 @@ class PathwayExpansionSeeder extends Seeder
                         'items' => [
                             ['category' => 'Fees', 'item' => 'App Fee (Online/Paper)', 'min' => 350, 'max' => 350, 'notes' => '€350 / €450'],
                             ['category' => 'Requirements', 'item' => 'Legalizations / Biometrics', 'min' => 100, 'max' => 100, 'notes' => 'Medical/Translations: €100+'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 800, 'max' => 800, 'notes' => '€800/month (€9,600/year)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 9600, 'max' => 9600, 'notes' => '€800/month (€9,600/year)'],
                         ]
                     ],
                     [
@@ -457,7 +457,7 @@ class PathwayExpansionSeeder extends Seeder
                         'items' => [
                             ['category' => 'Fees', 'item' => 'App Fee (Online/Paper)', 'min' => 470, 'max' => 470, 'notes' => '€470 / €520'],
                             ['category' => 'Requirements', 'item' => 'Legalizations / Biometrics', 'min' => 100, 'max' => 100, 'notes' => 'Translations: €100+'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 1000, 'max' => 1000, 'notes' => 'Sponsor income (e.g., €1,000/mo per child)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 12000, 'max' => 12000, 'notes' => 'Sponsor income (e.g., €1,000/mo per child)'],
                         ]
                     ],
                 ]
@@ -486,7 +486,7 @@ class PathwayExpansionSeeder extends Seeder
                         'items' => [
                             ['category' => 'Fees', 'item' => 'App Fee / Residence Card', 'min' => 150, 'max' => 150, 'notes' => '€150'],
                             ['category' => 'Requirements', 'item' => 'Legalizations/Translation', 'min' => 100, 'max' => 100, 'notes' => 'Appx: €100'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 1217, 'max' => 1217, 'notes' => '€1,217.96/month (Single standard)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 14604, 'max' => 14604, 'notes' => '€1,217.96/month (Single standard)'],
                         ]
                     ],
                     [
@@ -500,8 +500,8 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Requirements', 'item' => 'Health Insurance', 'min' => 67, 'max' => 67, 'notes' => 'Student insurance (€67/mo)'],
                             ['category' => 'Requirements', 'item' => 'Legalizations/Translation', 'min' => 100, 'max' => 100, 'notes' => 'Appx: €100'],
                             ['category' => 'Requirements', 'item' => 'Language Exam / Deg. Eval', 'min' => 150, 'max' => 150, 'notes' => 'English/German Cert: ~€150'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 1889, 'max' => 1889, 'notes' => '€1,217.96/month (If 24+) or ~€672 (If <24)'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Tuition)', 'min' => 15000, 'max' => 15000, 'notes' => 'Up to ~€726/semester'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 8064, 'max' => 8064, 'notes' => '€1,217.96/month (If 24+) or ~€672 (If <24)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Tuition)', 'min' => 726, 'max' => 726, 'notes' => 'Up to ~€726/semester'],
                         ]
                     ],
                 ]
@@ -532,7 +532,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Requirements', 'item' => 'Health Insurance / CVEC', 'min' => 103, 'max' => 103, 'notes' => 'CVEC (€103/year)'],
                             ['category' => 'Requirements', 'item' => 'Legalizations/Translations', 'min' => 250, 'max' => 250, 'notes' => 'Campus France Registration (€250)'],
                             ['category' => 'Requirements', 'item' => 'Language Req.', 'min' => 150, 'max' => 150, 'notes' => 'TCF/DELF: €150'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 615, 'max' => 615, 'notes' => '€615/month'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 7380, 'max' => 7380, 'notes' => '€615/month'],
                         ]
                     ],
                     [
@@ -544,7 +544,7 @@ class PathwayExpansionSeeder extends Seeder
                         'items' => [
                             ['category' => 'Fees', 'item' => 'App / Residence Fee (Tax)', 'min' => 225, 'max' => 225, 'notes' => '€225'],
                             ['category' => 'Requirements', 'item' => 'Legalizations/Translations', 'min' => 100, 'max' => 100, 'notes' => 'Chamber of Commerce Reg: €100'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 1766, 'max' => 1766, 'notes' => 'Min wage (SMIC, ~€1,766 gross/mo)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 21192, 'max' => 21192, 'notes' => 'Min wage (SMIC, ~€1,766 gross/mo)'],
                         ]
                     ],
                 ]
@@ -574,7 +574,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Fees', 'item' => 'Application/Auth Fees', 'min' => 89, 'max' => 89, 'notes' => '~€73 (Auth) + ~€16 (TIE)'],
                             ['category' => 'Requirements', 'item' => 'Notary / Hague Apostille', 'min' => 300, 'max' => 300, 'notes' => 'Translation/Apostille: €300+'],
                             ['category' => 'Requirements', 'item' => 'TIE / NIE Cards', 'min' => 30, 'max' => 30, 'notes' => '~€30'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 200, 'max' => 200, 'notes' => '200% of SMI (~€2,520/month)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 30240, 'max' => 30240, 'notes' => '200% of SMI (~€2,520/month)'],
                         ]
                     ],
                     [
@@ -587,7 +587,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Fees', 'item' => 'Application/Auth Fees', 'min' => 96, 'max' => 96, 'notes' => '~€80 - €140 + ~€16 (TIE)'],
                             ['category' => 'Requirements', 'item' => 'Notary / Hague Apostille', 'min' => 300, 'max' => 300, 'notes' => 'Translation/Apostille/Med: €300+'],
                             ['category' => 'Requirements', 'item' => 'TIE / NIE Cards', 'min' => 30, 'max' => 30, 'notes' => '~€30'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 400, 'max' => 400, 'notes' => '400% of IPREM (~€28,800/year)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 28800, 'max' => 28800, 'notes' => '400% of IPREM (~€28,800/year)'],
                         ]
                     ],
                     [
@@ -600,7 +600,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Fees', 'item' => 'Application/Auth Fees', 'min' => 96, 'max' => 96, 'notes' => '~€80 + ~€16 (TIE)'],
                             ['category' => 'Requirements', 'item' => 'Notary / Hague Apostille', 'min' => 150, 'max' => 150, 'notes' => 'Translation/Apostille: €150+'],
                             ['category' => 'Requirements', 'item' => 'TIE / NIE Cards', 'min' => 30, 'max' => 30, 'notes' => '~€30'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 100, 'max' => 100, 'notes' => '100% IPREM (~€600/month)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 7200, 'max' => 7200, 'notes' => '100% IPREM (~€600/month)'],
                         ]
                     ],
                 ]
@@ -630,7 +630,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Requirements', 'item' => 'Health Insurance', 'min' => 4, 'max' => 4, 'notes' => 'Travel Ins. (4 months)'],
                             ['category' => 'Requirements', 'item' => 'Legalizations / Tax Rep', 'min' => 100, 'max' => 100, 'notes' => 'Tax Rep. Fees: €100-300+'],
                             ['category' => 'Requirements', 'item' => 'Registration (NIF, NISS)', 'min' => 10, 'max' => 10, 'notes' => 'NIF setup: ~€10-100'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 4, 'max' => 4, 'notes' => '4x Min Wage (~€3,280/month)'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 39360, 'max' => 39360, 'notes' => '4x Min Wage (~€3,280/month)'],
                         ]
                     ],
                     [
@@ -656,7 +656,7 @@ class PathwayExpansionSeeder extends Seeder
                         'items' => [
                             ['category' => 'Fees', 'item' => 'Visa + Res Permit Fee', 'min' => 90, 'max' => 90, 'notes' => '~€90'],
                             ['category' => 'Requirements', 'item' => 'Legalizations / Tax Rep', 'min' => 100, 'max' => 100, 'notes' => 'Document Apostille: €100'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 820, 'max' => 820, 'notes' => 'Min Wage (€820/mo) or Guarantee'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 9840, 'max' => 9840, 'notes' => 'Min Wage (€820/mo) or Guarantee'],
                         ]
                     ],
                 ]
@@ -675,7 +675,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Requirements', 'item' => 'Health Insurance', 'min' => 500, 'max' => 500, 'notes' => 'Private Policy (~€500+/yr)'],
                             ['category' => 'Requirements', 'item' => 'Med/Police/Translations', 'min' => 100, 'max' => 100, 'notes' => '€100+'],
                             ['category' => 'Requirements', 'item' => 'IRP Registration', 'min' => 300, 'max' => 300, 'notes' => '€300/year'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 32000, 'max' => 32000, 'notes' => '>€32K/yr or >€64k/yr Salary'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 64000, 'max' => 64000, 'notes' => '>€32K/yr or >€64k/yr Salary'],
                         ]
                     ],
                     [
@@ -826,7 +826,7 @@ class PathwayExpansionSeeder extends Seeder
                             ['category' => 'Fees', 'item' => 'Visa + Permit (Permesso) Fee', 'min' => 120, 'max' => 120, 'notes' => '~€50 + ~€70 (Permesso)'],
                             ['category' => 'Requirements', 'item' => 'Health Insurance / System', 'min' => 150, 'max' => 150, 'notes' => 'SSN (~€150/year) OR Private'],
                             ['category' => 'Requirements', 'item' => 'Legalization / Apostille / Null', 'min' => 200, 'max' => 200, 'notes' => 'Degree Apostille/DoV: €200+'],
-                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 460, 'max' => 460, 'notes' => 'Minimum €460/month'],
+                            ['category' => 'Living Costs', 'item' => 'Proof of Funds (Living)', 'min' => 5520, 'max' => 5520, 'notes' => 'Minimum €460/month'],
                         ]
                     ],
                 ]

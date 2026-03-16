@@ -35,7 +35,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Health Surcharge (IHS) - Student", 'amount' => 776, 'currency' => 'GBP', 'description' => '£776/year', 'is_mandatory' => true],
                             ['name' => "Biometrics & Admin - Student", 'amount' => 19, 'currency' => 'GBP', 'description' => '~£19.20 (UK) or ~£55 (Abroad)', 'is_mandatory' => true],
                             ['name' => "Language / Med Tests - Student", 'amount' => 200, 'currency' => 'GBP', 'description' => 'English: ~£200; TB Test: ~£100', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living/Setup) - Student", 'amount' => 1334, 'currency' => 'GBP', 'description' => '£1,334/mo (London) or £1,023/mo (Outside) up to 9 mos', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living/Setup) - Student", 'amount' => 12006, 'currency' => 'GBP', 'description' => '£1,334/mo (London) or £1,023/mo (Outside) up to 9 mos', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Tuition/Capital) - Student", 'amount' => 15000, 'currency' => 'GBP', 'description' => 'Full 1st year tuition', 'is_mandatory' => true],
                         ]
                     ],
@@ -208,7 +208,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Admin / Biometrics / Legalization - Job Seeker (Opportunity Card)", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Reg./Translation: ~€100', 'is_mandatory' => true],
                             ['name' => "Language Test - Job Seeker (Opportunity Card)", 'amount' => 150, 'currency' => 'EUR', 'description' => 'A1 DE / B2 EN certificate: ~€150', 'is_mandatory' => true],
                             ['name' => "Degree Recognition (ZAB) - Job Seeker (Opportunity Card)", 'amount' => 200, 'currency' => 'EUR', 'description' => 'ZAB Evaluation: €200', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Job Seeker (Opportunity Card)", 'amount' => 1027, 'currency' => 'EUR', 'description' => '€1,027/month (Blocked Account)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Job Seeker (Opportunity Card)", 'amount' => 12324, 'currency' => 'EUR', 'description' => '€1,027/month (Blocked Account)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -251,7 +251,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Health Insurance - Student/Orientation Year", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Required (~€100-150/month)', 'is_mandatory' => true],
                             ['name' => "Translation / Legalizations - Student/Orientation Year", 'amount' => 150, 'currency' => 'EUR', 'description' => '~€150', 'is_mandatory' => true],
                             ['name' => "Integration Exam Req. - Student/Orientation Year", 'amount' => 250, 'currency' => 'EUR', 'description' => 'English test (TOEFL/IELTS): ~€250', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Student/Orientation Year", 'amount' => 1200, 'currency' => 'EUR', 'description' => '~€1,200/month', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Student/Orientation Year", 'amount' => 14400, 'currency' => 'EUR', 'description' => '~€1,200/month', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Tuition/Capital) - Student/Orientation Year", 'amount' => 15000, 'currency' => 'EUR', 'description' => 'Full tuition paid upfront (1st yr)', 'is_mandatory' => true],
                         ]
                     ],
@@ -261,7 +261,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "App Fee (IND/MVV) - Self-Employed/DAFT(US/JP)", 'amount' => 1529, 'currency' => 'EUR', 'description' => '€1,529', 'is_mandatory' => true],
                             ['name' => "Health Insurance - Self-Employed/DAFT(US/JP)", 'amount' => 150, 'currency' => 'EUR', 'description' => 'Required (~€150/month)', 'is_mandatory' => true],
                             ['name' => "Translation / Legalizations - Self-Employed/DAFT(US/JP)", 'amount' => 75, 'currency' => 'EUR', 'description' => 'KVK (Chamber of Commerce): ~€75', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Self-Employed/DAFT(US/JP)", 'amount' => 1500, 'currency' => 'EUR', 'description' => 'Min standard set by IND (~€1,500/mo)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Self-Employed/DAFT(US/JP)", 'amount' => 18000, 'currency' => 'EUR', 'description' => 'Min standard set by IND (~€1,500/mo)', 'is_mandatory' => true],
                             ['name' => "Proof of Funds (Tuition/Capital) - Self-Employed/DAFT(US/JP)", 'amount' => 15000, 'currency' => 'EUR', 'description' => '€4,500 Business Capital (DAFT)', 'is_mandatory' => true],
                         ]
                     ],
@@ -313,7 +313,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'items' => [
                             ['name' => "App Fee (Online/Paper) - Specialist/Skilled Worker", 'amount' => 380, 'currency' => 'EUR', 'description' => '€380 / €480', 'is_mandatory' => true],
                             ['name' => "Legalizations / Biometrics - Specialist/Skilled Worker", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Document Legalization: €100+', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Specialist/Skilled Worker", 'amount' => 3000, 'currency' => 'EUR', 'description' => 'Min salary requirement (>€3,000/mo)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Specialist/Skilled Worker", 'amount' => 36000, 'currency' => 'EUR', 'description' => 'Min salary requirement (>€3,000/mo)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -321,7 +321,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'items' => [
                             ['name' => "App Fee (Online/Paper) - Student", 'amount' => 350, 'currency' => 'EUR', 'description' => '€350 / €450', 'is_mandatory' => true],
                             ['name' => "Legalizations / Biometrics - Student", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Medical/Translations: €100+', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Student", 'amount' => 800, 'currency' => 'EUR', 'description' => '€800/month (€9,600/year)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Student", 'amount' => 9600, 'currency' => 'EUR', 'description' => '€800/month (€9,600/year)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -335,7 +335,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'items' => [
                             ['name' => "App Fee (Online/Paper) - Family Ties", 'amount' => 470, 'currency' => 'EUR', 'description' => '€470 / €520', 'is_mandatory' => true],
                             ['name' => "Legalizations / Biometrics - Family Ties", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Translations: €100+', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Family Ties", 'amount' => 1000, 'currency' => 'EUR', 'description' => 'Sponsor income (e.g., €1,000/mo per child)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Family Ties", 'amount' => 12000, 'currency' => 'EUR', 'description' => 'Sponsor income (e.g., €1,000/mo per child)', 'is_mandatory' => true],
                         ]
                     ],
                 ]
@@ -356,7 +356,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'items' => [
                             ['name' => "App Fee / Residence Card - Job Seeker", 'amount' => 150, 'currency' => 'EUR', 'description' => '€150', 'is_mandatory' => true],
                             ['name' => "Legalizations/Translation - Job Seeker", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Appx: €100', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Job Seeker", 'amount' => 1217, 'currency' => 'EUR', 'description' => '€1,217.96/month (Single standard)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Job Seeker", 'amount' => 14604, 'currency' => 'EUR', 'description' => '€1,217.96/month (Single standard)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -366,8 +366,8 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Health Insurance - Student Visa", 'amount' => 67, 'currency' => 'EUR', 'description' => 'Student insurance (€67/mo)', 'is_mandatory' => true],
                             ['name' => "Legalizations/Translation - Student Visa", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Appx: €100', 'is_mandatory' => true],
                             ['name' => "Language Exam / Deg. Eval - Student Visa", 'amount' => 150, 'currency' => 'EUR', 'description' => 'English/German Cert: ~€150', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Student Visa", 'amount' => 1889, 'currency' => 'EUR', 'description' => '€1,217.96/month (If 24+) or ~€672 (If <24)', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Tuition) - Student Visa", 'amount' => 15000, 'currency' => 'EUR', 'description' => 'Up to ~€726/semester', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Student Visa", 'amount' => 8064, 'currency' => 'EUR', 'description' => '€1,217.96/month (If 24+) or ~€672 (If <24)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Tuition) - Student Visa", 'amount' => 726, 'currency' => 'EUR', 'description' => 'Up to ~€726/semester', 'is_mandatory' => true],
                         ]
                     ],
                 ]
@@ -390,7 +390,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Health Insurance / CVEC - Student", 'amount' => 103, 'currency' => 'EUR', 'description' => 'CVEC (€103/year)', 'is_mandatory' => true],
                             ['name' => "Legalizations/Translations - Student", 'amount' => 250, 'currency' => 'EUR', 'description' => 'Campus France Registration (€250)', 'is_mandatory' => true],
                             ['name' => "Language Req. - Student", 'amount' => 150, 'currency' => 'EUR', 'description' => 'TCF/DELF: €150', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Student", 'amount' => 615, 'currency' => 'EUR', 'description' => '€615/month', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Student", 'amount' => 7380, 'currency' => 'EUR', 'description' => '€615/month', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -398,7 +398,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'items' => [
                             ['name' => "App / Residence Fee (Tax) - Profession Libérale", 'amount' => 225, 'currency' => 'EUR', 'description' => '€225', 'is_mandatory' => true],
                             ['name' => "Legalizations/Translations - Profession Libérale", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Chamber of Commerce Reg: €100', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Profession Libérale", 'amount' => 1766, 'currency' => 'EUR', 'description' => 'Min wage (SMIC, ~€1,766 gross/mo)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Profession Libérale", 'amount' => 21192, 'currency' => 'EUR', 'description' => 'Min wage (SMIC, ~€1,766 gross/mo)', 'is_mandatory' => true],
                         ]
                     ],
                 ]
@@ -420,7 +420,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Application/Auth Fees - Digital Nomad", 'amount' => 89, 'currency' => 'EUR', 'description' => '~€73 (Auth) + ~€16 (TIE)', 'is_mandatory' => true],
                             ['name' => "Notary / Hague Apostille - Digital Nomad", 'amount' => 300, 'currency' => 'EUR', 'description' => 'Translation/Apostille: €300+', 'is_mandatory' => true],
                             ['name' => "TIE / NIE Cards - Digital Nomad", 'amount' => 30, 'currency' => 'EUR', 'description' => '~€30', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Digital Nomad", 'amount' => 200, 'currency' => 'EUR', 'description' => '200% of SMI (~€2,520/month)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Digital Nomad", 'amount' => 30240, 'currency' => 'EUR', 'description' => '200% of SMI (~€2,520/month)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -429,7 +429,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Application/Auth Fees - Non-Lucrative (NLV)", 'amount' => 96, 'currency' => 'EUR', 'description' => '~€80 - €140 + ~€16 (TIE)', 'is_mandatory' => true],
                             ['name' => "Notary / Hague Apostille - Non-Lucrative (NLV)", 'amount' => 300, 'currency' => 'EUR', 'description' => 'Translation/Apostille/Med: €300+', 'is_mandatory' => true],
                             ['name' => "TIE / NIE Cards - Non-Lucrative (NLV)", 'amount' => 30, 'currency' => 'EUR', 'description' => '~€30', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Non-Lucrative (NLV)", 'amount' => 400, 'currency' => 'EUR', 'description' => '400% of IPREM (~€28,800/year)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Non-Lucrative (NLV)", 'amount' => 28800, 'currency' => 'EUR', 'description' => '400% of IPREM (~€28,800/year)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -438,7 +438,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Application/Auth Fees - Student", 'amount' => 96, 'currency' => 'EUR', 'description' => '~€80 + ~€16 (TIE)', 'is_mandatory' => true],
                             ['name' => "Notary / Hague Apostille - Student", 'amount' => 150, 'currency' => 'EUR', 'description' => 'Translation/Apostille: €150+', 'is_mandatory' => true],
                             ['name' => "TIE / NIE Cards - Student", 'amount' => 30, 'currency' => 'EUR', 'description' => '~€30', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Student", 'amount' => 100, 'currency' => 'EUR', 'description' => '100% IPREM (~€600/month)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Student", 'amount' => 7200, 'currency' => 'EUR', 'description' => '100% IPREM (~€600/month)', 'is_mandatory' => true],
                         ]
                     ],
                 ]
@@ -460,7 +460,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Health Insurance - D8 (Digital Nomad)", 'amount' => 4, 'currency' => 'EUR', 'description' => 'Travel Ins. (4 months)', 'is_mandatory' => true],
                             ['name' => "Legalizations / Tax Rep - D8 (Digital Nomad)", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Tax Rep. Fees: €100-300+', 'is_mandatory' => true],
                             ['name' => "Registration (NIF, NISS) - D8 (Digital Nomad)", 'amount' => 10, 'currency' => 'EUR', 'description' => 'NIF setup: ~€10-100', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - D8 (Digital Nomad)", 'amount' => 4, 'currency' => 'EUR', 'description' => '4x Min Wage (~€3,280/month)', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - D8 (Digital Nomad)", 'amount' => 39360, 'currency' => 'EUR', 'description' => '4x Min Wage (~€3,280/month)', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -478,7 +478,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                         'items' => [
                             ['name' => "Visa + Res Permit Fee - Student", 'amount' => 90, 'currency' => 'EUR', 'description' => '~€90', 'is_mandatory' => true],
                             ['name' => "Legalizations / Tax Rep - Student", 'amount' => 100, 'currency' => 'EUR', 'description' => 'Document Apostille: €100', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Student", 'amount' => 820, 'currency' => 'EUR', 'description' => 'Min Wage (€820/mo) or Guarantee', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Student", 'amount' => 9840, 'currency' => 'EUR', 'description' => 'Min Wage (€820/mo) or Guarantee', 'is_mandatory' => true],
                         ]
                     ],
                 ]
@@ -493,7 +493,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Health Insurance - Critical Skills Worker", 'amount' => 500, 'currency' => 'EUR', 'description' => 'Private Policy (~€500+/yr)', 'is_mandatory' => true],
                             ['name' => "Med/Police/Translations - Critical Skills Worker", 'amount' => 100, 'currency' => 'EUR', 'description' => '€100+', 'is_mandatory' => true],
                             ['name' => "IRP Registration - Critical Skills Worker", 'amount' => 300, 'currency' => 'EUR', 'description' => '€300/year', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Critical Skills Worker", 'amount' => 32000, 'currency' => 'EUR', 'description' => '>€32K/yr or >€64k/yr Salary', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Critical Skills Worker", 'amount' => 64000, 'currency' => 'EUR', 'description' => '>€32K/yr or >€64k/yr Salary', 'is_mandatory' => true],
                         ]
                     ],
                     [
@@ -600,7 +600,7 @@ class ComprehensiveRealisticCostSeeder extends Seeder
                             ['name' => "Visa + Permit (Permesso) Fee - Student Visa", 'amount' => 120, 'currency' => 'EUR', 'description' => '~€50 + ~€70 (Permesso)', 'is_mandatory' => true],
                             ['name' => "Health Insurance / System - Student Visa", 'amount' => 150, 'currency' => 'EUR', 'description' => 'SSN (~€150/year) OR Private', 'is_mandatory' => true],
                             ['name' => "Legalization / Apostille / Null - Student Visa", 'amount' => 200, 'currency' => 'EUR', 'description' => 'Degree Apostille/DoV: €200+', 'is_mandatory' => true],
-                            ['name' => "Proof of Funds (Living) - Student Visa", 'amount' => 460, 'currency' => 'EUR', 'description' => 'Minimum €460/month', 'is_mandatory' => true],
+                            ['name' => "Proof of Funds (Living) - Student Visa", 'amount' => 5520, 'currency' => 'EUR', 'description' => 'Minimum €460/month', 'is_mandatory' => true],
                         ]
                     ],
                 ]

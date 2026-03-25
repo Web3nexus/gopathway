@@ -16,7 +16,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
-            'cf_turnstile_response' => ['sometimes', new \App\Rules\Turnstile()],
+            'cf_turnstile_response' => [\App\Models\Setting::where('key', 'turnstile_secret_key')->whereNotNull('value')->exists() ? 'required' : 'nullable', new \App\Rules\Turnstile()],
         ];
     }
 }

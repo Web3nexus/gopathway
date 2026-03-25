@@ -16,9 +16,9 @@ class RegisterRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
+            'password' => ['required', 'string', \Illuminate\Validation\Rules\Password::defaults()],
             'ref' => ['nullable', 'string', 'exists:users,referral_code'],
-            'cf_turnstile_response' => ['sometimes', new \App\Rules\Turnstile()],
+            'cf_turnstile_response' => [\App\Models\Setting::where('key', 'turnstile_secret_key')->whereNotNull('value')->exists() ? 'required' : 'nullable', new \App\Rules\Turnstile()],
         ];
     }
 }

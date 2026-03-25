@@ -57,6 +57,10 @@ export function LoginForm({
   const [otpCode, setOtpCode] = useState('');
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (turnstileSiteKey && !values.cf_turnstile_response) {
+      form.setError('cf_turnstile_response', { message: 'Please complete the security check' });
+      return;
+    }
     setIsLoading(true);
     try {
       const response = await authService.login(values);

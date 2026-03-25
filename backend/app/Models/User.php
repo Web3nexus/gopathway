@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
@@ -185,6 +185,27 @@ class User extends Authenticatable
     public function actionLogs()
     {
         return $this->hasMany(UserActionLog::class);
+    }
+
+    /**
+     * Send the email verification notification.
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $verificationUrl = config('app.frontend_url') . '/verify-email?url=' . urlencode(url()->temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $this->id, 'hash' => sha1($this->email)]
+        ));
+
+        try {
+            \Illuminate\Support\Facades\Mail::to($this->email)->send(new \App\Mail\DynamicEmail('email_verification', [
+                'user_name' => $this->name,
+                'verification_url' => $verificationUrl,
+            ]));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Failed to send verification email to {$this->email}: " . $e->getMessage());
+        }
     }
 
     /**

@@ -46,10 +46,23 @@ class EmailTemplateSeeder extends Seeder
             ['key' => 'welcome_email'],
             [
                 'subject' => 'Welcome to GoPathway, {{user_name}}!',
-                'content' => "# Welcome to GoPathway!\n\nHello {{user_name}},\n\nWe're excited to have you on board! GoPathway is here to help you navigate your global migration journey with ease.\n\nYou can now start exploring destinations, tracking your pathway, and managing your documents.\n\n[Go to Dashboard]({{dashboard_url}})",
+                'content' => "# Welcome to GoPathway!\n\nHello {{user_name}},\n\nWe're excited to have you on board! GoPathway is here to help you navigate your global migration journey with ease.\n\n**Ready to unlock your full potential?**\nUpgrade to a Premium plan to access expert guidance, detailed cost analysis, and personalized roadmap tools.\n\n[Upgrade to Premium]({{upgrade_url}})\n\n[Go to Dashboard]({{dashboard_url}})",
                 'variables' => [
                     'user_name' => 'Name of the user',
-                    'dashboard_url' => 'URL to the user dashboard'
+                    'dashboard_url' => 'URL to the user dashboard',
+                    'upgrade_url' => 'URL to the pricing/upgrade page'
+                ],
+            ]
+        );
+
+        EmailTemplate::updateOrCreate(
+            ['key' => 'email_verification'],
+            [
+                'subject' => 'Verify Your Email Address',
+                'content' => "# Verify Your Email\n\nHello {{user_name}},\n\nPlease click the button below to verify your email address and get started with GoPathway.\n\n[Verify Email Address]({{verification_url}})\n\nIf you did not create an account, no further action is required.",
+                'variables' => [
+                    'user_name' => 'Name of the user',
+                    'verification_url' => 'URL to verify the email'
                 ],
             ]
         );

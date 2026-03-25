@@ -1,15 +1,39 @@
 import { useDashboard } from '@/hooks/useDashboard';
 import { useCurrency } from '@/contexts/CurrencyContext';
-import { MapPin, FileCheck, CreditCard, Bell, ArrowRight, Clock, AlertCircle, TrendingUp, Briefcase, Sparkles } from 'lucide-react';
+import { MapPin, FileCheck, CreditCard, Bell, ArrowRight, Clock, AlertCircle, TrendingUp, Briefcase, Sparkles, MailWarning } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import GoScoreWidget from '@/components/dashboard/GoScoreWidget';
 import { EmployabilityScoreCard } from '@/components/dashboard/EmployabilityScoreCard';
 import RelocationRoadmapWidget from '@/components/dashboard/RelocationRoadmapWidget';
+import { useState } from 'react';
+import { api } from '@/lib/api';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Dashboard() {
     const { data: summary, isLoading } = useDashboard();
     const { formatCurrency } = useCurrency();
+    const { toast } = useToast();
+    const [isResending, setIsResending] = useState(false);
+
+    const handleResendVerification = async () => {
+        setIsResending(true);
+        try {
+            await api.post('/api/v1/email/verification-notification');
+            toast({
+                title: 'Verification email sent',
+                description: 'Please check your inbox (and spam folder) for the link.',
+            });
+        } catch (error: any) {
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: error.response?.data?.message || 'Failed to resend verification email.',
+            });
+        } finally {
+            setIsResending(false);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -21,8 +45,32 @@ export default function Dashboard() {
         );
     }
 
+    const isEmailVerified = !!summary?.user?.email_verified_at;
+
     return (
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto space-y-6">
+            {!isEmailVerified && (
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                            <MailWarning className="h-5 w-5 text-amber-600" />
+                        </div>
+                        <div>
+                            <p className="text-sm font-bold text-amber-900">Please verify your email address</p>
+                            <p className="text-xs text-amber-700">Check your inbox for a verification link to unlock all system features.</p>
+                        </div>
+                    </div>
+                    <Button 
+                        size="sm" 
+                        variant="outline" 
+                        onClick={handleResendVerification}
+                        className="bg-white border-amber-300 text-amber-700 hover:bg-amber-100 font-bold text-xs"
+                        disabled={isResending}
+                    >
+                        {isResending ? 'Sending...' : 'Resend Verification Email'}
+                    </Button>
+                </div>
+            )}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                 {/* Primary Column: Pathway Selection & Action Center */}
                 <div className="lg:col-span-2 space-y-6">

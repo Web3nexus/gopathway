@@ -35,10 +35,14 @@ class AuthController extends Controller
             Mail::to($user->email)->send(new DynamicEmail('welcome_email', [
                 'user_name' => $user->name,
                 'dashboard_url' => config('app.frontend_url') . '/dashboard',
+                'upgrade_url' => config('app.frontend_url') . '/pricing',
             ]));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("Failed to send welcome email to {$user->email}: " . $e->getMessage());
         }
+
+        // Trigger Email Verification
+        $user->sendEmailVerificationNotification();
 
         Auth::guard('web')->login($user);
 

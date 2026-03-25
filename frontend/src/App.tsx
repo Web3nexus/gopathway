@@ -7,6 +7,7 @@ import { AdminRoute } from '@/components/auth/AdminRoute';
 import { Toaster } from '@/components/ui/toaster';
 import Login from '@/pages/auth/Login';
 import Register from '@/pages/auth/Register';
+import VerifyEmail from '@/pages/auth/VerifyEmail';
 import Home from '@/pages/public/Home';
 import BlogList from '@/pages/public/BlogList';
 import BlogPostView from '@/pages/public/BlogPostView';
@@ -98,6 +99,7 @@ function App() {
             <Route path="/terms" element={<Terms />} />
             <Route path="/documentation" element={<Documentation />} />
             <Route path="/status" element={<Status />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
           </Route>
           
           {/* Catch-all 404 Route */}

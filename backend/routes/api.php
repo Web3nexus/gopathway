@@ -66,6 +66,15 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::post('/referral/track/{code}', [\App\Http\Controllers\Api\ReferralController::class , 'trackClick']);
 
+    // Email Verification
+    Route::get('/email/verify/{id}/{hash}', [\App\Http\Controllers\Api\VerificationController::class, 'verify'])
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
+
+    Route::post('/email/verification-notification', [\App\Http\Controllers\Api\VerificationController::class, 'resend'])
+        ->middleware(['auth:sanctum', 'throttle:6,1'])
+        ->name('verification.send');
+
     Route::post('/webhooks/paystack', [WebhookController::class , 'handle']);
     Route::post('/webhooks/flutterwave', [WebhookController::class , 'handleFlutterwave']);
     Route::post('/webhooks/flutterwave/transfer', [WebhookController::class , 'handleFlutterwaveTransfer']);

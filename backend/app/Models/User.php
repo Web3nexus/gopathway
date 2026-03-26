@@ -199,6 +199,7 @@ class User extends Authenticatable implements MustVerifyEmail
         ));
 
         try {
+            \Illuminate\Support\Facades\Log::info("Sending verification email to {$this->email}", ['url' => $verificationUrl]);
             \Illuminate\Support\Facades\Mail::to($this->email)->send(new \App\Mail\DynamicEmail('email_verification', [
                 'user_name' => $this->name,
                 'verification_url' => $verificationUrl,

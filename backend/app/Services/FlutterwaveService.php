@@ -5,63 +5,29 @@ namespace App\Services;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 
 class FlutterwaveService
 {
-    protected string $clientId;
-    protected string $clientSecret;
+    protected string $secretKey;
     protected string $encryptionKey;
-    protected string $baseUrl = 'https://api.flutterwave.com/v4';
-    protected string $idpUrl = 'https://idp.flutterwave.com/realms/flutterwave/protocol/openid-connect/token';
+    protected string $baseUrl = 'https://api.flutterwave.com/v3';
 
     public function __construct()
     {
-        $this->clientId = Setting::where('key', 'flutterwave_public_key')->value('value') ?: env('FLUTTERWAVE_CLIENT_ID', '');
-        $this->clientSecret = Setting::where('key', 'flutterwave_secret_key')->value('value') ?: env('FLUTTERWAVE_CLIENT_SECRET', '');
-        $this->encryptionKey = Setting::where('key', 'flutterwave_encryption_key')->value('value') ?: env('FLUTTERWAVE_ENCRYPTION_KEY', '');
-    }
-
-    /**
-     * Get OAuth Access Token for V4
-     */
-    protected function getAccessToken(): ?string
-    {
-        $cacheKey = 'flutterwave_v4_access_token';
+        $dbKey = Setting::where('key', 'flutterwave_secret_key')->value('value');
+        $this->secretKey = $dbKey ?: (config('services.flutterwave.secret_key') ?? env('FLUTTERWAVE_SECRET_KEY', ''));
         
-        return Cache::remember($cacheKey, 3000, function () {
-            try {
-                $response = Http::asForm()->post($this->idpUrl, [
-                    'grant_type' => 'client_credentials',
-                    'client_id' => $this->clientId,
-                    'client_secret' => $this->clientSecret,
-                ]);
-
-                if ($response->successful()) {
-                    return $response->json('access_token');
-                }
-
-                Log::error('Flutterwave V4 Token Error', [
-                    'status' => $response->status(),
-                    'body' => $response->body()
-                ]);
-            } catch (\Exception $e) {
-                Log::error('Flutterwave V4 Token Exception: ' . $e->getMessage());
-            }
-            return null;
-        });
+        $dbEncKey = Setting::where('key', 'flutterwave_encryption_key')->value('value');
+        $this->encryptionKey = $dbEncKey ?: env('FLUTTERWAVE_ENCRYPTION_KEY', '');
     }
 
     /**
-     * Initialize a transaction (Hosted Checkout).
+     * Initialize a payment (Hosted Checkout).
      */
     public function initializeTransaction(array $data)
     {
-        $token = $this->getAccessToken();
-        if (!$token) throw new \Exception('Flutterwave Authentication Failed');
-
         try {
-            $payload = [
+            $response = Http::withToken($this->secretKey)->post($this->baseUrl . '/payments', [
                 'amount' => (float)$data['amount'],
                 'currency' => $data['currency'],
                 'tx_ref' => $data['tx_ref'],
@@ -71,29 +37,29 @@ class FlutterwaveService
                     'name' => $data['customer']['name'] ?? 'Customer',
                 ],
                 'customization' => [
-                    'title' => 'GoPathway Payment',
-                    'description' => 'Subscription Payment',
+                    'title' => 'GoPathway Subscription',
+                    'description' => 'Payment for subscription plan',
                 ],
                 'meta' => $data['meta'] ?? [],
-            ];
-
-            // Trying /payments on V4 as some docs suggest it's still the hosted checkout endpoint
-            $response = Http::withToken($token)->post("{$this->baseUrl}/payments", $payload);
+            ]);
 
             if ($response->successful()) {
                 return $response->json()['data'];
             }
 
-            Log::error('Flutterwave V4 Initialization Failed', [
+            Log::error('Flutterwave V3 Initialization Failed', [
                 'status' => $response->status(),
-                'body' => $response->body(), // Raw body for better debugging
-                'payload' => $payload
+                'body' => $response->body(),
+                'data' => $data
             ]);
-            
-            throw new \Exception($response->json('message') ?? 'Flutterwave initialization failed (Code: ' . $response->status() . ')');
+
+            return [
+                'status' => 'error',
+                'message' => 'Flutterwave Error: ' . ($response->json('message') ?? 'Unknown error')
+            ];
         } catch (\Exception $e) {
-            Log::error('Flutterwave V4 Init Exception: ' . $e->getMessage());
-            throw $e;
+            Log::error('Flutterwave V3 Init Exception: ' . $e->getMessage());
+            return ['status' => 'error', 'message' => 'Internal server error'];
         }
     }
 
@@ -102,20 +68,20 @@ class FlutterwaveService
      */
     public function verifyTransaction(string $transactionId)
     {
-        $token = $this->getAccessToken();
-        if (!$token) return null;
-
         try {
-            $response = Http::withToken($token)
-                ->get("{$this->baseUrl}/transactions/{$transactionId}/verify");
+            $response = Http::withToken($this->secretKey)->get($this->baseUrl . "/transactions/{$transactionId}/verify");
 
             if ($response->successful()) {
-                return $response->json()['data'];
+                return $response->json('data');
             }
 
-            Log::error('Flutterwave V4 Verification Failed', ['transaction_id' => $transactionId, 'response' => $response->json()]);
+            Log::error('Flutterwave V3 Verification Failed', [
+                'status' => $response->status(),
+                'body' => $response->body(),
+                'id' => $transactionId
+            ]);
         } catch (\Exception $e) {
-            Log::error('Flutterwave V4 Verify Exception: ' . $e->getMessage());
+            Log::error('Flutterwave V3 Verify Exception: ' . $e->getMessage());
         }
 
         return null;
@@ -126,11 +92,8 @@ class FlutterwaveService
      */
     public function getFxRate(string $from, string $to, float $amount = 1)
     {
-        $token = $this->getAccessToken();
-        if (!$token) return null;
-
         try {
-            $response = Http::withToken($token)
+            $response = Http::withToken($this->secretKey)
                 ->post("{$this->baseUrl}/transfers/rates", [
                     'from' => $from,
                     'to' => $to,
@@ -141,7 +104,7 @@ class FlutterwaveService
                 return $response->json()['data'];
             }
         } catch (\Exception $e) {
-            Log::error('Flutterwave V4 FX Rate Fetch Exception: ' . $e->getMessage());
+            Log::error('Flutterwave V3 FX Rate Fetch Failed: ' . $e->getMessage());
         }
         return null;
     }
@@ -151,18 +114,15 @@ class FlutterwaveService
      */
     public function getBanks(string $countryCode)
     {
-        $token = $this->getAccessToken();
-        if (!$token) return [];
-
         try {
-            $response = Http::withToken($token)
+            $response = Http::withToken($this->secretKey)
                 ->get("{$this->baseUrl}/banks/{$countryCode}");
 
             if ($response->successful()) {
                 return $response->json()['data'];
             }
         } catch (\Exception $e) {
-            Log::error('Flutterwave V4 Bank Fetch Exception: ' . $e->getMessage());
+            Log::error('Flutterwave V3 Bank Fetch Failed: ' . $e->getMessage());
         }
         return [];
     }
@@ -172,21 +132,18 @@ class FlutterwaveService
      */
     public function initiateTransfer(array $data)
     {
-        $token = $this->getAccessToken();
-        if (!$token) throw new \Exception('Flutterwave Authentication Failed');
-
         try {
-            $response = Http::withToken($token)
+            $response = Http::withToken($this->secretKey)
                 ->post("{$this->baseUrl}/transfers", $data);
 
             if ($response->successful()) {
                 return $response->json()['data'];
             }
 
-            Log::error('Flutterwave V4 Transfer Failed', ['data' => $data, 'response' => $response->json()]);
+            Log::error('Flutterwave V3 Transfer Failed', ['data' => $data, 'response' => $response->json()]);
             throw new \Exception($response->json()['message'] ?? 'Flutterwave transfer failed');
         } catch (\Exception $e) {
-            Log::error('Flutterwave V4 Transfer Exception: ' . $e->getMessage());
+            Log::error('Flutterwave V3 Transfer Exception: ' . $e->getMessage());
             throw $e;
         }
     }

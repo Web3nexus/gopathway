@@ -52,6 +52,7 @@ class DashboardController extends Controller
         });
 
         return response()->json([
+            'user' => $user,
             'profile_completeness' => $completeness,
             'pathway' => $pathway ? [
                 'id' => $pathway->id,

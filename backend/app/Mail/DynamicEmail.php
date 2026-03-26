@@ -92,10 +92,12 @@ class DynamicEmail extends Mailable
      */
     protected function getDefaultContent(): string
     {
+        $buttonStyle = "display: inline-block; padding: 12px 24px; background-color: #0B3C91; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: bold; text-align: center;";
+        
         return match ($this->templateKey) {
-            'email_verification' => "# Verify Your Email\n\nHello {{user_name}},\n\nPlease click the link below to verify your email address:\n\n[Verify Email Address]({{verification_url}})",
-            'password_reset' => "# Password Reset\n\nHello {{user_name}},\n\nYou requested a password reset. Click the link below to set a new password:\n\n[Reset Password]({{reset_url}})",
-            'welcome_email' => "# Welcome to GoPathway, {{user_name}}!\n\nThank you for joining. We are excited to help you on your relocation journey.\n\n[Go to Dashboard]({{dashboard_url}})",
+            'email_verification' => "# Verify Your Email\n\nHello {{user_name}},\n\nPlease click the button below to verify your email address:\n\n<p style=\"text-align: center; margin-top: 20px;\"><a href=\"{{verification_url}}\" style=\"{$buttonStyle}\">Verify Email Address</a></p>",
+            'password_reset' => "# Password Reset\n\nHello {{user_name}},\n\nYou requested a password reset. Click the button below to set a new password:\n\n<p style=\"text-align: center; margin-top: 20px;\"><a href=\"{{reset_url}}\" style=\"{$buttonStyle}\">Reset Password</a></p>",
+            'welcome_email' => "# Welcome to GoPathway, {{user_name}}!\n\nThank you for joining. We are excited to help you on your relocation journey.\n\n<p style=\"text-align: center; margin-top: 20px;\"><a href=\"{{dashboard_url}}\" style=\"{$buttonStyle}\">Go to Dashboard</a></p>",
             default => 'You have a new notification.',
         };
     }

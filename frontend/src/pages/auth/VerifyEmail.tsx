@@ -4,11 +4,13 @@ import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function VerifyEmail() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const { toast } = useToast();
+    const queryClient = useQueryClient();
     const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
     const [message, setMessage] = useState('');
 
@@ -27,6 +29,10 @@ export default function VerifyEmail() {
                 setStatus('success');
                 setMessage(response.data.message || 'Email verified successfully!');
                 toast({ title: 'Success', description: 'Your email has been verified.' });
+                
+                // Invalidate frontend cache so the dashboard banner disappears
+                queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+                queryClient.invalidateQueries({ queryKey: ['auth'] });
                 
                 // Redirect to dashboard after 3 seconds
                 setTimeout(() => {

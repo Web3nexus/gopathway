@@ -57,9 +57,11 @@ class SettingController extends Controller
                 $value = $value ? '1' : '0';
             }
 
-            Setting::where('key', $item['key'])->update([
-                'value' => $value
-            ]);
+            $setting = Setting::where('key', $item['key'])->first();
+            if ($setting) {
+                $setting->value = $value;
+                $setting->save();
+            }
         }
 
         return response()->json([

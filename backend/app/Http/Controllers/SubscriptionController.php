@@ -77,9 +77,9 @@ class SubscriptionController extends Controller
             ];
         });
 
-        $activeGateway = Setting::where('key', 'payment_gateway_active')->value('value') ?: 'paystack';
-        $paystackKey = Setting::where('key', 'paystack_public_key')->value('value') ?: env('PAYSTACK_PUBLIC_KEY', '');
-        $flutterwaveKey = Setting::where('key', 'flutterwave_public_key')->value('value') ?: env('FLUTTERWAVE_PUBLIC_KEY', '');
+        $activeGateway = Setting::where('key', 'payment_gateway_active')->first()?->value ?: 'paystack';
+        $paystackKey = Setting::where('key', 'paystack_public_key')->first()?->value ?: env('PAYSTACK_PUBLIC_KEY', '');
+        $flutterwaveKey = Setting::where('key', 'flutterwave_public_key')->first()?->value ?: env('FLUTTERWAVE_PUBLIC_KEY', '');
 
         return response()->json([
             'data' => $plans,
@@ -110,7 +110,7 @@ class SubscriptionController extends Controller
                 ->first();
         }
 
-        $activeGateway = Setting::where('key', 'payment_gateway_active')->value('value') ?: 'paystack';
+        $activeGateway = Setting::where('key', 'payment_gateway_active')->first()?->value ?: 'paystack';
 
         return response()->json([
             'data' => $subscription,
@@ -210,7 +210,7 @@ class SubscriptionController extends Controller
             }
         }
 
-        $gatewayChoice = $validated['gateway'] ?? Setting::where('key', 'payment_gateway_active')->value('value') ?? 'paystack';
+        $gatewayChoice = $validated['gateway'] ?? Setting::where('key', 'payment_gateway_active')->first()?->value ?? 'paystack';
         if ($gatewayChoice === 'both') {
             $gatewayChoice = 'paystack'; // Default to paystack if not explicitly sent when both are active
         }
@@ -237,6 +237,11 @@ class SubscriptionController extends Controller
                         'description' => $plan->name . ' Plan',
                     ]
                 ]);
+
+                // Normalize for frontend
+                if (isset($checkoutData['link'])) {
+                    $checkoutData['authorization_url'] = $checkoutData['link'];
+                }
             } else {
                 $checkoutData = $this->paystackService->initializeTransaction([
                     'email' => $user->email,
@@ -250,6 +255,8 @@ class SubscriptionController extends Controller
                         'original_currency' => $targetCurrency,
                     ],
                 ]);
+
+                // Paystack already returns authorization_url in its data
             }
 
             return response()->json(['data' => $checkoutData, 'gateway' => $gatewayChoice]);

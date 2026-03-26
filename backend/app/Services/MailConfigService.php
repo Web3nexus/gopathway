@@ -13,21 +13,27 @@ class MailConfigService
     public static function apply(): void
     {
         try {
-            $settings = Setting::where('group', 'Email')->get()->pluck('value', 'key');
+            $settings = Setting::where('group', 'Email')->get();
 
             if ($settings->isEmpty()) {
                 return;
             }
 
+            // Create a key-value map while respecting accessors
+            $settingsMap = [];
+            foreach ($settings as $setting) {
+                $settingsMap[$setting->key] = $setting->value;
+            }
+
             $config = [
-                'mail.default' => $settings->get('mail_mailer', config('mail.default')),
-                'mail.mailers.smtp.host' => $settings->get('mail_host', config('mail.mailers.smtp.host')),
-                'mail.mailers.smtp.port' => $settings->get('mail_port', config('mail.mailers.smtp.port')),
-                'mail.mailers.smtp.encryption' => $settings->get('mail_encryption', config('mail.mailers.smtp.encryption')),
-                'mail.mailers.smtp.username' => $settings->get('mail_username', config('mail.mailers.smtp.username')),
-                'mail.mailers.smtp.password' => $settings->get('mail_password', config('mail.mailers.smtp.password')),
-                'mail.from.address' => $settings->get('mail_from_address', config('mail.from.address')),
-                'mail.from.name' => $settings->get('mail_from_name', config('mail.from.name')),
+                'mail.default' => $settingsMap['mail_mailer'] ?? config('mail.default'),
+                'mail.mailers.smtp.host' => $settingsMap['mail_host'] ?? config('mail.mailers.smtp.host'),
+                'mail.mailers.smtp.port' => $settingsMap['mail_port'] ?? config('mail.mailers.smtp.port'),
+                'mail.mailers.smtp.encryption' => $settingsMap['mail_encryption'] ?? config('mail.mailers.smtp.encryption'),
+                'mail.mailers.smtp.username' => $settingsMap['mail_username'] ?? config('mail.mailers.smtp.username'),
+                'mail.mailers.smtp.password' => $settingsMap['mail_password'] ?? config('mail.mailers.smtp.password'),
+                'mail.from.address' => $settingsMap['mail_from_address'] ?? config('mail.from.address'),
+                'mail.from.name' => $settingsMap['mail_from_name'] ?? config('mail.from.name'),
             ];
 
             config($config);

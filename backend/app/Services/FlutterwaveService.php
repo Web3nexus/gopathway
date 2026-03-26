@@ -14,11 +14,8 @@ class FlutterwaveService
 
     public function __construct()
     {
-        $dbKey = Setting::where('key', 'flutterwave_secret_key')->value('value');
-        $this->secretKey = $dbKey ?: (config('services.flutterwave.secret_key') ?? env('FLUTTERWAVE_SECRET_KEY', ''));
-        
-        $dbEncKey = Setting::where('key', 'flutterwave_encryption_key')->value('value');
-        $this->encryptionKey = $dbEncKey ?: env('FLUTTERWAVE_ENCRYPTION_KEY', '');
+        $this->secretKey = \App\Helpers\SettingHelper::get('flutterwave_secret_key') ?: env('FLUTTERWAVE_SECRET_KEY', '');
+        $this->encryptionKey = \App\Helpers\SettingHelper::get('flutterwave_encryption_key') ?: env('FLUTTERWAVE_ENCRYPTION_KEY', '');
     }
 
     /**

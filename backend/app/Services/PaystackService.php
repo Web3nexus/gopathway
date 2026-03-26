@@ -13,8 +13,7 @@ class PaystackService
 
     public function __construct()
     {
-        $dbKey = Setting::where('key', 'paystack_secret_key')->value('value');
-        $this->secretKey = $dbKey ?: (config('services.paystack.secret_key') ?? env('PAYSTACK_SECRET_KEY', ''));
+        $this->secretKey = \App\Helpers\SettingHelper::get('paystack_secret_key') ?: env('PAYSTACK_SECRET_KEY', '');
     }
 
     /**

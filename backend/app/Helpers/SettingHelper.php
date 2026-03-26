@@ -17,7 +17,8 @@ class SettingHelper
     public static function get(string $key, $default = null)
     {
         return Cache::remember("setting_{$key}", 3600, function () use ($key, $default) {
-            return Setting::where('key', $key)->value('value') ?? $default;
+            $setting = Setting::where('key', $key)->first();
+            return $setting ? $setting->value : $default;
         });
     }
 

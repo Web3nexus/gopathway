@@ -61,7 +61,6 @@ class FlutterwaveService
         if (!$token) throw new \Exception('Flutterwave Authentication Failed');
 
         try {
-            // Mapping V3 standard fields to V4 charge format
             $payload = [
                 'amount' => (float)$data['amount'],
                 'currency' => $data['currency'],
@@ -76,18 +75,22 @@ class FlutterwaveService
                     'description' => 'Subscription Payment',
                 ],
                 'meta' => $data['meta'] ?? [],
-                'type' => 'hosted'
             ];
 
-            $response = Http::withToken($token)->post("{$this->baseUrl}/charges", $payload);
+            // Trying /payments on V4 as some docs suggest it's still the hosted checkout endpoint
+            $response = Http::withToken($token)->post("{$this->baseUrl}/payments", $payload);
 
             if ($response->successful()) {
-                // V4 returns 'data' which contains the 'link' for hosted checkout
                 return $response->json()['data'];
             }
 
-            Log::error('Flutterwave V4 Initialization Failed', ['response' => $response->json(), 'payload' => $payload]);
-            throw new \Exception($response->json()['message'] ?? 'Flutterwave initialization failed');
+            Log::error('Flutterwave V4 Initialization Failed', [
+                'status' => $response->status(),
+                'body' => $response->body(), // Raw body for better debugging
+                'payload' => $payload
+            ]);
+            
+            throw new \Exception($response->json('message') ?? 'Flutterwave initialization failed (Code: ' . $response->status() . ')');
         } catch (\Exception $e) {
             Log::error('Flutterwave V4 Init Exception: ' . $e->getMessage());
             throw $e;

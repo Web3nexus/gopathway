@@ -3,8 +3,10 @@ import { billingService } from '@/services/api/billingService';
 import { Link } from 'react-router-dom';
 import { Check, Zap, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Pricing() {
+    const { user } = useAuth();
     const { data: planResponse, isLoading } = useQuery({
         queryKey: ['public-plans'],
         queryFn: async () => {
@@ -103,14 +105,14 @@ export default function Pricing() {
                                 ))}
                             </ul>
 
-                            <Link to="/register">
+                            <Link to={user ? '/billing' : '/register'}>
                                 <Button
                                     className={`w-full py-7 rounded-2xl text-lg font-bold shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98] ${plan.highlight
                                         ? 'bg-[#00C2FF] hover:bg-[#00C2FF]/90 text-[#0B3C91]'
                                         : 'bg-[#0B3C91] hover:bg-[#0B3C91]/90 text-white shadow-blue-100'
                                         }`}
                                 >
-                                    {isFree ? 'Get Started' : 'Subscribe Now'}
+                                    {isFree ? 'Get Started' : (user ? 'Upgrade Now' : 'Subscribe Now')}
                                 </Button>
                             </Link>
                         </div>

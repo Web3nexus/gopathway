@@ -16,11 +16,13 @@ import {
     Briefcase,
     MessageSquare,
     Mail,
-    User
+    User,
+    X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
-export function AdminSidebar() {
+export function AdminSidebar({ mobile, onClose }: { mobile?: boolean, onClose?: () => void }) {
     const routes = [
         { name: 'Admin Overview', path: '/securegate', icon: Home },
         { name: 'Destinations', path: '/admin/countries', icon: Globe },
@@ -45,12 +47,25 @@ export function AdminSidebar() {
     ];
 
     return (
-        <div className="w-64 h-screen hidden lg:flex flex-col overflow-y-auto border-r bg-slate-900 text-slate-300 z-20">
-            <div className="p-6">
+        <div className={cn(
+            "h-full flex flex-col overflow-y-auto border-r bg-slate-900 text-slate-300 z-20",
+            mobile ? "w-72" : "w-64 hidden lg:flex"
+        )}>
+            <div className="p-6 flex items-center justify-between">
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
                     <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-sm">G</div>
                     GoPathway <span className="text-[10px] bg-blue-600/20 text-blue-400 px-1.5 py-0.5 rounded uppercase tracking-tighter">Admin</span>
                 </h2>
+                {mobile && (
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={onClose}
+                        className="text-slate-400 hover:text-white"
+                    >
+                        <X className="w-5 h-5" />
+                    </Button>
+                )}
             </div>
 
             <nav className="flex-1 px-4 space-y-1 mt-4">
@@ -67,6 +82,9 @@ export function AdminSidebar() {
                                     : 'hover:bg-slate-800 hover:text-white'
                             )
                         }
+                        onClick={() => {
+                            if (mobile && onClose) onClose();
+                        }}
                     >
                         <route.icon className="w-5 h-5" />
                         {route.name}

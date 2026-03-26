@@ -11,7 +11,8 @@ import {
     ChevronDown,
     Settings as SettingsIcon,
     ShieldAlert,
-    LogOut as LeaveIcon
+    LogOut as LeaveIcon,
+    Menu
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,7 +21,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { notificationService } from '@/services/api/notificationService';
 import { adminService } from '@/services/api/adminService';
 
-export function Header() {
+export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
     const { user, logout, isLoggingOut, isImpersonating } = useAuth();
     const queryClient = useQueryClient();
     const [isOpen, setIsOpen] = useState(false);
@@ -96,7 +97,16 @@ export function Header() {
                 </div>
             )}
             <header className="h-16 border-b bg-white backdrop-blur-md dark:bg-black flex items-center justify-between px-6 z-[50] sticky top-0">
-                <div className="flex-1 flex items-center">
+                <div className="flex-1 flex items-center gap-4">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="lg:hidden hover:bg-black/5 dark:hover:bg-white/5 rounded-full"
+                        onClick={onMenuClick}
+                    >
+                        <Menu className="w-5 h-5 text-muted-foreground" />
+                    </Button>
+                    
                     <div className="relative w-full max-w-md hidden md:flex">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <Input

@@ -1,13 +1,14 @@
 import { NavLink, Link } from 'react-router-dom';
-import { Home, Compass, Folder, Calculator, Settings, HelpCircle, FileText, CreditCard, MessageSquare, Lock, Sparkles, Scale, Share2, GraduationCap, Map, Briefcase, DollarSign } from 'lucide-react';
+import { Home, Compass, Folder, Calculator, Settings, HelpCircle, FileText, CreditCard, MessageSquare, Lock, Sparkles, Scale, Share2, GraduationCap, Map, Briefcase, DollarSign, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useFeatures } from '@/hooks/useFeatures';
 
 import { useQuery } from '@tanstack/react-query';
 import { publicService } from '@/services/api/publicService';
 
-export function Sidebar() {
+export function Sidebar({ mobile, onClose }: { mobile?: boolean, onClose?: () => void }) {
     const { user } = useAuth();
     const { canAccessFeature } = useFeatures();
     const isAdmin = user?.roles?.some((role: any) => role.name === 'admin');
@@ -41,14 +42,29 @@ export function Sidebar() {
     ];
 
     return (
-        <div className="w-64 h-full hidden lg:flex flex-col overflow-y-auto border-r bg-white/60 backdrop-blur-xl dark:bg-black/40 z-20">
-            <div className="p-6">
-                {logoUrl ? (
-                    <img src={logoUrl} alt="GoPathway" className="h-8 object-contain" />
-                ) : (
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                        GoPathway
-                    </h2>
+        <div className={cn(
+            "h-full flex flex-col overflow-y-auto border-r bg-white/60 backdrop-blur-xl dark:bg-black/40 z-20",
+            mobile ? "w-72" : "w-64 hidden lg:flex"
+        )}>
+            <div className="p-6 flex items-center justify-between">
+                <div>
+                    {logoUrl ? (
+                        <img src={logoUrl} alt="GoPathway" className="h-8 object-contain" />
+                    ) : (
+                        <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                            GoPathway
+                        </h2>
+                    )}
+                </div>
+                {mobile && (
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={onClose}
+                        className="lg:hidden"
+                    >
+                        <X className="w-5 h-5 text-muted-foreground" />
+                    </Button>
                 )}
             </div>
 
@@ -64,6 +80,8 @@ export function Sidebar() {
                                 if (restricted) {
                                     e.preventDefault();
                                     // Optionally toast
+                                } else if (mobile && onClose) {
+                                    onClose();
                                 }
                             }}
                             className={({ isActive }) =>

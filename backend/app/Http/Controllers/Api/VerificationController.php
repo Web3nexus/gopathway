@@ -43,6 +43,11 @@ class VerificationController extends Controller
      */
     public function resend(Request $request): JsonResponse
     {
+        \Illuminate\Support\Facades\Log::info('Verification resend requested', [
+            'user_id' => $request->user()?->id,
+            'email' => $request->user()?->email
+        ]);
+
         if ($request->user()->hasVerifiedEmail()) {
             return response()->json(['message' => 'Email already verified'], 400);
         }

@@ -8,6 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\DynamicEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -187,25 +191,33 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserActionLog::class);
     }
 
-    /**
-     * Send the email verification notification.
-     */
     public function sendEmailVerificationNotification()
     {
-        $verificationUrl = config('app.frontend_url') . '/verify-email?url=' . urlencode(url()->temporarySignedRoute(
-            'verification.verify',
-            now()->addMinutes(60),
-            ['id' => $this->id, 'hash' => sha1($this->email)]
-        ));
-
         try {
-            \Illuminate\Support\Facades\Log::info("Sending verification email to {$this->email}", ['url' => $verificationUrl]);
-            \Illuminate\Support\Facades\Mail::to($this->email)->send(new \App\Mail\DynamicEmail('email_verification', [
+            $verifyUrl = URL::temporarySignedRoute(
+                'verification.verify',
+                now()->addMinutes(60),
+                ['id' => $this->id, 'hash' => sha1($this->email)]
+            );
+
+            $verificationUrl = config('app.frontend_url') . '/verify-email?url=' . urlencode($verifyUrl);
+
+            Log::info("Attempting to send verification email to {$this->email}", [
+                'template' => 'email_verification',
+                'url' => $verificationUrl
+            ]);
+
+            Mail::to($this->email)->send(new DynamicEmail('email_verification', [
                 'user_name' => $this->name,
                 'verification_url' => $verificationUrl,
             ]));
+
+            Log::info("Verification email successfully sent to {$this->email}");
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("Failed to send verification email to {$this->email}: " . $e->getMessage());
+            Log::error("CRITICAL: Failed to send verification email to {$this->email}", [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
         }
     }
 

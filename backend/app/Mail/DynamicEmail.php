@@ -31,7 +31,7 @@ class DynamicEmail extends Mailable
     public function envelope(): Envelope
     {
         $template = EmailTemplate::where('key', $this->templateKey)->first();
-        $subject = $template ? $template->subject : 'GoPathway Notification';
+        $subject = $template ? $template->subject : $this->getDefaultSubject();
 
         // Replace placeholders in subject
         foreach ($this->data as $key => $value) {
@@ -49,7 +49,7 @@ class DynamicEmail extends Mailable
     public function content(): Content
     {
         $template = EmailTemplate::where('key', $this->templateKey)->first();
-        $content = $template ? $template->content : 'You have a new notification.';
+        $content = $template ? $template->content : $this->getDefaultContent();
 
         // Replace placeholders in content
         foreach ($this->data as $key => $value) {
@@ -72,5 +72,31 @@ class DynamicEmail extends Mailable
     public function attachments(): array
     {
         return [];
+    }
+
+    /**
+     * Default subject fallback for critical templates.
+     */
+    protected function getDefaultSubject(): string
+    {
+        return match ($this->templateKey) {
+            'email_verification' => 'Verify Your Email Address',
+            'password_reset' => 'Password Reset Request',
+            'welcome_email' => 'Welcome to GoPathway',
+            default => 'GoPathway Notification',
+        };
+    }
+
+    /**
+     * Default content fallback for critical templates.
+     */
+    protected function getDefaultContent(): string
+    {
+        return match ($this->templateKey) {
+            'email_verification' => "# Verify Your Email\n\nHello {{user_name}},\n\nPlease click the link below to verify your email address:\n\n[Verify Email Address]({{verification_url}})",
+            'password_reset' => "# Password Reset\n\nHello {{user_name}},\n\nYou requested a password reset. Click the link below to set a new password:\n\n[Reset Password]({{reset_url}})",
+            'welcome_email' => "# Welcome to GoPathway, {{user_name}}!\n\nThank you for joining. We are excited to help you on your relocation journey.\n\n[Go to Dashboard]({{dashboard_url}})",
+            default => 'You have a new notification.',
+        };
     }
 }

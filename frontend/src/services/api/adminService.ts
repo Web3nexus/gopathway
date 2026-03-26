@@ -53,6 +53,8 @@ export const adminService = {
     createSubscriptionPlan: (data: any) => api.post('/api/v1/admin/subscription-plans', data).then(r => r.data.data),
     updateSubscriptionPlan: (id: number, data: any) => api.put(`/api/v1/admin/subscription-plans/${id}`, data).then(r => r.data.data),
     deleteSubscriptionPlan: (id: number) => api.delete(`/api/v1/admin/subscription-plans/${id}`).then(r => r.data.data),
+    getSubscriptionHistory: (params?: { search?: string; page?: number }) => 
+        api.get('/api/v1/admin/subscriptions/history', { params }).then(r => r.data.data),
 
     // Relocation Kits
     getRelocationKits: (params?: { country_id?: string }) => api.get('/api/v1/admin/relocation-kits', { params }).then(r => r.data.data),

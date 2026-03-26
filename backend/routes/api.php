@@ -240,6 +240,7 @@ Route::group(['prefix' => 'v1'], function () {
                     Route::apiResource('timeline-templates', TimelineStepTemplateController::class);
                     Route::apiResource('cost-items', CostItemController::class);
                     Route::apiResource('subscription-plans', \App\Http\Controllers\Admin\SubscriptionPlanController::class)->except(['show']);
+                    Route::get('subscriptions/history', [\App\Http\Controllers\Admin\SubscriptionController::class, 'index']);
 
                     // Relocation Kits
                     Route::apiResource('relocation-kits', \App\Http\Controllers\Admin\RelocationKitController::class);

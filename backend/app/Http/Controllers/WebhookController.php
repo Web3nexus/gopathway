@@ -9,6 +9,7 @@ use App\Models\Subscription;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\Setting;
+use Illuminate\Support\Facades\DB;
 
 class WebhookController extends Controller
 {
@@ -89,39 +90,64 @@ class WebhookController extends Controller
         // but they have specialized fields. For now, let's focus on the metadata path.
 
         if ($planId) {
-            // Find current active/recent subscription for this plan
-            $subscription = $user->subscriptions()
-                ->where('subscription_plan_id', $planId)
-                ->latest()
-                ->first();
-
-            if ($subscription && ($subscription->status === 'active' || $subscription->ends_at->isFuture() || $subscription->ends_at->diffInDays(now()) < 7)) {
-                // It's a renewal or extension
-                $subscription->extend();
-                Log::info('Subscription Extended via Webhook', ['user' => $user->id, 'plan' => $planId]);
+            $plan = \App\Models\SubscriptionPlan::find($planId);
+            if (!$plan) {
+                Log::error('Plan Not Found in Webhook', ['plan_id' => $planId]);
+                return;
             }
-            else {
-                // New subscription or long expired
-                $plan = \App\Models\SubscriptionPlan::find($planId);
+
+            DB::transaction(function () use ($user, $planId, $plan, $data) {
+                $reference = $data['reference'] ?? null;
+                
+                // Check if this payment is already recorded (idempotency)
+                $existingLog = \App\Models\PaymentLog::where('reference', $reference)->first();
+                if ($existingLog) {
+                    Log::info('Payment already recorded via Webhook', ['reference' => $reference]);
+                    return;
+                }
+
                 $interval = $plan->interval ?? 'month';
                 $endsAt = $interval === 'year' ? now()->addYear() : now()->addMonth();
 
-                $user->subscriptions()->update(['status' => 'inactive']);
-                $user->subscriptions()->create([
-                    'subscription_plan_id' => $planId,
-                    'paystack_id' => $data['id'] ?? null,
-                    'paystack_code' => $data['reference'] ?? null,
-                    'status' => 'active',
-                    'starts_at' => now(),
-                    'ends_at' => $endsAt,
-                ]);
-                Log::info('New Subscription Created via Webhook', ['user' => $user->id, 'plan' => $planId]);
-            }
-        }
+                // Find current active/recent subscription for this plan
+                $subscription = $user->subscriptions()
+                    ->where('subscription_plan_id', $planId)
+                    ->latest()
+                    ->first();
 
-        // Record Referral Commission
-        $referralService = app(\App\Services\ReferralService::class);
-        $referralService->recordPayment($user, $data['amount'] / 100, $data['reference']);
+                if ($subscription && ($subscription->status === 'active' || $subscription->ends_at->isFuture() || $subscription->ends_at->diffInDays(now()) < 7)) {
+                    // It's a renewal or extension
+                    $subscription->extend();
+                    Log::info('Subscription Extended via Webhook', ['user' => $user->id, 'plan' => $planId]);
+                }
+                else {
+                    // New subscription or long expired
+                    $user->subscriptions()->update(['status' => 'inactive']);
+                    $user->subscriptions()->create([
+                        'subscription_plan_id' => $planId,
+                        'paystack_id' => $data['id'] ?? null,
+                        'paystack_code' => $reference,
+                        'status' => 'active',
+                        'starts_at' => now(),
+                        'ends_at' => $endsAt,
+                    ]);
+                    Log::info('New Subscription Created via Webhook', ['user' => $user->id, 'plan' => $planId]);
+                }
+
+                // Record Payment Log
+                $user->paymentLogs()->create([
+                    'amount' => $data['amount'] / 100,
+                    'currency' => $data['currency'],
+                    'reference' => $reference,
+                    'status' => 'success',
+                    'plan_name' => $plan->name,
+                ]);
+
+                // Record Referral Commission
+                $referralService = app(\App\Services\ReferralService::class);
+                $referralService->recordPayment($user, $data['amount'] / 100, $reference);
+            });
+        }
     }
 
     protected function handleSubscriptionDisabled($data)
@@ -143,37 +169,62 @@ class WebhookController extends Controller
         $planId = $data['meta']['plan_id'] ?? null;
 
         if ($planId) {
-            // Find current active/recent subscription for this plan
-            $subscription = $user->subscriptions()
-                ->where('subscription_plan_id', $planId)
-                ->latest()
-                ->first();
-
-            if ($subscription && ($subscription->status === 'active' || $subscription->ends_at->isFuture() || $subscription->ends_at->diffInDays(now()) < 7)) {
-                $subscription->extend();
-                Log::info('Subscription Extended via Webhook (Flutterwave)', ['user' => $user->id, 'plan' => $planId]);
+            $plan = \App\Models\SubscriptionPlan::find($planId);
+            if (!$plan) {
+                Log::error('Plan Not Found in Webhook (Flutterwave)', ['plan_id' => $planId]);
+                return;
             }
-            else {
-                $plan = \App\Models\SubscriptionPlan::find($planId);
+
+            DB::transaction(function () use ($user, $planId, $plan, $data) {
+                $reference = $data['tx_ref'] ?? null;
+
+                // Check for duplicate payment log
+                $existingLog = \App\Models\PaymentLog::where('reference', $reference)->first();
+                if ($existingLog) {
+                    Log::info('Flutterwave Payment already recorded via Webhook', ['reference' => $reference]);
+                    return;
+                }
+
                 $interval = $plan->interval ?? 'month';
                 $endsAt = $interval === 'year' ? now()->addYear() : now()->addMonth();
 
-                $user->subscriptions()->update(['status' => 'inactive']);
-                $user->subscriptions()->create([
-                    'subscription_plan_id' => $planId,
-                    'paystack_id' => $data['id'] ?? null,    // Reusing the ID column
-                    'paystack_code' => $data['tx_ref'] ?? null,  // Reusing the ref column
-                    'status' => 'active',
-                    'starts_at' => now(),
-                    'ends_at' => $endsAt,
-                ]);
-                Log::info('New Subscription Created via Webhook (Flutterwave)', ['user' => $user->id, 'plan' => $planId]);
-            }
-        }
+                // Find current active/recent subscription for this plan
+                $subscription = $user->subscriptions()
+                    ->where('subscription_plan_id', $planId)
+                    ->latest()
+                    ->first();
 
-        // Record Referral Commission
-        $referralService = app(\App\Services\ReferralService::class);
-        $referralService->recordPayment($user, $data['amount'], $data['tx_ref'] ?? 'FW-WEBHOOK');
+                if ($subscription && ($subscription->status === 'active' || $subscription->ends_at->isFuture() || $subscription->ends_at->diffInDays(now()) < 7)) {
+                    $subscription->extend();
+                    Log::info('Subscription Extended via Webhook (Flutterwave)', ['user' => $user->id, 'plan' => $planId]);
+                }
+                else {
+                    $user->subscriptions()->update(['status' => 'inactive']);
+                    $user->subscriptions()->create([
+                        'subscription_plan_id' => $planId,
+                        'paystack_id' => $data['id'] ?? null,    // Reusing the ID column
+                        'paystack_code' => $reference,
+                        'status' => 'active',
+                        'starts_at' => now(),
+                        'ends_at' => $endsAt,
+                    ]);
+                    Log::info('New Subscription Created via Webhook (Flutterwave)', ['user' => $user->id, 'plan' => $planId]);
+                }
+
+                // Record Payment Log
+                $user->paymentLogs()->create([
+                    'amount' => $data['amount'],
+                    'currency' => $data['currency'],
+                    'reference' => $reference,
+                    'status' => 'success',
+                    'plan_name' => $plan->name,
+                ]);
+
+                // Record Referral Commission
+                $referralService = app(\App\Services\ReferralService::class);
+                $referralService->recordPayment($user, $data['amount'], $reference ?? 'FW-WEBHOOK');
+            });
+        }
     }
     public function handleFlutterwaveTransfer(Request $request)
     {

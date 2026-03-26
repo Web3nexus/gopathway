@@ -29,6 +29,7 @@ export function AdminSidebar({ mobile, onClose }: { mobile?: boolean, onClose?: 
         { name: 'Visa & Checklists', path: '/admin/visas', icon: FileCheck },
         { name: 'Cost Templates', path: '/admin/costs', icon: DollarSign },
         { name: 'Subscription Plans', path: '/admin/plans', icon: CreditCard },
+        { name: 'Subscription History', path: '/admin/subscriptions', icon: FileText },
         { name: 'Feature Management', path: '/admin/features', icon: Settings },
         { name: 'Bookings', path: '/admin/bookings', icon: Calendar },
         { name: 'Referral Management', path: '/admin/referrals', icon: Share2 },

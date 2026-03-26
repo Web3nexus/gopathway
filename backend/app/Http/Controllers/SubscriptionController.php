@@ -277,9 +277,17 @@ class SubscriptionController extends Controller
             $paymentData = $this->flutterwaveService->verifyTransaction($transactionId);
 
             if ($paymentData && $paymentData['status'] === 'successful') {
+                $reference = $paymentData['tx_ref'];
+                
+                // Check if already processed by webhook
+                $existingLog = \App\Models\PaymentLog::where('reference', $reference)->first();
+                if ($existingLog) {
+                    return response()->json(['message' => 'Subscription already processed']);
+                }
+
                 $planId = $paymentData['meta']['plan_id'];
                 
-                DB::transaction(function () use ($user, $planId, $paymentData) {
+                DB::transaction(function () use ($user, $planId, $paymentData, $reference) {
                     $plan = SubscriptionPlan::find($planId);
                     $interval = $plan->interval ?? 'month';
                     $endsAt = $interval === 'year' ? now()->addYear() : now()->addMonth();
@@ -287,8 +295,8 @@ class SubscriptionController extends Controller
                     $user->subscriptions()->update(['status' => 'inactive']);
                     $user->subscriptions()->create([
                         'subscription_plan_id' => $planId,
-                        'paystack_id' => $paymentData['id'], // Using same column for simplicity or add flutterwave_id
-                        'paystack_code' => $paymentData['tx_ref'],
+                        'paystack_id' => $paymentData['id'], 
+                        'paystack_code' => $reference,
                         'status' => 'active',
                         'starts_at' => now(),
                         'ends_at' => $endsAt,
@@ -297,7 +305,7 @@ class SubscriptionController extends Controller
                     $user->paymentLogs()->create([
                         'amount' => $paymentData['amount'],
                         'currency' => $paymentData['currency'],
-                        'reference' => $paymentData['tx_ref'],
+                        'reference' => $reference,
                         'status' => 'success',
                         'plan_name' => $plan->name,
                     ]);
@@ -328,9 +336,17 @@ class SubscriptionController extends Controller
             $paymentData = $this->paystackService->verifyTransaction($reference);
 
             if ($paymentData && $paymentData['status'] === 'success') {
+                $reference = $paymentData['reference'];
+
+                // Check if already processed by webhook
+                $existingLog = \App\Models\PaymentLog::where('reference', $reference)->first();
+                if ($existingLog) {
+                    return response()->json(['message' => 'Subscription already processed']);
+                }
+
                 $planId = $paymentData['metadata']['plan_id'];
 
-                DB::transaction(function () use ($user, $planId, $paymentData) {
+                DB::transaction(function () use ($user, $planId, $paymentData, $reference) {
                     $plan = SubscriptionPlan::find($planId);
                     $interval = $plan->interval ?? 'month';
                     $endsAt = $interval === 'year' ? now()->addYear() : now()->addMonth();
@@ -339,7 +355,7 @@ class SubscriptionController extends Controller
                     $user->subscriptions()->create([
                         'subscription_plan_id' => $planId,
                         'paystack_id' => $paymentData['id'],
-                        'paystack_code' => $paymentData['reference'],
+                        'paystack_code' => $reference,
                         'status' => 'active',
                         'starts_at' => now(),
                         'ends_at' => $endsAt,
@@ -348,7 +364,7 @@ class SubscriptionController extends Controller
                     $user->paymentLogs()->create([
                         'amount' => $paymentData['amount'] / 100,
                         'currency' => $paymentData['currency'],
-                        'reference' => $paymentData['reference'],
+                        'reference' => $reference,
                         'status' => 'success',
                         'plan_name' => $plan->name,
                     ]);

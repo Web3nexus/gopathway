@@ -3,8 +3,10 @@ import { billingService } from '@/services/api/billingService';
 import { CreditCard, Calendar, Shield, ArrowUpRight, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useMutation } from '@tanstack/react-query';
+import { Check, Zap, Crown } from 'lucide-react';
 
 export default function Billing() {
     const { toast } = useToast();
@@ -52,11 +54,52 @@ export default function Billing() {
         queryFn: billingService.getHistory
     });
 
+    const { data: planResponse, isLoading: plansLoading } = useQuery({
+        queryKey: ['billing-plans'],
+        queryFn: billingService.getPlans,
+        enabled: subscription?.status !== 'active'
+    });
+
+    const [selectedGateway, setSelectedGateway] = useState<string>('paystack');
+    const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (billingInfo?.active_gateway && billingInfo.active_gateway !== 'both') {
+            setSelectedGateway(billingInfo.active_gateway);
+        }
+    }, [billingInfo?.active_gateway]);
+
+    const subscribeMutation = useMutation({
+        mutationFn: ({ planId, gateway }: { planId: number, gateway: string }) => 
+            billingService.subscribe(planId, planResponse?.detected_currency || 'USD', gateway),
+        onSuccess: (res: any) => {
+            if (res.data?.authorization_url) {
+                window.location.href = res.data.authorization_url;
+            } else if (res.message) {
+                toast({ title: 'Success', description: res.message });
+                window.location.href = '/dashboard';
+            }
+        },
+        onError: (err: any) => {
+            toast({
+                title: 'Subscription failed',
+                description: err.response?.data?.message || 'Transaction could not be initialized.',
+                variant: 'destructive'
+            });
+        }
+    });
+
     const isLoading = subLoading || historyLoading;
 
     if (isLoading) {
         return <div className="flex justify-center p-20"><Loader2 className="h-8 w-8 animate-spin text-[#0B3C91]" /></div>;
     }
+
+    const plans = planResponse?.data || [];
+    const activeGatewayChoice = planResponse?.gateways?.active || 'paystack';
+
+    // Show plans if on free tier
+    const showPlanSelector = subscription?.status !== 'active';
 
     return (
         <div className="max-w-4xl mx-auto space-y-8">
@@ -105,14 +148,90 @@ export default function Billing() {
                             </div>
                         </div>
 
-                        {subscription?.status !== 'active' && (
+                        {subscription?.status !== 'active' && !showPlanSelector && (
                             <div className="flex gap-3 p-4 bg-amber-50 rounded-xl text-amber-800 text-sm">
                                 <AlertCircle className="w-5 h-5 shrink-0" />
-                                <p>You are currently on the free tier. Upgrade to unlock the full potential of GoPathway.</p>
+                                <p>You are currently on the free tier. Upgrade below to unlock the full potential of GoPathway.</p>
                             </div>
                         )}
                     </div>
                 </div>
+
+                {/* Plan Selector Grid (Visible when on Free Tier) */}
+                {showPlanSelector && (
+                    <div className="md:col-span-2 space-y-6">
+                        <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-sm p-8">
+                            <h3 className="text-xl font-bold mb-6">Select an Upgrade Plan</h3>
+                            
+                            {plansLoading ? (
+                                <div className="flex justify-center py-10"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                                    {plans.filter((p: any) => p.tier !== 'free').map((plan: any) => (
+                                        <div 
+                                            key={plan.id}
+                                            onClick={() => setSelectedPlanId(plan.id)}
+                                            className={`p-6 rounded-2xl border-2 transition-all cursor-pointer relative ${
+                                                selectedPlanId === plan.id 
+                                                ? 'border-primary bg-primary/5 shadow-md' 
+                                                : 'border-slate-100 hover:border-slate-200 bg-white'
+                                            }`}
+                                        >
+                                            {selectedPlanId === plan.id && (
+                                                <div className="absolute top-4 right-4 bg-primary text-white rounded-full p-1">
+                                                    <Check className="w-3 h-3" />
+                                                </div>
+                                            )}
+                                            <div className="flex items-center gap-2 mb-2">
+                                                {plan.tier === 'premium' ? <Crown className="w-4 h-4 text-amber-500" /> : <Zap className="w-4 h-4 text-blue-500" />}
+                                                <span className="font-bold text-slate-800">{plan.name}</span>
+                                            </div>
+                                            <div className="flex items-baseline gap-1 mb-2">
+                                                <span className="text-2xl font-black">{plan.display_currency} {parseFloat(plan.display_price).toLocaleString()}</span>
+                                                <span className="text-xs text-slate-400 font-medium">/{plan.interval === 'year' ? 'yr' : 'mo'}</span>
+                                            </div>
+                                            <p className="text-xs text-slate-500 line-clamp-2">{plan.description}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {selectedPlanId && (
+                                <div className="space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                                    {activeGatewayChoice === 'both' && (
+                                        <div className="space-y-3">
+                                            <p className="text-sm font-bold text-slate-700">Choose Payment Method:</p>
+                                            <div className="flex flex-wrap gap-3">
+                                                <Button 
+                                                    variant={selectedGateway === 'paystack' ? 'default' : 'outline'}
+                                                    className="rounded-xl"
+                                                    onClick={() => setSelectedGateway('paystack')}
+                                                >
+                                                    Paystack (Cards/Bank)
+                                                </Button>
+                                                <Button 
+                                                    variant={selectedGateway === 'flutterwave' ? 'default' : 'outline'}
+                                                    className="rounded-xl"
+                                                    onClick={() => setSelectedGateway('flutterwave')}
+                                                >
+                                                    Flutterwave (Mobile/Cards)
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <Button 
+                                        className="w-full py-6 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all"
+                                        disabled={subscribeMutation.isPending}
+                                        onClick={() => subscribeMutation.mutate({ planId: selectedPlanId, gateway: selectedGateway })}
+                                    >
+                                        {subscribeMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Complete Upgrade'}
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
 
                 {/* Quick Stats Sidebar */}
                 <div className="space-y-6">
@@ -126,8 +245,8 @@ export default function Billing() {
                             <p className="text-slate-300 font-medium">Managed by {gatewayName}</p>
                             <p className="text-[10px] text-slate-500 mt-1">Card details are stored securely on {gatewayName}'s servers</p>
                         </div>
-                        <Button variant="ghost" onClick={() => navigate('/pricing')} className="w-full mt-4 text-xs hover:bg-white/5 hover:text-white">
-                            Change Plan
+                        <Button variant="ghost" onClick={() => navigate('/dashboard/pricing')} className="w-full mt-4 text-xs hover:bg-white/5 hover:text-white">
+                            View All Pricing Plans
                         </Button>
                     </div>
 

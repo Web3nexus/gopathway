@@ -109,7 +109,7 @@ export function Sidebar({ mobile, onClose }: { mobile?: boolean, onClose?: () =>
                     <div className="glass-card rounded-xl p-4 text-center">
                         <p className="text-sm font-medium text-foreground mb-1">Upgrade to Premium</p>
                         <p className="text-xs text-muted-foreground mb-3">Unlock advanced tools</p>
-                        <Link to="/pricing">
+                        <Link to="/dashboard/pricing">
                             <button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-2 rounded-lg font-semibold transition-colors">
                                 Upgrade Now
                             </button>

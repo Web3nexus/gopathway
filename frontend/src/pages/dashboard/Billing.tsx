@@ -89,7 +89,7 @@ export default function Billing() {
                                     </span>
                                 </p>
                             </div>
-                            <Button variant="outline" onClick={() => navigate('/pricing')} className="rounded-xl font-bold border-2">
+                            <Button variant="outline" onClick={() => navigate('/dashboard/pricing')} className="rounded-xl font-bold border-2">
                                 Change Plan <ArrowUpRight className="ml-2 w-4 h-4" />
                             </Button>
                         </div>

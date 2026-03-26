@@ -144,7 +144,7 @@ function App() {
               <Route path="/recommendations" element={<Recommendations />} />
               <Route path="/cost" element={<CostPlanner />} />
               <Route path="/documents" element={<DocumentVault />} />
-              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/dashboard/pricing" element={<Pricing />} />
               <Route path="/billing" element={<Billing />} />
               <Route path="/experts" element={<ExpertMarketplace />} />
               <Route path="/dashboard/settings" element={<Settings />} />

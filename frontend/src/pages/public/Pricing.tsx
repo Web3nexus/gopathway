@@ -105,7 +105,7 @@ export default function Pricing() {
                                 ))}
                             </ul>
 
-                            <Link to={user ? '/billing' : '/register'}>
+                            <Link to={user ? '/dashboard/pricing' : '/register'}>
                                 <Button
                                     className={`w-full py-7 rounded-2xl text-lg font-bold shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98] ${plan.highlight
                                         ? 'bg-[#00C2FF] hover:bg-[#00C2FF]/90 text-[#0B3C91]'

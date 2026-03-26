@@ -23,6 +23,9 @@ class FlutterwaveService
      */
     public function initializeTransaction(array $data)
     {
+        // DEBUG: Check if key is decrypted (displays first 10 chars only)
+        Log::info('Flutterwave Key Check', ['prefix' => substr($this->secretKey, 0, 10)]);
+
         try {
             $response = Http::withToken($this->secretKey)->post($this->baseUrl . '/payments', [
                 'amount' => (float)$data['amount'],

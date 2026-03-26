@@ -9,12 +9,16 @@ use Illuminate\Support\Facades\Log;
 class FlutterwaveService
 {
     protected string $secretKey;
+    protected string $encryptionKey;
     protected string $baseUrl = 'https://api.flutterwave.com/v3';
 
     public function __construct()
     {
         $dbKey = Setting::where('key', 'flutterwave_secret_key')->value('value');
         $this->secretKey = $dbKey ?: (config('services.flutterwave.secret_key') ?? env('FLUTTERWAVE_SECRET_KEY', ''));
+        
+        $dbEncKey = Setting::where('key', 'flutterwave_encryption_key')->value('value');
+        $this->encryptionKey = $dbEncKey ?: env('FLUTTERWAVE_ENCRYPTION_KEY', '');
     }
 
     /**

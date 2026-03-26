@@ -154,6 +154,22 @@ class SettingSeeder extends Seeder
                 'label' => 'Flutterwave Secret Key',
                 'description' => 'Secret API key for Flutterwave.',
             ],
+            [
+                'key' => 'flutterwave_encryption_key',
+                'value' => '',
+                'group' => 'payment',
+                'type' => 'encrypted_string',
+                'label' => 'Flutterwave Encryption Key',
+                'description' => 'Encryption key for Flutterwave (used for some client-side SDKs).',
+            ],
+            [
+                'key' => 'flutterwave_secret_hash',
+                'value' => '',
+                'group' => 'payment',
+                'type' => 'encrypted_string',
+                'label' => 'Flutterwave Secret Hash',
+                'description' => 'Secret hash set in the Flutterwave dashboard for webhook verification.',
+            ],
             // Social Auth
             [
                 'key' => 'google_auth_enabled',

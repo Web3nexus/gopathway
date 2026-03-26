@@ -45,7 +45,7 @@ class WebhookController extends Controller
     public function handleFlutterwave(Request $request)
     {
         // 1. Verify Flutterwave Signature
-        $secretHash = Setting::where('key', 'flutterwave_secret_key')->value('value') ?: env('FLUTTERWAVE_SECRET_HASH', '');
+        $secretHash = Setting::where('key', 'flutterwave_secret_hash')->value('value') ?: env('FLUTTERWAVE_SECRET_HASH', '');
         // Note: Flutterwave usually uses a secret hash you set in your dashboard, not necessarily the API secret key.
         // We'll verify using the signature header 'verif-hash'.
         $signature = $request->header('verif-hash');
@@ -229,7 +229,7 @@ class WebhookController extends Controller
     public function handleFlutterwaveTransfer(Request $request)
     {
         $signature = $request->header('verif-hash');
-        $secretHash = Setting::where('key', 'flutterwave_secret_key')->value('value') ?: env('FLUTTERWAVE_SECRET_HASH', '');
+        $secretHash = Setting::where('key', 'flutterwave_secret_hash')->value('value') ?: env('FLUTTERWAVE_SECRET_HASH', '');
 
         if (!$signature || $signature !== $secretHash) {
             Log::warning('Flutterwave Transfer Webhook Signature Mismatch');

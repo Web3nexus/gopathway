@@ -47,9 +47,13 @@ class Setting extends Model
     public function setValueAttribute($value)
     {
         if ($this->type === 'encrypted_string' && $value) {
-            // Only encrypt if it's not already encrypted (crude check, but we usually pass raw strings here)
-            // If the user submits stars/mask, don't re-save it
-            if (str_repeat('*', strlen($value)) === $value || strpos($value, 'eyJpdiI6') === 0) {
+            // If the user submits stars/mask, don't overwrite the existing value
+            if (str_repeat('*', strlen($value)) === $value) {
+                return;
+            }
+
+            // Only encrypt if it's not already encrypted
+            if (strpos($value, 'eyJpdiI6') === 0) {
                  $this->attributes['value'] = $value;
             } else {
                  $this->attributes['value'] = \Illuminate\Support\Facades\Crypt::encryptString($value);

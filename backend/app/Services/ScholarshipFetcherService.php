@@ -81,6 +81,7 @@ class ScholarshipFetcherService
             'source_url' => $sourceUrl,
             'status' => 'pending',
             'last_checked_at' => now(),
+            'opening_date' => isset($data['opening_date']) ? date('Y-m-d', strtotime($data['opening_date'])) : null,
         ]);
 
         Log::info("ScholarshipFetcherService: Created new pending scholarship: " . ($data['title'] ?? 'Unknown'));

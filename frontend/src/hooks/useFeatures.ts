@@ -15,14 +15,20 @@ export function useFeatures() {
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
-    const { data: platformFlags = {}, isLoading: flagsLoading } = useQuery({
+    const { data: platformData = { flags: {}, isPremium: false }, isLoading: flagsLoading } = useQuery({
         queryKey: ['platform-flags'],
         queryFn: async () => {
             const res = await api.get('/api/v1/dashboard/summary');
-            return res.data?.platform_features || {};
+            return {
+                flags: res.data?.platform_features || {},
+                isPremium: res.data?.is_premium || false
+            };
         },
         staleTime: 1000 * 60,
     });
+
+    const platformFlags = platformData.flags;
+    const userIsPremium = user?.is_premium || platformData.isPremium;
 
     const isFeaturePremium = (slug: string) => {
         const feature = Array.isArray(features) ? features.find((f: any) => f.slug === slug) : null;
@@ -56,7 +62,7 @@ export function useFeatures() {
         const isPremiumRequired = platformFeature?.is_premium ||
             (Array.isArray(features) && features.find((f: any) => f.slug.toLowerCase() === slug.toLowerCase())?.is_premium);
 
-        if (isPremiumRequired && !user?.is_premium) return 'locked';
+        if (isPremiumRequired && !userIsPremium) return 'locked';
 
         return 'active';
     };

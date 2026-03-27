@@ -58,8 +58,19 @@ class SchoolFetcherService
                 'location' => $data['location'] ?? $data['region'] ?? null,
                 'website' => $data['official_website_link'] ?? null,
                 'description' => $data['description'] ?? "Extracted from {$source->name}",
+                'admission_opening_date' => isset($data['admission_opening_date']) ? date('Y-m-d', strtotime($data['admission_opening_date'])) : null,
+                'admission_deadline_date' => isset($data['admission_deadline_date']) ? date('Y-m-d', strtotime($data['admission_deadline_date'])) : null,
                 'is_active' => false, // All fetched data pending approval
             ]);
+        } else {
+            // Update dates if they are in the extracted data
+            $updates = [];
+            if (isset($data['admission_opening_date'])) $updates['admission_opening_date'] = date('Y-m-d', strtotime($data['admission_opening_date']));
+            if (isset($data['admission_deadline_date'])) $updates['admission_deadline_date'] = date('Y-m-d', strtotime($data['admission_deadline_date']));
+            
+            if (!empty($updates)) {
+                $school->update($updates);
+            }
         }
 
         // Handle programs if extraction includes them

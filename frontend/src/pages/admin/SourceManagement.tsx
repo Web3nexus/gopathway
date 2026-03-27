@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Play, Trash2, Edit, Globe, Activity } from 'lucide-react';
-import axios from 'axios';
+import api from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 
 interface ScholarshipSource {
@@ -28,7 +28,7 @@ export default function SourceManagement() {
 
     const fetchSources = async () => {
         try {
-            const response = await axios.get('/api/v1/admin/scholarship-sources');
+            const response = await api.get('/api/v1/admin/scholarship-sources');
             setSources(response.data);
         } catch (error) {
             console.error('Error fetching sources:', error);
@@ -40,7 +40,7 @@ export default function SourceManagement() {
 
     const handleCrawl = async (id: number) => {
         try {
-            await axios.post(`/api/v1/admin/scholarship-sources/${id}/crawl`);
+            await api.post(`/api/v1/admin/scholarship-sources/${id}/crawl`);
             toast({ title: 'Success', description: 'Scraping job dispatched.' });
         } catch (error) {
             toast({ title: 'Error', description: 'Failed to start scraping', variant: 'destructive' });

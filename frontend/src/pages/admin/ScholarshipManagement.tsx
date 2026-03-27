@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, XCircle, Edit, Trash2, Eye } from 'lucide-react';
-import axios from 'axios';
+import api from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 
 interface Scholarship {
@@ -29,8 +29,8 @@ export default function ScholarshipManagement() {
     const fetchData = async () => {
         try {
             const [listRes, statsRes] = await Promise.all([
-                axios.get('/api/v1/admin/scholarships'),
-                axios.get('/api/v1/admin/scholarships/stats')
+                api.get('/api/v1/admin/scholarships'),
+                api.get('/api/v1/admin/scholarships/stats')
             ]);
             setScholarships(listRes.data.data);
             setStats(statsRes.data);
@@ -44,7 +44,7 @@ export default function ScholarshipManagement() {
 
     const handleStatus = async (id: number, status: string) => {
         try {
-            await axios.put(`/api/v1/admin/scholarships/${id}`, { status });
+            await api.put(`/api/v1/admin/scholarships/${id}`, { status });
             toast({ title: 'Success', description: `Scholarship ${status} successfully.` });
             fetchData();
         } catch (error) {

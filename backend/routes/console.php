@@ -16,3 +16,6 @@ Schedule::call(function () {
         \App\Jobs\FetchScholarshipsJob::dispatch($source);
     }
 })->daily()->name('fetch-scholarships');
+
+// Check deadlines and notify users daily at 8 AM
+Schedule::command('app:check-deadlines')->dailyAt('08:00')->name('check-deadlines');

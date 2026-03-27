@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Search, MapPin, GraduationCap, DollarSign, Calendar, ExternalLink } from 'lucide-react';
-import axios from 'axios';
+import api from '@/lib/api';
 
 interface Scholarship {
     id: number;
@@ -28,7 +28,7 @@ export default function ScholarshipListing() {
 
     const fetchScholarships = async () => {
         try {
-            const response = await axios.get('/api/v1/scholarships');
+            const response = await api.get('/api/v1/scholarships');
             setScholarships(response.data.data);
         } catch (error) {
             console.error('Error fetching scholarships:', error);

@@ -22,11 +22,13 @@ class Scholarship extends Model
         'source_url',
         'status',
         'last_checked_at',
+        'opening_date',
     ];
 
     protected $casts = [
         'last_checked_at' => 'datetime',
         'deadline' => 'date',
+        'opening_date' => 'date',
     ];
 
     public function source(): BelongsTo

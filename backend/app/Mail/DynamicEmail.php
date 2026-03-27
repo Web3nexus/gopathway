@@ -83,6 +83,7 @@ class DynamicEmail extends Mailable
             'email_verification' => 'Verify Your Email Address',
             'password_reset' => 'Password Reset Request',
             'welcome_email' => 'Welcome to GoPathway',
+            'deadline_alert' => '{{alert_title}}',
             default => 'GoPathway Notification',
         };
     }
@@ -98,6 +99,7 @@ class DynamicEmail extends Mailable
             'email_verification' => "# Verify Your Email\n\nHello {{user_name}},\n\nPlease click the button below to verify your email address:\n\n<p style=\"text-align: center; margin-top: 20px;\"><a href=\"{{verification_url}}\" style=\"{$buttonStyle}\">Verify Email Address</a></p>",
             'password_reset' => "# Password Reset\n\nHello {{user_name}},\n\nYou requested a password reset. Click the button below to set a new password:\n\n<p style=\"text-align: center; margin-top: 20px;\"><a href=\"{{reset_url}}\" style=\"{$buttonStyle}\">Reset Password</a></p>",
             'welcome_email' => "# Welcome to GoPathway, {{user_name}}!\n\nThank you for joining. We are excited to help you on your relocation journey.\n\n<p style=\"text-align: center; margin-top: 20px;\"><a href=\"{{dashboard_url}}\" style=\"{$buttonStyle}\">Go to Dashboard</a></p>",
+            'deadline_alert' => "# {{alert_title}}\n\nHello {{user_name}},\n\n{{alert_body}}\n\n<p style=\"text-align: center; margin-top: 20px;\"><a href=\"{{action_url}}\" style=\"{$buttonStyle}\">{{action_label}}</a></p>",
             default => 'You have a new notification.',
         };
     }

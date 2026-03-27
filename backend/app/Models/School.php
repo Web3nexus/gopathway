@@ -11,10 +11,13 @@ class School extends Model
     protected $fillable = [
         'country_id', 'name', 'location', 'type', 'ranking',
         'website', 'application_portal', 'description', 'logo_url', 'is_active',
+        'admission_opening_date', 'admission_deadline_date',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'admission_opening_date' => 'date',
+        'admission_deadline_date' => 'date',
     ];
 
     public function country(): BelongsTo

@@ -65,6 +65,9 @@ import SupportManagement from '@/pages/admin/SupportManagement';
 import EmailManagement from '@/pages/admin/EmailManagement';
 import AdminProfile from '@/pages/admin/AdminProfile';
 import SubscriptionHistory from '@/pages/admin/SubscriptionHistory';
+import ScholarshipListing from '@/pages/public/ScholarshipListing';
+import ScholarshipManagement from '@/pages/admin/ScholarshipManagement';
+import SourceManagement from '@/pages/admin/SourceManagement';
 import SchoolExplorer from '@/pages/dashboard/SchoolExplorer';
 import ExpertMarketplace from '@/pages/marketplace/ExpertMarketplace';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -100,6 +103,7 @@ function App() {
             <Route path="/terms" element={<Terms />} />
             <Route path="/documentation" element={<Documentation />} />
             <Route path="/status" element={<Status />} />
+            <Route path="/scholarships" element={<ScholarshipListing />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
           </Route>
           
@@ -132,6 +136,8 @@ function App() {
               <Route path="/admin/email-management" element={<EmailManagement />} />
               <Route path="/admin/settings" element={<GeneralSettings />} />
                <Route path="/admin/subscriptions" element={<SubscriptionHistory />} />
+              <Route path="/admin/scholarships" element={<ScholarshipManagement />} />
+              <Route path="/admin/scholarship-sources" element={<SourceManagement />} />
               <Route path="/admin/profile" element={<AdminProfile />} />
             </Route>
           </Route>

@@ -17,7 +17,9 @@ import {
     MessageSquare,
     Mail,
     User,
-    X
+    X,
+    Award,
+    Database
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -43,6 +45,8 @@ export function AdminSidebar({ mobile, onClose }: { mobile?: boolean, onClose?: 
         { name: 'Support Messages', path: '/admin/support', icon: MessageSquare },
         { name: 'SEO & Branding', path: '/admin/seo-settings', icon: Globe },
         { name: 'Email Management', path: '/admin/email-management', icon: Mail },
+        { name: 'Scholarships', path: '/admin/scholarships', icon: Award },
+        { name: 'Scholarship Sources', path: '/admin/scholarship-sources', icon: Database },
         { name: 'General Settings', path: '/admin/settings', icon: Settings },
         { name: 'My Profile', path: '/admin/profile', icon: User },
     ];

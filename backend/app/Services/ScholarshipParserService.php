@@ -28,12 +28,19 @@ class ScholarshipParserService
             $data = [];
             foreach ($rules['fields'] as $field => $selector) {
                 try {
-                    $data[$field] = $node->filter($selector)->text();
+                    $element = $node->filter($selector);
+                    if (str_ends_with($field, 'url') || str_ends_with($field, 'link')) {
+                        $data[$field] = $element->attr('href');
+                        // if href is relative, it will need to be made absolute later
+                    } else {
+                        $data[$field] = $element->text();
+                    }
                 } catch (\Exception $e) {
                     $data[$field] = null;
                 }
             }
-            if (!empty($data)) {
+            // Ensure at least one required field exists before pushing
+            if (array_filter($data)) {
                 $scholarships[] = $data;
             }
         });

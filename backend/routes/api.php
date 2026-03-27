@@ -34,6 +34,8 @@ use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Admin\SupportManagementController;
 use App\Http\Controllers\Api\ExpertPaymentController;
 use App\Http\Controllers\Api\SeoController;
+use App\Http\Controllers\Api\ScholarshipController;
+use App\Http\Controllers\Api\ScholarshipSourceController;
 use App\Http\Controllers\HealthController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +61,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/sitemap.xml', [SeoController::class , 'sitemap']);
     Route::get('/robots.txt', [SeoController::class , 'robots']);
     Route::get('/blog/{slug}', [BlogController::class , 'show']);
+    Route::get('/scholarships', [ScholarshipController::class , 'index']);
 
     // Auth (Sanctum stateful handled by bootstrap/app.php middleware)
     Route::post('/auth/register', [AuthController::class , 'register'])->middleware('throttle:register');
@@ -333,6 +336,14 @@ Route::group(['prefix' => 'v1'], function () {
                     Route::get('support', [SupportManagementController::class , 'index']);
                     Route::get('support/{id}', [SupportManagementController::class , 'show']);
                     Route::post('support/{id}/reply', [SupportManagementController::class , 'reply']);
+
+                    // Scholarships
+                    Route::get('scholarships', [ScholarshipController::class , 'adminIndex']);
+                    Route::get('scholarships/stats', [ScholarshipController::class , 'stats']);
+                    Route::put('scholarships/{scholarship}', [ScholarshipController::class , 'update']);
+                    Route::delete('scholarships/{scholarship}', [ScholarshipController::class , 'destroy']);
+                    Route::apiResource('scholarship-sources', ScholarshipSourceController::class);
+                    Route::post('scholarship-sources/{source}/crawl', [ScholarshipSourceController::class , 'crawl']);
                 }
                 );
             }

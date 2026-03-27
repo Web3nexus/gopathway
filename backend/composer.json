@@ -16,7 +16,9 @@
         "pragmarx/google2fa-laravel": "^2.3",
         "predis/predis": "^3.4",
         "spatie/laravel-medialibrary": "^11.21",
-        "spatie/laravel-permission": "^7.2"
+        "spatie/laravel-permission": "^7.2",
+        "symfony/css-selector": "^8.0",
+        "symfony/dom-crawler": "^8.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

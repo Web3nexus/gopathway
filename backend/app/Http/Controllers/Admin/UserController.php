@@ -49,9 +49,9 @@ class UserController extends Controller
             return response()->json(['message' => 'No premium plan found in database.'], 422);
         }
 
-        // Days can be provided, default to 1 year (365 days) if not specified or "lifetime" (10 years)
+        // Days can be provided, default to 1 year (365 days) if not specified or "lifetime" (null)
         $days = $request->input('days');
-        $endsAt = $days === 'lifetime' ? now()->addYears(10) : now()->addDays(intval($days ?: 365));
+        $endsAt = $days === 'lifetime' ? null : now()->addDays(intval($days ?: 365));
 
         $user->subscriptions()->where('status', 'active')->update(['status' => 'cancelled']);
 
@@ -61,7 +61,6 @@ class UserController extends Controller
             'status' => 'active',
             'starts_at' => now(),
             'ends_at' => $endsAt,
-            'payment_status' => 'completed',
         ]);
 
         return response()->json([

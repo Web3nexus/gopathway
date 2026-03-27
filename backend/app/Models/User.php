@@ -41,11 +41,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $appends = ['is_premium', 'referral_link'];
 
-    protected $casts = [
-        'payout_details' => 'encrypted:json',
-        'email_notifications' => 'boolean',
-    ];
-
     /**
      * Boot the model.
      */
@@ -112,6 +107,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'two_factor_enabled' => 'boolean',
             'two_factor_recovery_codes' => 'encrypted:array',
             'two_factor_secret' => 'encrypted',
+            'payout_details' => 'encrypted:json',
+            'email_notifications' => 'boolean',
         ];
     }
 

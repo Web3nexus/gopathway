@@ -1,6 +1,6 @@
 import { useDashboard } from '@/hooks/useDashboard';
 import { useCurrency } from '@/contexts/CurrencyContext';
-import { MapPin, FileCheck, CreditCard, Bell, ArrowRight, Clock, AlertCircle, TrendingUp, Briefcase, Sparkles, MailWarning } from 'lucide-react';
+import { MapPin, FileCheck, CreditCard, Bell, ArrowRight, Clock, AlertCircle, TrendingUp, Briefcase, Sparkles, MailWarning, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import GoScoreWidget from '@/components/dashboard/GoScoreWidget';
@@ -230,6 +230,27 @@ export default function Dashboard() {
                         <Link to="/professional/onboarding" className="w-full">
                             <Button variant="outline" className="w-full border-[#0B3C91] text-[#0B3C91] hover:bg-blue-50 font-bold">
                                 Join as Specialist
+                            </Button>
+                        </Link>
+                    </div>
+
+                    {/* Scholarship Promo */}
+                    <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl border border-blue-100 p-6 shadow-sm">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="h-10 w-10 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
+                                <Award className="h-5 w-5 text-blue-600" />
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">New Feature</p>
+                                <h4 className="text-sm font-bold text-[#1A1A1A]">Scholarships</h4>
+                            </div>
+                        </div>
+                        <p className="text-xs text-slate-500 mb-4 leading-relaxed">
+                            Find fully funded and partial scholarships to support your study abroad journey.
+                        </p>
+                        <Link to="/scholarships">
+                            <Button className="w-full bg-[#0B3C91] hover:bg-[#0B3C91]/90 text-white rounded-xl h-9 font-bold text-xs gap-2">
+                                Browse Opportunities <ArrowRight className="h-3.5 w-3.5" />
                             </Button>
                         </Link>
                     </div>

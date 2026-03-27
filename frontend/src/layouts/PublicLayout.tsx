@@ -9,6 +9,7 @@ const navLinks = [
     { to: '/countries', label: 'Countries' },
     { to: '/blog', label: 'Blog' },
     { to: '/pricing', label: 'Pricing' },
+    { to: '/scholarships', label: 'Scholarships' },
 ];
 
 export function PublicLayout() {

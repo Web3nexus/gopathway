@@ -90,6 +90,7 @@ export default function UserManagement() {
             toast({ title: 'Success', description: res.message });
             setAccessModalOpen(false);
             queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+            queryClient.invalidateQueries({ queryKey: ['user'] });
         },
         onError: (err: any) => toast({
             title: 'Failed',
@@ -104,6 +105,7 @@ export default function UserManagement() {
             toast({ title: 'Access Revoked', description: res.message });
             setAccessModalOpen(false);
             queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+            queryClient.invalidateQueries({ queryKey: ['user'] });
         },
         onError: (err: any) => toast({
             title: 'Failed',

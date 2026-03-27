@@ -9,3 +9,10 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('app:pathway-action-engine')->daily();
+
+Schedule::call(function () {
+    $sources = \App\Models\ScholarshipSource::where('is_active', true)->get();
+    foreach ($sources as $source) {
+        \App\Jobs\FetchScholarshipsJob::dispatch($source);
+    }
+})->daily()->name('fetch-scholarships');

@@ -39,6 +39,8 @@ class SchoolFetcherService
         foreach ($extractedData as $data) {
             $this->saveSchool($data, $source);
         }
+
+        $source->update(['last_run_at' => now()]);
     }
 
     /**

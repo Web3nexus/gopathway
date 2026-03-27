@@ -31,4 +31,9 @@ class School extends Model
     {
         return $this->hasMany(UserSchoolApplication::class);
     }
+
+    public function trackers()
+    {
+        return $this->belongsToMany(User::class, 'user_school_tracks', 'school_id', 'user_id')->withTimestamps();
+    }
 }

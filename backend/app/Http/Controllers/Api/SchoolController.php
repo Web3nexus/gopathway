@@ -37,6 +37,7 @@ class SchoolController extends Controller
             'description' => $school->description,
             'programs' => $school->programs,
             'program_count' => $school->programs->count(),
+            'is_tracked' => Auth::user() ? Auth::user()->trackedSchools()->where('school_id', $school->id)->exists() : false,
             ];
         });
 
@@ -110,5 +111,57 @@ class SchoolController extends Controller
         }
         $application->delete();
         return response()->json(['message' => 'Application removed.']);
+    }
+
+    /**
+     * Get the user's tracked schools.
+     */
+    public function myTrackedSchools(): JsonResponse
+    {
+        $schools = Auth::user()->trackedSchools()->with('country')->get();
+        return response()->json(['data' => $schools]);
+    }
+
+    /**
+     * Track a school.
+     */
+    public function track(School $school): JsonResponse
+    {
+        $user = Auth::user();
+        
+        if ($user->trackedSchools()->where('school_id', $school->id)->exists()) {
+            return response()->json(['message' => 'Already tracking this school.'], 400);
+        }
+
+        $user->trackedSchools()->attach($school->id);
+
+        // Immediate Notification (In-App)
+        $user->notifications()->create([
+            'title' => 'School Tracked: ' . $school->name,
+            'message' => 'You are now tracking ' . $school->name . '. You will receive updates about this school.',
+            'is_read' => false,
+        ]);
+
+        // Email Notification
+        try {
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\DynamicEmail('school_tracked', [
+                'user_name' => $user->name,
+                'school_name' => $school->name,
+                'school_url' => config('app.frontend_url') . '/dashboard/schools/' . $school->id,
+            ]));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Failed to send school tracking email: " . $e->getMessage());
+        }
+
+        return response()->json(['message' => 'School tracked successfully.']);
+    }
+
+    /**
+     * Untrack a school.
+     */
+    public function untrack(School $school): JsonResponse
+    {
+        Auth::user()->trackedSchools()->detach($school->id);
+        return response()->json(['message' => 'School untracked successfully.']);
     }
 }

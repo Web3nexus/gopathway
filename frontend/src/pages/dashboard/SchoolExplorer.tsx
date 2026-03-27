@@ -59,6 +59,7 @@ interface School {
     application_portal?: string;
     program_count?: number;
     programs?: SchoolProgram[];
+    is_tracked?: boolean;
 }
 
 interface SchoolApplication {
@@ -104,6 +105,16 @@ export default function SchoolExplorer() {
     const saveMutation = useMutation({
         mutationFn: (data: { school_id: number; status: string }) => api.post('/api/v1/school-applications', data),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['school-applications'] }),
+    });
+    
+    const trackMutation = useMutation({
+        mutationFn: (schoolId: number) => api.post(`/api/v1/schools/${schoolId}/track`),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['schools'] }),
+    });
+
+    const untrackMutation = useMutation({
+        mutationFn: (schoolId: number) => api.delete(`/api/v1/schools/${schoolId}/untrack`),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['schools'] }),
     });
 
     const schools: School[] = schoolsData || [];
@@ -232,9 +243,14 @@ export default function SchoolExplorer() {
                                             <div>
                                                 <div className="flex flex-wrap items-center gap-2">
                                                     <h3 className="font-bold text-lg text-foreground">{school.name}</h3>
+                                                    {school.is_tracked && (
+                                                        <span className="flex items-center gap-1 text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">
+                                                            <Star className="w-3 h-3 fill-blue-700" /> Tracked
+                                                        </span>
+                                                    )}
                                                     {applied && (
                                                         <span className="flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                                                            <CheckCircle2 className="w-3 h-3" /> Tracking
+                                                            <CheckCircle2 className="w-3 h-3" /> Applied
                                                         </span>
                                                     )}
                                                 </div>
@@ -271,12 +287,22 @@ export default function SchoolExplorer() {
                                                         </Button>
                                                     </a>
                                                 )}
-                                                {!applied && (
-                                                    <Button variant="outline" size="sm" className="rounded-xl gap-1.5"
-                                                        onClick={() => saveMutation.mutate({ school_id: school.id, status: 'researching' })}>
-                                                        <BookOpen className="w-3.5 h-3.5" />Track This School
-                                                    </Button>
-                                                )}
+                                                <Button 
+                                                    variant={school.is_tracked ? "secondary" : "outline"} 
+                                                    size="sm" 
+                                                    className="rounded-xl gap-1.5"
+                                                    disabled={trackMutation.isPending || untrackMutation.isPending}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        school.is_tracked ? untrackMutation.mutate(school.id) : trackMutation.mutate(school.id);
+                                                    }}
+                                                >
+                                                    {school.is_tracked ? (
+                                                        <><Star className="w-3.5 h-3.5 fill-current text-blue-600" /> Untrack</>
+                                                    ) : (
+                                                        <><Star className="w-3.5 h-3.5" /> Track</>
+                                                    )}
+                                                </Button>
                                             </div>
 
                                             {/* Programs list */}

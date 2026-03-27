@@ -53,11 +53,11 @@ class DatabaseSeeder extends Seeder
 
 
         // ──────────────── DOCUMENT TYPES (Global) ────────────────
-        DocumentType::create(['name' => 'International Passport', 'description' => 'Valid international travel document', 'visa_type_id' => null]);
-        DocumentType::create(['name' => 'IELTS / TOEFL Certificate', 'description' => 'English language proficiency proof', 'visa_type_id' => null]);
-        DocumentType::create(['name' => 'Bank Statement', 'description' => 'Proof of sufficient funds (last 3-6 months)', 'visa_type_id' => null]);
-        DocumentType::create(['name' => 'Criminal Record / Police Clearance', 'description' => 'Background check certificate', 'visa_type_id' => null]);
-        DocumentType::create(['name' => 'Educational Certificates', 'description' => 'Degree certificates and transcripts', 'visa_type_id' => null]);
+        DocumentType::updateOrCreate(['name' => 'International Passport'], ['description' => 'Valid international travel document', 'visa_type_id' => null]);
+        DocumentType::updateOrCreate(['name' => 'IELTS / TOEFL Certificate'], ['description' => 'English language proficiency proof', 'visa_type_id' => null]);
+        DocumentType::updateOrCreate(['name' => 'Bank Statement'], ['description' => 'Proof of sufficient funds (last 3-6 months)', 'visa_type_id' => null]);
+        DocumentType::updateOrCreate(['name' => 'Criminal Record / Police Clearance'], ['description' => 'Background check certificate', 'visa_type_id' => null]);
+        DocumentType::updateOrCreate(['name' => 'Educational Certificates'], ['description' => 'Degree certificates and transcripts', 'visa_type_id' => null]);
 
         // ──────────────── DEMO USER — PROFILE + PATHWAY ────────────────
         $uk = Country::where('code', 'GB')->first();

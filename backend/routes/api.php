@@ -120,6 +120,11 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/school-applications', [\App\Http\Controllers\Api\SchoolController::class , 'myApplications']);
             Route::post('/school-applications', [\App\Http\Controllers\Api\SchoolController::class , 'saveApplication']);
             Route::delete('/school-applications/{application}', [\App\Http\Controllers\Api\SchoolController::class , 'destroyApplication']);
+            
+            // School Tracking
+            Route::get('/schools/tracked', [\App\Http\Controllers\Api\SchoolController::class , 'myTrackedSchools']);
+            Route::post('/schools/{school}/track', [\App\Http\Controllers\Api\SchoolController::class , 'track']);
+            Route::delete('/schools/{school}/untrack', [\App\Http\Controllers\Api\SchoolController::class , 'untrack']);
 
             // Finance
             Route::get('/finance/recommendations', [\App\Http\Controllers\Api\FinanceController::class , 'recommendations']);

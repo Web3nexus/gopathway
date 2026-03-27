@@ -188,6 +188,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserActionLog::class);
     }
 
+    public function trackedSchools()
+    {
+        return $this->belongsToMany(School::class, 'user_school_tracks', 'user_id', 'school_id')->withTimestamps();
+    }
+
     public function sendEmailVerificationNotification()
     {
         try {

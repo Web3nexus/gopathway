@@ -20,11 +20,38 @@ interface ScholarshipSource {
 export default function SourceManagement() {
     const [sources, setSources] = useState<ScholarshipSource[]>([]);
     const [loading, setLoading] = useState(true);
+    const [queueStats, setQueueStats] = useState({ pending: 0, failed: 0 });
     const { toast } = useToast();
 
     useEffect(() => {
         fetchSources();
+        fetchQueueStats();
+        
+        // Poll for queue stats every 10 seconds
+        const interval = setInterval(fetchQueueStats, 10000);
+        return () => clearInterval(interval);
     }, []);
+
+    const fetchQueueStats = async () => {
+        try {
+            const response = await api.get('/api/v1/admin/scholarship-sources/queue-stats');
+            setQueueStats(response.data);
+        } catch (error) {
+            console.error('Error fetching queue stats:', error);
+        }
+    };
+
+    const handleProcessQueue = async () => {
+        try {
+            toast({ title: 'Processing', description: 'Working on pending jobs...' });
+            await api.post('/api/v1/admin/scholarship-sources/process-queue');
+            toast({ title: 'Success', description: 'Queue processed.' });
+            fetchQueueStats();
+            fetchSources();
+        } catch (error) {
+            toast({ title: 'Error', description: 'Failed to process queue', variant: 'destructive' });
+        }
+    };
 
     const fetchSources = async () => {
         try {
@@ -137,10 +164,21 @@ export default function SourceManagement() {
                                     <span className="text-blue-100">Active Sources</span>
                                     <span className="font-bold">{sources.filter(s => s.is_active).length}</span>
                                 </div>
-                                <div className="flex justify-between items-center text-sm">
-                                    <span className="text-blue-100">AI Tokens Used (Today)</span>
-                                    <span className="font-bold">1.2k</span>
+                                <div className="flex justify-between items-center text-sm border-b border-white/10 pb-2">
+                                    <span className="text-blue-100">Pending Jobs in Queue</span>
+                                    <span className="font-bold">{queueStats.pending}</span>
                                 </div>
+                                <div className="flex justify-between items-center text-sm border-b border-white/10 pb-4">
+                                    <span className="text-blue-100">Failed Jobs</span>
+                                    <span className="font-bold text-red-200">{queueStats.failed}</span>
+                                </div>
+                                <Button 
+                                    onClick={handleProcessQueue} 
+                                    className="w-full bg-white text-blue-700 hover:bg-slate-100 mt-2"
+                                    disabled={queueStats.pending === 0}
+                                >
+                                    Process Queue Now
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>

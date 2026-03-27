@@ -59,4 +59,32 @@ class ScholarshipSourceController extends Controller
 
         return response()->json(['message' => 'Crawl job dispatched successfully.']);
     }
+
+    /**
+     * Get queue statistics.
+     */
+    public function queueStats()
+    {
+        $pendingJobs = \Illuminate\Support\Facades\DB::table('jobs')->count();
+        $failedJobs = \Illuminate\Support\Facades\DB::table('failed_jobs')->count();
+
+        return response()->json([
+            'pending_jobs' => $pendingJobs,
+            'failed_jobs' => $failedJobs,
+        ]);
+    }
+
+    /**
+     * Process the queue (useful for shared hosting without Supervisor).
+     */
+    public function processQueue()
+    {
+        \Illuminate\Support\Facades\Artisan::call('queue:work', [
+            '--stop-when-empty' => true,
+            '--tries' => 1,
+            '--timeout' => 120,
+        ]);
+
+        return response()->json(['message' => 'Queue processed successfully.']);
+    }
 }

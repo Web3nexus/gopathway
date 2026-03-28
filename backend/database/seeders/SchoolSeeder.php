@@ -524,6 +524,31 @@ class SchoolSeeder extends Seeder
                 ],
                 'schools' => [
                     [
+                        'name' => 'University of Warsaw',
+                        'location' => 'Warsaw',
+                        'type' => 'public',
+                        'ranking' => 'Top 300 QS World',
+                        'website' => 'https://en.uw.edu.pl/',
+                        'application_portal' => 'https://irk.uw.edu.pl/en-gb/',
+                        'description' => 'The largest and most prestigious university in Poland, offering over 20 programs in English.',
+                        'programs' => [
+                            ['name' => 'MSc Data Science and Business Analytics', 'degree_type' => 'master', 'field_of_study' => 'Data Science', 'duration_years' => 2, 'tuition_per_year' => 4500, 'currency' => 'EUR', 'intake_periods' => ['October'], 'ielts_min' => 6.5, 'admission_requirements' => ['Bachelor in related field', 'Strong math background']],
+                            ['name' => 'BA International Relations', 'degree_type' => 'bachelor', 'field_of_study' => 'Political Science', 'duration_years' => 3, 'tuition_per_year' => 3000, 'currency' => 'EUR', 'intake_periods' => ['October'], 'ielts_min' => 6.0],
+                        ],
+                    ],
+                    [
+                        'name' => 'Jagiellonian University',
+                        'location' => 'Kraków',
+                        'type' => 'public',
+                        'ranking' => 'Top 400 QS World',
+                        'website' => 'https://en.uj.edu.pl/en_GB',
+                        'application_portal' => 'https://irk.uj.edu.pl/',
+                        'description' => 'One of the oldest universities in Europe, established in 1364.',
+                        'programs' => [
+                            ['name' => 'MA European Studies', 'degree_type' => 'master', 'field_of_study' => 'Political Science', 'duration_years' => 2, 'tuition_per_year' => 4000, 'currency' => 'EUR', 'intake_periods' => ['October', 'February'], 'ielts_min' => 6.5],
+                        ],
+                    ],
+                    [
                         'name' => 'Vistula University',
                         'location' => 'Warsaw',
                         'type' => 'private',
@@ -532,20 +557,8 @@ class SchoolSeeder extends Seeder
                         'application_portal' => 'https://apply.vistula.edu.pl/',
                         'description' => 'A leading international university in Warsaw known for its business and IT programs.',
                         'programs' => [
-                            ['name' => 'BSc Computer Science', 'degree_type' => 'bachelor', 'field_of_study' => 'Computer Science', 'duration_years' => 3.5, 'tuition_per_year' => 3500, 'currency' => 'EUR', 'intake_periods' => ['Fall', 'Spring'], 'ielts_min' => 6.0, 'admission_requirements' => ['High school diploma', 'English proficiency test']],
-                            ['name' => 'Master in International Business', 'degree_type' => 'master', 'field_of_study' => 'Business', 'duration_years' => 2, 'tuition_per_year' => 3000, 'currency' => 'EUR', 'intake_periods' => ['Fall', 'Spring'], 'ielts_min' => 6.5, 'admission_requirements' => ['Bachelor degree', 'CV', 'Interview']],
-                        ],
-                    ],
-                    [
-                        'name' => 'University of Warsaw',
-                        'location' => 'Warsaw',
-                        'type' => 'public',
-                        'ranking' => 'Top 300 QS World',
-                        'website' => 'https://en.uw.edu.pl/',
-                        'application_portal' => 'https://irk.uw.edu.pl/en-gb/',
-                        'description' => 'The largest and most prestigious university in Poland.',
-                        'programs' => [
-                            ['name' => 'MSc Data Science and Business Analytics', 'degree_type' => 'master', 'field_of_study' => 'Data Science', 'duration_years' => 2, 'tuition_per_year' => 4500, 'currency' => 'EUR', 'intake_periods' => ['Fall'], 'ielts_min' => 6.5, 'admission_requirements' => ['Bachelor in related field', 'Strong math background']],
+                            ['name' => 'BSc Computer Science', 'degree_type' => 'bachelor', 'field_of_study' => 'Computer Science', 'duration_years' => 3.5, 'tuition_per_year' => 3500, 'currency' => 'EUR', 'intake_periods' => ['October', 'March'], 'ielts_min' => 6.0],
+                            ['name' => 'Master in Management', 'degree_type' => 'master', 'field_of_study' => 'Business', 'duration_years' => 2, 'tuition_per_year' => 3000, 'currency' => 'EUR', 'intake_periods' => ['October', 'March'], 'ielts_min' => 6.5],
                         ],
                     ],
                 ],
@@ -575,7 +588,20 @@ class SchoolSeeder extends Seeder
                         'application_portal' => 'https://ethz.ch/en/studies/registration-application.html',
                         'description' => 'One of the world\'s leading universities in science and technology.',
                         'programs' => [
-                            ['name' => 'MSc Computer Science', 'degree_type' => 'master', 'field_of_study' => 'Computer Science', 'duration_years' => 2, 'tuition_per_year' => 1500, 'currency' => 'CHF', 'intake_periods' => ['Fall'], 'ielts_min' => 7.0, 'admission_requirements' => ['Strong Bachelor in CS', 'GRE (recommended)', 'References']],
+                            ['name' => 'MSc Computer Science', 'degree_type' => 'master', 'field_of_study' => 'Computer Science', 'duration_years' => 2, 'tuition_per_year' => 1500, 'currency' => 'CHF', 'intake_periods' => ['September'], 'ielts_min' => 7.0, 'admission_requirements' => ['Strong Bachelor in CS', 'GRE (recommended)', 'References']],
+                            ['name' => 'MSc Robotics', 'degree_type' => 'master', 'field_of_study' => 'Engineering', 'duration_years' => 2, 'tuition_per_year' => 1500, 'currency' => 'CHF', 'intake_periods' => ['September'], 'ielts_min' => 7.0],
+                        ],
+                    ],
+                    [
+                        'name' => 'University of Zurich',
+                        'location' => 'Zurich',
+                        'type' => 'public',
+                        'ranking' => 'Top 100 QS World',
+                        'website' => 'https://www.uzh.ch/en.html',
+                        'application_portal' => 'https://www.uzh.ch/en/studies/application.html',
+                        'description' => 'The largest university in Switzerland, offering the widest range of programs.',
+                        'programs' => [
+                            ['name' => 'MSc Finance', 'degree_type' => 'master', 'field_of_study' => 'Finance', 'duration_years' => 2, 'tuition_per_year' => 1700, 'currency' => 'CHF', 'intake_periods' => ['September', 'February'], 'ielts_min' => 7.0],
                         ],
                     ],
                     [
@@ -587,7 +613,7 @@ class SchoolSeeder extends Seeder
                         'application_portal' => 'https://gbsge.com/admissions/',
                         'description' => 'A leading boutique business school focused on practical learning.',
                         'programs' => [
-                            ['name' => 'Bachelor of Business Administration', 'degree_type' => 'bachelor', 'field_of_study' => 'Business', 'duration_years' => 3, 'tuition_per_year' => 12500, 'currency' => 'EUR', 'intake_periods' => ['Fall', 'Spring'], 'ielts_min' => 6.0, 'admission_requirements' => ['High school diploma', 'Personal interview']],
+                            ['name' => 'Bachelor of Business Administration', 'degree_type' => 'bachelor', 'field_of_study' => 'Business', 'duration_years' => 3, 'tuition_per_year' => 12500, 'currency' => 'EUR', 'intake_periods' => ['September', 'February'], 'ielts_min' => 6.0],
                         ],
                     ],
                 ],
@@ -604,7 +630,7 @@ class SchoolSeeder extends Seeder
                     'min_funds_description' => 'per year (€18/day)',
                     'work_hours_per_week' => 20,
                     'post_study_work_permit' => true,
-                    'post_study_work_duration' => '6–9 months',
+                    'post_study_work_duration' => '12 months job-seeker',
                     'required_documents' => ['Passport', 'Acceptance letter', 'Proof of funds', 'Medical insurance certificate', 'Accommodation proof'],
                 ],
                 'schools' => [
@@ -617,8 +643,20 @@ class SchoolSeeder extends Seeder
                         'application_portal' => 'https://www.um.edu.mt/apply',
                         'description' => 'The highest teaching institution in Malta, offering a wide variety of courses.',
                         'programs' => [
-                            ['name' => 'MSc Artificial Intelligence', 'degree_type' => 'master', 'field_of_study' => 'IT', 'duration_years' => 1.5, 'tuition_per_year' => 8500, 'currency' => 'EUR', 'intake_periods' => ['Fall'], 'ielts_min' => 6.5, 'admission_requirements' => ['Bachelor in CS or related', 'Math background']],
-                            ['name' => 'Bachelor of Commerce', 'degree_type' => 'bachelor', 'field_of_study' => 'Business', 'duration_years' => 3, 'tuition_per_year' => 7000, 'currency' => 'EUR', 'intake_periods' => ['Fall'], 'ielts_min' => 6.0, 'admission_requirements' => ['High school diploma', 'English proficiency']],
+                            ['name' => 'MSc Artificial Intelligence', 'degree_type' => 'master', 'field_of_study' => 'IT', 'duration_years' => 1.5, 'tuition_per_year' => 8500, 'currency' => 'EUR', 'intake_periods' => ['October'], 'ielts_min' => 6.5],
+                            ['name' => 'Bachelor of Commerce', 'degree_type' => 'bachelor', 'field_of_study' => 'Business', 'duration_years' => 3, 'tuition_per_year' => 7000, 'currency' => 'EUR', 'intake_periods' => ['October'], 'ielts_min' => 6.0],
+                        ],
+                    ],
+                    [
+                        'name' => 'MCAST',
+                        'location' => 'Paola',
+                        'type' => 'public',
+                        'ranking' => 'Leading Vocational Institution',
+                        'website' => 'https://www.mcast.edu.mt/',
+                        'application_portal' => 'https://www.mcast.edu.mt/admissions/',
+                        'description' => 'Malta College of Arts, Science and Technology, providing vocational education.',
+                        'programs' => [
+                            ['name' => 'BEng Electronics Engineering', 'degree_type' => 'bachelor', 'field_of_study' => 'Engineering', 'duration_years' => 4, 'tuition_per_year' => 6500, 'currency' => 'EUR', 'intake_periods' => ['October'], 'ielts_min' => 5.5],
                         ],
                     ],
                 ],

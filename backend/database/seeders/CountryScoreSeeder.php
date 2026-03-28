@@ -118,6 +118,27 @@ class CountryScoreSeeder extends Seeder
                 'pr_ease' => 50,
                 'job_market' => 80,
             ],
+            'Poland' => [
+                'visa_difficulty' => 40,
+                'cost_index' => 30,
+                'processing_speed' => 70,
+                'pr_ease' => 50,
+                'job_market' => 60,
+            ],
+            'Switzerland' => [
+                'visa_difficulty' => 80,
+                'cost_index' => 100,
+                'processing_speed' => 30,
+                'pr_ease' => 20,
+                'job_market' => 90,
+            ],
+            'Malta' => [
+                'visa_difficulty' => 60,
+                'cost_index' => 60,
+                'processing_speed' => 40,
+                'pr_ease' => 70,
+                'job_market' => 50,
+            ],
         ];
 
         foreach ($data as $countryName => $scores) {

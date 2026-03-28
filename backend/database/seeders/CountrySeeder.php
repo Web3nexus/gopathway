@@ -25,6 +25,9 @@ class CountrySeeder extends Seeder
             ['code' => 'IE', 'name' => 'Ireland'],
             ['code' => 'NO', 'name' => 'Norway'],
             ['code' => 'IT', 'name' => 'Italy'],
+            ['code' => 'PL', 'name' => 'Poland'],
+            ['code' => 'CH', 'name' => 'Switzerland'],
+            ['code' => 'MT', 'name' => 'Malta'],
             ['code' => 'NG', 'name' => 'Nigeria'],
         ];
 

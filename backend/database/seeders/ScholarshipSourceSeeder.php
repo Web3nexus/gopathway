@@ -17,12 +17,12 @@ class ScholarshipSourceSeeder extends Seeder
                 'crawl_type' => 'scholarship',
                 'is_active' => true,
                 'scraping_rules' => [
-                    'item_selector' => 'article.post',
+                    'item_selector' => '.post',
                     'fields' => [
-                        'title'            => 'h2.entry-title a',
-                        'description'      => 'div.entry-summary',
-                        'application_link' => 'h2.entry-title a',
-                        'source_url'       => 'h2.entry-title a',
+                        'title'            => 'h2 a',
+                        'description'      => 'div.entry > p',
+                        'application_link' => 'h2 a',
+                        'source_url'       => 'h2 a',
                     ],
                 ],
             ],
@@ -30,16 +30,16 @@ class ScholarshipSourceSeeder extends Seeder
             // School/university source — targets the university listing
             [
                 'name' => 'Free-Apply - International Universities',
-                'base_url' => 'https://free-apply.com/en/university/',
+                'base_url' => 'https://free-apply.com/en/search/uk/universities',
                 'crawl_type' => 'school',
-                'is_active' => true,
+                'is_active' => false,
                 'scraping_rules' => [
-                    'item_selector' => '.university-item',
+                    'item_selector' => '.university-item, .card, .bg-white.rounded-lg.shadow', // We'll need to figure this out if it works
                     'fields' => [
-                        'school_name'            => '.university-name',
-                        'location'               => '.university-location',
-                        'official_website_link'  => '.university-link a',
-                        'description'            => '.university-description',
+                        'school_name'            => '.university-name, h3',
+                        'location'               => '.university-location, .location',
+                        'official_website_link'  => '.university-link a, a',
+                        'description'            => '.university-description, p',
                     ],
                 ],
             ],

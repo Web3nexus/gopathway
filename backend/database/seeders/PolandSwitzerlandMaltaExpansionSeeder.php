@@ -48,13 +48,23 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
                 ]
             ],
             [
-                'name' => 'Poland.Business Harbour (PBH)',
-                'type' => 'Tech/Business',
-                'description' => 'Fast-track pathway for IT specialists, startups, and established companies.',
-                'processing_time' => '2-4 weeks',
+                'name' => 'Skilled Worker Visa (National Type D)',
+                'type' => 'Skilled Work',
+                'description' => 'For professionals with a job offer. Note: The PBH program is currently suspended; apply via standard Type D.',
+                'processing_time' => '4-8 weeks',
                 'pr_possibility' => true,
-                'requirements' => ['Tech degree or 1 year experience', 'Job offer/B2B contract', 'Company sponsorship'],
-                'benefits' => ['No labor market test', 'B2B activity allowed', 'Family reunification'],
+                'min_funds' => 5000,
+                'requirements' => ['Employment Contract', 'Work Permit (Zezwolenie)', 'Health Insurance', 'Rent Agreement'],
+                'benefits' => ['Long-term residency', 'Family reunification possible', 'Access to EU market'],
+                'costs' => [
+                    ['category' => 'Government Fees', 'item' => 'Visa Fee (Type D)', 'min' => 200, 'max' => 200],
+                    ['category' => 'Housing Setup', 'item' => 'Rent (1BR Center)', 'min' => 600, 'max' => 950],
+                    ['category' => 'Housing Setup', 'item' => 'Deposit (2 months)', 'min' => 1200, 'max' => 1800],
+                    ['category' => 'Monthly Living', 'item' => 'Groceries', 'min' => 250, 'max' => 400],
+                    ['category' => 'Monthly Living', 'item' => 'Utilities & Internet', 'min' => 120, 'max' => 200],
+                    ['category' => 'Insurance', 'item' => 'Private/State Health Mix', 'min' => 40, 'max' => 100],
+                    ['category' => 'Transport', 'item' => 'Monthly Pass', 'min' => 25, 'max' => 50],
+                ]
             ],
             [
                 'name' => 'Graduate Job Seeker Visa',
@@ -62,6 +72,12 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
                 'description' => 'A 9-month residence permit for non-EU graduates of Polish universities to look for work.',
                 'processing_time' => '30-90 days',
                 'pr_possibility' => true,
+                'costs' => [
+                    ['category' => 'Government Fees', 'item' => 'Application Fee', 'min' => 100, 'max' => 150],
+                    ['category' => 'Monthly Living', 'item' => 'Groceries', 'min' => 250, 'max' => 350],
+                    ['category' => 'Monthly Living', 'item' => 'Utilities', 'min' => 80, 'max' => 150],
+                    ['category' => 'Housing Setup', 'item' => 'Shared Room/Studio', 'min' => 350, 'max' => 600],
+                ]
             ]
         ];
 
@@ -103,6 +119,13 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
                 'description' => 'For highly qualified professionals with a binding job offer.',
                 'processing_time' => '3-6 months',
                 'pr_possibility' => true,
+                'costs' => [
+                    ['category' => 'Government Fees', 'item' => 'Cantonal Administrative Fee', 'min' => 250, 'max' => 600],
+                    ['category' => 'Housing Setup', 'item' => 'Rent (1BR Executive)', 'min' => 2500, 'max' => 4500],
+                    ['category' => 'Monthly Living', 'item' => 'High-end Groceries', 'min' => 800, 'max' => 1200],
+                    ['category' => 'Insurance', 'item' => 'Comprehensive Health (KVG)', 'min' => 400, 'max' => 700],
+                    ['category' => 'Transport', 'item' => 'GA Travelcard (Monthly)', 'min' => 340, 'max' => 340],
+                ]
             ]
         ];
 
@@ -146,6 +169,12 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
                 'pr_possibility' => true,
                 'requirements' => ['Employment contract', 'Income proof (>€3.5k/mo)', 'Health insurance', 'Rental contract in Malta'],
                 'benefits' => ['Yearly renewable', 'Tax benefits', 'Easy EU travel'],
+                'costs' => [
+                    ['category' => 'Government Fees', 'item' => 'Application Admin Fee', 'min' => 300, 'max' => 300],
+                    ['category' => 'Housing Setup', 'item' => 'High-end Apartment', 'min' => 1200, 'max' => 2200],
+                    ['category' => 'Monthly Living', 'item' => 'Lifestyle & Dining', 'min' => 500, 'max' => 1000],
+                    ['category' => 'Insurance', 'item' => 'Private Premium Health', 'min' => 60, 'max' => 120],
+                ]
             ],
             [
                 'name' => 'Key Employee Initiative (KEI)',
@@ -153,6 +182,12 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
                 'description' => 'Fast-track work permit for managerial or highly technical roles.',
                 'processing_time' => '5 working days',
                 'pr_possibility' => true,
+                'costs' => [
+                    ['category' => 'Government Fees', 'item' => 'KEI Application Fee', 'min' => 280, 'max' => 280],
+                    ['category' => 'Housing Setup', 'item' => 'Corporate Housing', 'min' => 1500, 'max' => 3000],
+                    ['category' => 'Monthly Living', 'item' => 'Groceries', 'min' => 400, 'max' => 600],
+                    ['category' => 'Transport', 'item' => 'Leased Car/Transport', 'min' => 200, 'max' => 500],
+                ]
             ]
         ];
 

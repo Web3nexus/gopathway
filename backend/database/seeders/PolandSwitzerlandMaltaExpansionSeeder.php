@@ -8,7 +8,7 @@ use App\Models\CostTemplate;
 use App\Models\SettlementStep;
 use App\Models\ResidencyRule;
 use App\Models\JobPlatform;
-use App\Models\CVTemplate;
+use App\Models\CvTemplate;
 use Illuminate\Database\Seeder;
 
 class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
@@ -437,7 +437,7 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
 
         $data = $cvs[$type] ?? null;
         if ($data) {
-            CVTemplate::updateOrCreate(
+            CvTemplate::updateOrCreate(
                 ['country_id' => $country->id],
                 [
                     'name' => $data['name'],

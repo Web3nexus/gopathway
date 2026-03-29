@@ -25,9 +25,11 @@ export default function ScholarshipListing() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [isLimited, setIsLimited] = useState(false);
+    const [limitReason, setLimitReason] = useState<'guest' | 'upgrade' | null>(null);
     const [totalCount, setTotalCount] = useState(0);
 
     useEffect(() => {
+        setLoading(true);
         fetchScholarships();
     }, [user]);
 
@@ -36,6 +38,7 @@ export default function ScholarshipListing() {
             const response = await api.get('/api/v1/scholarships');
             setScholarships(response.data.data);
             setIsLimited(response.data.is_limited || false);
+            setLimitReason(response.data.reason || null);
             setTotalCount(response.data.total_count || 0);
         } catch (error) {
             console.error('Error fetching scholarships:', error);
@@ -124,25 +127,45 @@ export default function ScholarshipListing() {
                     </div>
                 )}
 
-                {/* Guest Overlay */}
+                {/* Guest / Free-user Overlay */}
                 {isLimited && !loading && (
-                    <div className="absolute inset-x-0 bottom-0 h-[60%] flex items-end justify-center pb-12 bg-gradient-to-t from-white via-white/90 to-transparent pt-32 z-10">
-                        <div className="text-center max-w-md px-6 bg-white/50 backdrop-blur-md p-10 rounded-3xl border border-white shadow-2xl">
-                            <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-blue-200 rotate-6">
+                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-center pb-12 bg-gradient-to-t from-white via-white/95 to-transparent z-10" style={{ height: '65%' }}>
+                        <div className="text-center max-w-md w-full mx-4 bg-white/70 backdrop-blur-md p-10 rounded-3xl border border-slate-100 shadow-2xl shadow-blue-100">
+                            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-blue-300 rotate-6">
                                 <Lock className="text-white w-8 h-8" />
                             </div>
-                            <h2 className="text-2xl font-bold text-slate-900 mb-3">Unlock Restricted Access</h2>
-                            <p className="text-slate-600 mb-8 leading-relaxed">
-                                You are currently viewing a guest preview. Sign up to unlock the full directory of over <span className="font-bold text-blue-600">{totalCount} scholarships</span> across 20+ countries.
-                            </p>
-                            <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white py-8 text-lg font-bold rounded-2xl shadow-xl shadow-blue-200 transition-all hover:-translate-y-1">
-                                <Link to="/register">
-                                    Create Free Account
-                                </Link>
-                            </Button>
-                            <p className="mt-4 text-sm text-slate-400">
-                                Already have an account? <Link to="/login" className="text-blue-600 font-semibold hover:underline">Log in</Link>
-                            </p>
+
+                            {limitReason === 'upgrade' ? (
+                                <>
+                                    <h2 className="text-2xl font-bold text-slate-900 mb-3">Premium Feature</h2>
+                                    <p className="text-slate-600 mb-8 leading-relaxed">
+                                        You're on the free plan. Upgrade to <span className="font-bold text-blue-600">GoPathway Premium</span> to unlock the full directory of <span className="font-bold text-blue-600">{totalCount}+ scholarships</span> across 20+ countries and filter by level, funding type, and more.
+                                    </p>
+                                    <Button asChild className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-8 text-lg font-bold rounded-2xl shadow-xl shadow-blue-200 transition-all duration-300 hover:-translate-y-1">
+                                        <Link to="/dashboard/pricing">
+                                            Upgrade to Premium
+                                        </Link>
+                                    </Button>
+                                    <p className="mt-4 text-sm text-slate-400">
+                                        Already premium? <button onClick={fetchScholarships} className="text-blue-600 font-semibold hover:underline">Refresh</button>
+                                    </p>
+                                </>
+                            ) : (
+                                <>
+                                    <h2 className="text-2xl font-bold text-slate-900 mb-3">Unlock Full Access</h2>
+                                    <p className="text-slate-600 mb-8 leading-relaxed">
+                                        Create a free account, then upgrade to <span className="font-bold text-blue-600">GoPathway Premium</span> to explore <span className="font-bold text-blue-600">{totalCount}+ scholarships</span> across 20+ countries — with powerful filters and deadline tracking.
+                                    </p>
+                                    <Button asChild className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-8 text-lg font-bold rounded-2xl shadow-xl shadow-blue-200 transition-all duration-300 hover:-translate-y-1">
+                                        <Link to="/register">
+                                            Create Free Account
+                                        </Link>
+                                    </Button>
+                                    <p className="mt-4 text-sm text-slate-400">
+                                        Already have an account? <Link to="/login" className="text-blue-600 font-semibold hover:underline">Log in</Link>
+                                    </p>
+                                </>
+                            )}
                         </div>
                     </div>
                 )}

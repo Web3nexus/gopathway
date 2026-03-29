@@ -28,29 +28,37 @@ class ScholarshipController extends Controller
             $query->where('funding_type', $request->funding_type);
         }
 
-        // Limit for guests
-        if (!auth('sanctum')->check()) {
+        $user = auth('sanctum')->user();
+        $isPremium = $user && $user->isPremium();
+
+        // Show full list only to premium subscribers
+        if (!$isPremium) {
+            $reason = $user ? 'upgrade' : 'guest'; // distinguish logged-in free vs guest
+
             $allApproved = $query->latest()->get();
-            
-            // Try to get unique countries first
+
+            // Try to get 6 from unique countries first for variety
             $scholarships = $allApproved->unique('country_id')->take(6);
-            
-            // If we have fewer than 6 unique countries, fill with others
+
+            // Fallback: if fewer than 6 unique countries, just take first 6
             if ($scholarships->count() < 6) {
                 $scholarships = $allApproved->take(6);
             }
 
             return response()->json([
-                'data' => $scholarships->values(),
-                'is_limited' => true,
-                'total_count' => Scholarship::approved()->count()
+                'data'        => $scholarships->values(),
+                'is_limited'  => true,
+                'reason'      => $reason,
+                'total_count' => Scholarship::approved()->count(),
             ]);
         }
 
+        // Premium: return the full paginated list
         $results = $query->latest()->paginate(20);
-        
+
         return response()->json(array_merge($results->toArray(), [
-            'is_limited' => false
+            'is_limited' => false,
+            'reason'     => null,
         ]));
     }
 

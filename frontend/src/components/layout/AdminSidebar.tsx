@@ -52,6 +52,7 @@ export function AdminSidebar({ mobile, onClose }: { mobile?: boolean, onClose?: 
         { name: 'Residency & Career', path: '/admin/career', icon: Briefcase },
         { name: 'User Management', path: '/admin/users', icon: Users },
         { name: 'Expert Payouts', path: '/admin/expert-withdrawals', icon: DollarSign },
+        { name: 'Finance Management', path: '/admin/finance', icon: DollarSign },
         { 
             name: 'Support Messages', 
             path: '/admin/support', 

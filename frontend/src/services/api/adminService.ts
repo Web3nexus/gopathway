@@ -130,4 +130,11 @@ export const adminService = {
     verify2FA: (code: string) => api.post('/api/v1/admin/2fa/verify', { code }).then(r => r.data),
     updateAdminProfile: (data: { name: string; email: string }) => api.put('/api/v1/admin/profile', data).then(r => r.data),
     updatePassword: (data: any) => api.put('/api/v1/auth/password', data).then(r => r.data),
+
+    // Finance Management
+    getFinanceProviders: (page = 1) => api.get(`/api/v1/admin/finance-providers?page=${page}`).then(r => r.data),
+    createFinanceProvider: (data: any) => api.post('/api/v1/admin/finance-providers', data).then(r => r.data),
+    updateFinanceProvider: (id: number, data: any) => api.put(`/api/v1/admin/finance-providers/${id}`, data).then(r => r.data),
+    deleteFinanceProvider: (id: number) => api.delete(`/api/v1/admin/finance-providers/${id}`).then(r => r.data),
+    toggleFinanceProvider: (id: number) => api.patch(`/api/v1/admin/finance-providers/${id}/toggle`).then(r => r.data),
 };

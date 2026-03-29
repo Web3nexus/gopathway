@@ -38,6 +38,7 @@ use App\Http\Controllers\Api\ScholarshipController;
 use App\Http\Controllers\Api\ScholarshipSourceController;
 use App\Http\Controllers\Admin\SystemHealthController;
 use App\Http\Controllers\HealthController;
+use App\Http\Controllers\Admin\FinanceManagementController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -351,6 +352,10 @@ Route::group(['prefix' => 'v1'], function () {
                     Route::delete('scholarships/{scholarship}', [ScholarshipController::class , 'destroy']);
                     Route::apiResource('scholarship-sources', ScholarshipSourceController::class);
                     Route::post('scholarship-sources/{source}/crawl', [ScholarshipSourceController::class , 'crawl']);
+
+                    // Finance Management
+                    Route::apiResource('finance-providers', FinanceManagementController::class);
+                    Route::patch('finance-providers/{financeProvider}/toggle', [FinanceManagementController::class, 'toggleActive']);
                 }
                 );
             }

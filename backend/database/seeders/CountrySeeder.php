@@ -25,9 +25,9 @@ class CountrySeeder extends Seeder
             ['code' => 'IE', 'name' => 'Ireland'],
             ['code' => 'NO', 'name' => 'Norway'],
             ['code' => 'IT', 'name' => 'Italy'],
-            ['code' => 'PL', 'name' => 'Poland', 'description' => 'A central European hub with affordable living, rich history, and a booming tech sector.', 'image_url' => 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?q=80&w=1200&auto=format&fit=crop', 'competitiveness_score' => 75],
-            ['code' => 'CH', 'name' => 'Switzerland', 'description' => 'Highly innovative alpine paradise offering a premium quality of life and world-class research.', 'image_url' => 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=1200&auto=format&fit=crop', 'competitiveness_score' => 85],
-            ['code' => 'MT', 'name' => 'Malta', 'description' => 'A sunny Mediterranean gateway for business and study with an English-speaking environment.', 'image_url' => 'https://images.unsplash.com/photo-1516478177764-9fe5bd7e9717?q=80&w=1200&auto=format&fit=crop', 'competitiveness_score' => 70],
+            ['code' => 'PL', 'name' => 'Poland', 'description' => 'A vibrant Central European hub offering a unique blend of medieval history, affordable high-quality education, and a rapidly growing tech economy.', 'image_url' => 'https://images.unsplash.com/photo-1512813583167-9d7842e4719e?q=80&w=1200', 'competitiveness_score' => 75],
+            ['code' => 'CH', 'name' => 'Switzerland', 'description' => 'A global leader in innovation and research, offering elite education set against the breathtaking backdrop of the Swiss Alps and pristine lakes.', 'image_url' => 'https://images.unsplash.com/photo-1531310197839-ccf54634509e?q=80&w=1200', 'competitiveness_score' => 85],
+            ['code' => 'MT', 'name' => 'Malta', 'description' => 'A sun-drenched Mediterranean archipelago and rising tech hub, perfect for international students seeking a safe, English-speaking environment.', 'image_url' => 'https://images.unsplash.com/photo-1543834297-c1d401344607?q=80&w=1200', 'competitiveness_score' => 70],
             ['code' => 'NG', 'name' => 'Nigeria'],
         ];
 

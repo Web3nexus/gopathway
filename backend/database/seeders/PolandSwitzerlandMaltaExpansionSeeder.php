@@ -35,10 +35,13 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
                 'costs' => [
                     ['category' => 'Government Fees', 'item' => 'Visa Fee', 'min' => 80, 'max' => 80],
                     ['category' => 'Travel', 'item' => 'Relocation Flight', 'min' => 400, 'max' => 1200],
+                    ['category' => 'Housing Setup', 'item' => 'Rent (Studio/1BR)', 'min' => 450, 'max' => 1100],
                     ['category' => 'Housing Setup', 'item' => 'Rental Deposit', 'min' => 600, 'max' => 1000],
-                    ['category' => 'Monthly Living', 'item' => 'Food & Groceries', 'min' => 250, 'max' => 400],
-                    ['category' => 'Monthly Living', 'item' => 'Utilities (Electricity, Water, Internet)', 'min' => 100, 'max' => 200],
+                    ['category' => 'Monthly Living', 'item' => 'Groceries', 'min' => 250, 'max' => 400],
+                    ['category' => 'Monthly Living', 'item' => 'Utilities (Elec, Water, Gas)', 'min' => 80, 'max' => 150],
+                    ['category' => 'Monthly Living', 'item' => 'High-Speed Internet', 'min' => 15, 'max' => 30],
                     ['category' => 'Insurance', 'item' => 'Statutory Health Insurance (NFZ)', 'min' => 15, 'max' => 50],
+                    ['category' => 'Transport', 'item' => 'Monthly City Pass (Student)', 'min' => 12, 'max' => 25],
                 ]
             ],
             [
@@ -80,9 +83,11 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
                 'benefits' => ['World-class HEIs', '15h/week work rights (after 6 months)', 'Schengen mobility'],
                 'costs' => [
                     ['category' => 'Government Fees', 'item' => 'Visa Fee (Cantonal varies)', 'min' => 80, 'max' => 150],
+                    ['category' => 'Housing Setup', 'item' => 'Rent (Studio/1BR)', 'min' => 1800, 'max' => 2800],
                     ['category' => 'Housing Setup', 'item' => 'Rental Deposit (3 months)', 'min' => 3000, 'max' => 6000],
                     ['category' => 'Insurance', 'item' => 'Mandatory Health Insurance (KVG)', 'min' => 300, 'max' => 500, 'notes' => 'Monthly premium'],
                     ['category' => 'Monthly Living', 'item' => 'Groceries & Household', 'min' => 600, 'max' => 900],
+                    ['category' => 'Monthly Living', 'item' => 'Utilities & Internet', 'min' => 150, 'max' => 250],
                     ['category' => 'Transport', 'item' => 'Halbtax (Half-fare card)', 'min' => 185, 'max' => 185],
                 ]
             ],
@@ -116,9 +121,12 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
                 'benefits' => ['English instruction', 'Mediterranean lifestyle', 'EU residency'],
                 'costs' => [
                     ['category' => 'Government Fees', 'item' => 'Visa Application Fee', 'min' => 66, 'max' => 70],
+                    ['category' => 'Housing Setup', 'item' => 'Rent (Studio/1BR)', 'min' => 800, 'max' => 1300],
                     ['category' => 'Housing Setup', 'item' => 'Rental Deposit', 'min' => 800, 'max' => 1500],
-                    ['category' => 'Monthly Living', 'item' => 'Utilities & Personal', 'min' => 150, 'max' => 300],
+                    ['category' => 'Monthly Living', 'item' => 'Groceries', 'min' => 300, 'max' => 450],
+                    ['category' => 'Monthly Living', 'item' => 'Utilities & Internet', 'min' => 100, 'max' => 200],
                     ['category' => 'Insurance', 'item' => 'Private Health Insurance', 'min' => 40, 'max' => 100, 'notes' => 'Monthly estimate'],
+                    ['category' => 'Transport', 'item' => 'Tallinja App (Free for residents)', 'min' => 0, 'max' => 30],
                 ]
             ],
             [

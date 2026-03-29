@@ -23,17 +23,32 @@ class FinanceController extends Controller
         $country = $pathway->country->name;
         $visaType = $pathway->visaType->name;
 
-        // Simple filtering logic:
-        // Match if supported_countries contains the country OR is null/empty
-        // AND match if supported_pathways contains the visa type OR is null/empty
+        $country = strtolower($pathway->country->name);
+        $visaType = strtolower($pathway->visaType->name);
+
+        // Flexible filtering logic:
         $providers = FinanceProvider::where('is_active', true)
             ->get()
             ->filter(function ($provider) use ($country, $visaType) {
-            $countries = $provider->supported_countries;
-            $pathways = $provider->supported_pathways;
+            $countries = array_map('strtolower', (array)$provider->supported_countries);
+            $pathways = array_map('strtolower', (array)$provider->supported_pathways);
 
-            $countryMatch = empty($countries) || in_array($country, (array)$countries) || in_array('Global', (array)$countries);
-            $pathwayMatch = empty($pathways) || in_array($visaType, (array)$pathways);
+            // Match if:
+            // 1. Countries list is empty/null OR contains the country OR contains 'global'
+            $countryMatch = empty($countries) || 
+                           in_array($country, $countries) || 
+                           in_array('global', $countries);
+
+            // 2. Pathways list is empty/null OR contains exact visa type OR partial match (e.g. "Student" in "Student Visa")
+            $pathwayMatch = empty($pathways);
+            if (!$pathwayMatch) {
+                foreach ($pathways as $p) {
+                    if (str_contains($visaType, $p) || str_contains($p, $visaType)) {
+                        $pathwayMatch = true;
+                        break;
+                    }
+                }
+            }
 
             return $countryMatch && $pathwayMatch;
         })

@@ -91,7 +91,10 @@ export default function FinanceManagement() {
         mutationFn: adminService.createFinanceProvider,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['admin-finance-providers'] });
-            toast.success('Provider created successfully');
+            toast({
+                title: "Success",
+                description: "Provider created successfully",
+            });
             setIsDialogOpen(false);
             resetForm();
         },
@@ -101,7 +104,10 @@ export default function FinanceManagement() {
         mutationFn: ({ id, data }: { id: number; data: any }) => adminService.updateFinanceProvider(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['admin-finance-providers'] });
-            toast.success('Provider updated successfully');
+            toast({
+                title: "Success",
+                description: "Provider updated successfully",
+            });
             setIsDialogOpen(false);
             setEditingProvider(null);
         },
@@ -111,7 +117,10 @@ export default function FinanceManagement() {
         mutationFn: adminService.deleteFinanceProvider,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['admin-finance-providers'] });
-            toast.success('Provider deleted successfully');
+            toast({
+                title: "Success",
+                description: "Provider deleted successfully",
+            });
         },
     });
 

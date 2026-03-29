@@ -6,6 +6,9 @@ use App\Models\Country;
 use App\Models\VisaType;
 use App\Models\CostTemplate;
 use App\Models\SettlementStep;
+use App\Models\ResidencyRule;
+use App\Models\JobPlatform;
+use App\Models\CVTemplate;
 use Illuminate\Database\Seeder;
 
 class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
@@ -64,6 +67,9 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
 
         $this->processPathways($country, $pathways, 'EUR');
         $this->seedSettlement($country, 'Poland');
+        $this->seedResidency($country, 'Poland');
+        $this->seedJobs($country, 'Poland');
+        $this->seedCV($country, 'Poland');
     }
 
     private function seedSwitzerland()
@@ -102,6 +108,9 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
 
         $this->processPathways($country, $pathways, 'CHF');
         $this->seedSettlement($country, 'Switzerland');
+        $this->seedResidency($country, 'Switzerland');
+        $this->seedJobs($country, 'Switzerland');
+        $this->seedCV($country, 'Switzerland');
     }
 
     private function seedMalta()
@@ -149,6 +158,9 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
 
         $this->processPathways($country, $pathways, 'EUR');
         $this->seedSettlement($country, 'Malta');
+        $this->seedResidency($country, 'Malta');
+        $this->seedJobs($country, 'Malta');
+        $this->seedCV($country, 'Malta');
     }
 
     private function processPathways($country, $pathways, $defaultCurrency)
@@ -188,22 +200,118 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
     {
         $stepsData = [
             'Poland' => [
-                ['phase' => 'week1', 'title' => 'Get a PESEL Number', 'description' => 'Registration in the Universal Electronic System for Registration of the Population. Essential for tax and healthcare.'],
-                ['phase' => 'week1', 'title' => 'Open a Bank Account', 'description' => 'Major banks: PKO BP, mBank, Santander. Many allow opening with just a passport.'],
-                ['phase' => 'month1', 'title' => 'Secure a Local SIM', 'description' => 'Choose between Orange, T-Mobile, or Play. ID registration is mandatory.'],
-                ['phase' => 'month1', 'title' => 'Transport Pass (ZTM)', 'description' => 'Apply for a city travel card for discounted public transport.'],
+                [
+                    'phase' => 'week1', 
+                    'title' => 'Get a PESEL Number', 
+                    'description' => 'Registration in the Universal Electronic System for Registration of the Population. Essential for tax and healthcare.',
+                    'official_link' => 'https://www.gov.pl/web/gov/uzyskaj-numer-pesel-dla-cudzoziemcow',
+                    'required_documents' => "Valid Passport\nRental Agreement\nApplication Form",
+                    'estimated_time' => 'Immediate',
+                    'mandatory' => true
+                ],
+                [
+                    'phase' => 'week1', 
+                    'title' => 'Open a Bank Account', 
+                    'description' => 'Major banks: PKO BP, mBank, Santander. Many allow opening with just a passport.',
+                    'official_link' => 'https://www.mbank.pl/klient-indywidualny/konta/konta-osobiste/konto-dla-obcokrajowca/',
+                    'required_documents' => "Passport\nPESEL Number (Recommended)\nProof of Address",
+                    'estimated_time' => '1 day',
+                    'mandatory' => true
+                ],
+                [
+                    'phase' => 'month1', 
+                    'title' => 'Secure a Local SIM', 
+                    'description' => 'Choose between Orange, T-Mobile, or Play. ID registration is mandatory.',
+                    'official_link' => 'https://www.orange.pl/view/oferta-dla-obcokrajowcow',
+                    'required_documents' => "Passport or Residence Card",
+                    'estimated_time' => '1 hour',
+                    'mandatory' => true
+                ],
+                [
+                    'phase' => 'month1', 
+                    'title' => 'Transport Pass (ZTM)', 
+                    'description' => 'Apply for a city travel card for discounted public transport.',
+                    'official_link' => 'https://www.wtp.waw.pl/en/',
+                    'required_documents' => "Passport\nStudent ID (for discount)\nPassport Photo",
+                    'estimated_time' => 'On-site',
+                    'mandatory' => false
+                ],
             ],
             'Switzerland' => [
-                ['phase' => 'week1', 'title' => 'Register with the Residents\' Office (Kreisbüro)', 'description' => 'Mandatory within 14 days of arrival. This leads to your residency permit.'],
-                ['phase' => 'week1', 'title' => 'Open a Bank Account (UBS/CS)', 'description' => 'Swiss banks require residence registration proof.'],
-                ['phase' => 'month1', 'title' => 'Halbtax Card', 'description' => 'Buy the SBB Half-Fare travelcard to significantly reduce travel costs.'],
-                ['phase' => 'month1', 'title' => 'Select Health Insurance (KVG)', 'description' => 'You have 3 months to select a mandatory basic insurance provider.'],
+                [
+                    'phase' => 'week1', 
+                    'title' => 'Register with the Residents\' Office (Kreisbüro)', 
+                    'description' => 'Mandatory within 14 days of arrival. This leads to your residency permit.',
+                    'official_link' => 'https://www.stadt-zuerich.ch/prd/de/index/bevoelkerungsamt/personenmeldeamt/anmelden.html',
+                    'required_documents' => "Passport\nEmployment Contract\nSigned Lease Agreement\nHealth Insurance Proof",
+                    'estimated_time' => '1-2 weeks',
+                    'mandatory' => true
+                ],
+                [
+                    'phase' => 'week1', 
+                    'title' => 'Open a Bank Account (UBS/CS)', 
+                    'description' => 'Swiss banks require residence registration proof.',
+                    'official_link' => 'https://www.ubs.com/ch/en/swissbank/private/accounts/foreign-clients.html',
+                    'required_documents' => "Passport\nResidence Permit (or proof of application)\nEmployment Contract",
+                    'estimated_time' => '2-5 days',
+                    'mandatory' => true
+                ],
+                [
+                    'phase' => 'month1', 
+                    'title' => 'Halbtax Card', 
+                    'description' => 'Buy the SBB Half-Fare travelcard to significantly reduce travel costs.',
+                    'official_link' => 'https://www.sbb.ch/en/travelcards-and-tickets/travelcards/half-fare-travelcard.html',
+                    'required_documents' => "Passport\nSwissPass (if available)\nPayment method",
+                    'estimated_time' => 'Immediate (Digital)',
+                    'mandatory' => false
+                ],
+                [
+                    'phase' => 'month1', 
+                    'title' => 'Select Health Insurance (KVG)', 
+                    'description' => 'You have 3 months to select a mandatory basic insurance provider.',
+                    'official_link' => 'https://www.priminfo.admin.ch/',
+                    'required_documents' => "Passport\nResidence Registration",
+                    'estimated_time' => 'Ongoing',
+                    'mandatory' => true
+                ],
             ],
             'Malta' => [
-                ['phase' => 'week1', 'title' => 'Apply for e-Residence Card', 'description' => 'Your main identification at Identità (the Identity Agency).'],
-                ['phase' => 'week1', 'title' => 'Social Security Number', 'description' => 'Required for all employees and freelancers.'],
-                ['phase' => 'month1', 'title' => 'Open Bank Account (BOV/HSBC)', 'description' => 'Proof of address and e-residence application receipt usually required.'],
-                ['phase' => 'month1', 'title' => 'Tallinja Transport Card', 'description' => 'Register for the national bus card for subsidized fares.'],
+                [
+                    'phase' => 'week1', 
+                    'title' => 'Apply for e-Residence Card', 
+                    'description' => 'Your main identification at Identità (the Identity Agency).',
+                    'official_link' => 'https://identita.gov.mt/expatriates-unit-main-page/',
+                    'required_documents' => "Form ID 1A\nPassport Copies (all pages)\nRegistered Lease Agreement\nHealth Insurance Policy (€30k)",
+                    'estimated_time' => '2-4 months',
+                    'mandatory' => true
+                ],
+                [
+                    'phase' => 'week1', 
+                    'title' => 'Social Security Number', 
+                    'description' => 'Required for all employees and freelancers.',
+                    'official_link' => 'https://socialsecurity.gov.mt/en/',
+                    'required_documents' => "Passport\nJob Offer/Contract",
+                    'estimated_time' => '7-14 days',
+                    'mandatory' => true
+                ],
+                [
+                    'phase' => 'month1', 
+                    'title' => 'Open Bank Account (BOV/HSBC)', 
+                    'description' => 'Proof of address and e-residence application receipt usually required.',
+                    'official_link' => 'https://www.bov.com/content/applying-for-an-account',
+                    'required_documents' => "Passport\ne-Residence Application Receipt\nEmployment Letter",
+                    'estimated_time' => '2-4 weeks',
+                    'mandatory' => true
+                ],
+                [
+                    'phase' => 'month1', 
+                    'title' => 'Tallinja Transport Card', 
+                    'description' => 'Register for the national bus card for subsidized fares.',
+                    'official_link' => 'https://www.publictransport.com.mt/en/register-now',
+                    'required_documents' => "Passport\nMalta Address\nPassport Photo",
+                    'estimated_time' => '7-10 days',
+                    'mandatory' => false
+                ],
             ]
         ];
 
@@ -213,6 +321,129 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
             SettlementStep::updateOrCreate(
                 ['country_id' => $country->id, 'title' => $step['title']],
                 array_merge($step, ['order' => $idx])
+            );
+        }
+    }
+
+    private function seedResidency($country, $type)
+    {
+        $rules = [
+            'Poland' => [
+                'temporary_reqs' => [
+                    'permit_name' => 'Karta Czasowego Pobytu',
+                    'validity' => '1-3 years',
+                    'documents' => ['Annex 1 (Employer completion)', 'Medical Insurance', 'Lease Agreement', 'Tax Clearance']
+                ],
+                'permanent_reqs' => [
+                    'years' => 5,
+                    'income' => 'Stable and regular income',
+                    'language' => 'B1 Polish Certificate'
+                ],
+                'citizenship_reqs' => [
+                    'years' => '8-10 years total',
+                    'tests' => ['Polish Language (B1)', 'Civic/History Test']
+                ]
+            ],
+            'Switzerland' => [
+                'temporary_reqs' => [
+                    'permit_name' => 'Permit B (Residence)',
+                    'validity' => '1-5 years',
+                    'documents' => ['Employment Contract', 'Lease Agreement', 'Health Insurance Proof']
+                ],
+                'permanent_reqs' => [
+                    'years' => '5 (VINT) or 10 (Standard)',
+                    'income' => 'Financial independence',
+                    'language' => 'A2/B1 Local Language (German/French/Italian)'
+                ],
+                'citizenship_reqs' => [
+                    'years' => '10 years total',
+                    'tests' => ['C Permit required', 'Local Cantonal stay (2-5 yrs)', 'Integration test']
+                ]
+            ],
+            'Malta' => [
+                'temporary_reqs' => [
+                    'permit_name' => 'e-Residence Card / Single Permit',
+                    'validity' => '1 year (Renewable)',
+                    'documents' => ['Job Contract', 'Health Insurance', 'Police Conduct']
+                ],
+                'permanent_reqs' => [
+                    'years' => 5,
+                    'income' => 'Sufficient resources for family',
+                    'language' => 'Integration Course + Maltese Basics'
+                ],
+                'citizenship_reqs' => [
+                    'years' => '5-7 years residency',
+                    'tests' => ['Police clearance', 'Community integration']
+                ]
+            ]
+        ];
+
+        $data = $rules[$type] ?? null;
+        if ($data) {
+            ResidencyRule::updateOrCreate(
+                ['country_id' => $country->id],
+                $data
+            );
+        }
+    }
+
+    private function seedJobs($country, $type)
+    {
+        $platforms = [
+            'Poland' => [
+                ['name' => 'Pracuj.pl', 'url' => 'https://www.pracuj.pl', 'cat' => 'General', 'tips' => 'Largest portal in Poland. Use "Direct Apply" filters.'],
+                ['name' => 'LinkedIn Poland', 'url' => 'https://www.linkedin.com', 'cat' => 'Corporate/Tech', 'tips' => 'Crucial for multinational roles and networking.'],
+                ['name' => 'JustJoin.it', 'url' => 'https://justjoin.it', 'cat' => 'Tech/IT', 'tips' => 'Best for salary transparency and remote dev roles.'],
+            ],
+            'Switzerland' => [
+                ['name' => 'Jobs.ch', 'url' => 'https://www.jobs.ch', 'cat' => 'General', 'tips' => 'Market leader. Set up immediate match alerts.'],
+                ['name' => 'Jobup.ch', 'url' => 'https://www.jobup.ch', 'cat' => 'General (French regions)', 'tips' => 'Primary source for Geneva and Lausanne regions.'],
+                ['name' => 'SwissDevJobs.ch', 'url' => 'https://swissdevjobs.ch', 'cat' => 'Tech', 'tips' => 'Focuses on salary transparency and tech stacks.'],
+            ],
+            'Malta' => [
+                ['name' => 'Keepmeposted.com.mt', 'url' => 'https://www.keepmeposted.com.mt', 'cat' => 'General', 'tips' => 'Largest reach for local jobs in Malta.'],
+                ['name' => 'Jobsplus', 'url' => 'https://jobsplus.gov.mt', 'cat' => 'Gov/General', 'tips' => 'Mandatory registration for many work-study paths.'],
+                ['name' => 'Konnekt', 'url' => 'https://www.konnekt.com', 'cat' => 'Finance/Tech', 'tips' => 'Excellent for specialized roles in iGaming and Fintech.'],
+            ]
+        ];
+
+        foreach ($platforms[$type] ?? [] as $job) {
+            JobPlatform::updateOrCreate(
+                ['country_id' => $country->id, 'name' => $job['name']],
+                ['website_url' => $job['url'], 'category' => $job['cat'], 'tips' => $job['tips']]
+            );
+        }
+    }
+
+    private function seedCV($country, $type)
+    {
+        $cvs = [
+            'Poland' => [
+                'name' => 'Polish Professional CV',
+                'rules' => ['Photo expected', 'Age/DOB expected', 'GDPR/RODO clause mandatory', 'Polish for local firms, English for Tech'],
+                'structure' => ['Summary', 'Contact', 'Experience', 'Education', 'Skills', 'Languages', 'RODO Clause']
+            ],
+            'Switzerland' => [
+                'name' => 'Swiss Corporate CV',
+                'rules' => ['Photo Mandatory', 'DOB/Age Mandatory', 'Marital Status common', 'Arbeitszeugnis (Work Certificates) attached'],
+                'structure' => ['Contact & Profile', 'Core Competencies', 'Professional Experience', 'Education', 'Certifications', 'References']
+            ],
+            'Malta' => [
+                'name' => 'Maltese Standard CV',
+                'rules' => ['Photo NOT expected', 'Age NOT expected (UK style)', 'English language only', 'Europass format highly preferred'],
+                'structure' => ['Contact Info', 'Personal Profile', 'Employment History', 'Education & Training', 'Digital Skills', 'Interests']
+            ]
+        ];
+
+        $data = $cvs[$type] ?? null;
+        if ($data) {
+            CVTemplate::updateOrCreate(
+                ['country_id' => $country->id],
+                [
+                    'name' => $data['name'],
+                    'format_rules' => $data['rules'],
+                    'structure_json' => $data['structure']
+                ]
             );
         }
     }

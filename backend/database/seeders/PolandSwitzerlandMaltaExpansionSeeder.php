@@ -15,9 +15,38 @@ class PolandSwitzerlandMaltaExpansionSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->cleanupOldData();
+
         $this->seedPoland();
         $this->seedSwitzerland();
         $this->seedMalta();
+    }
+
+    private function cleanupOldData()
+    {
+        $countryCodes = ['PL', 'CH', 'MT'];
+        $countries = Country::whereIn('code', $countryCodes)->get();
+
+        foreach ($countries as $country) {
+            // Delete visa types that are not in our 2026 standardized list
+            // This prevents duplicates like "Poland.Business Harbour" vs "Skilled Worker Visa (National Type D)"
+            $standardNames = [
+                'Student Visa (Type D)',
+                'Skilled Worker Visa (National Type D)',
+                'Graduate Job Seeker Visa',
+                'Skilled Work (Permit B)',
+                'Nomad Residence Permit',
+                'Key Employee Initiative (KEI)'
+            ];
+
+            // Optional: If we want to be 100% sure costs are fresh, delete existing templates for these visa types
+            $visaTypes = VisaType::where('country_id', $country->id)->get();
+            foreach ($visaTypes as $vt) {
+                 if (!in_array($vt->name, $standardNames)) {
+                     $vt->delete(); // This deletes associated costs via CASCADE if set, or just gets rid of the record
+                 }
+            }
+        }
     }
 
     private function seedPoland()

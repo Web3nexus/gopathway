@@ -9,7 +9,10 @@ class VisaTypeController extends Controller
 {
     public function byCountry(Country $country)
     {
-        $visaTypes = $country->visaTypes()->where('is_active', true)->get();
+        $visaTypes = $country->visaTypes()
+            ->with(['costTemplates'])
+            ->where('is_active', true)
+            ->get();
         return VisaTypeResource::collection($visaTypes);
     }
 }

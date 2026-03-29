@@ -29,9 +29,9 @@ class ScholarshipController extends Controller
         }
 
         $user = auth('sanctum')->user();
-        $isPremium = $user && $user->isPremium();
+        $isPremium = ($user && $user->isPremium()) || ($user && $user->hasRole('admin'));
 
-        // Show full list only to premium subscribers
+        // Show full list to premium or admin
         if (!$isPremium) {
             $reason = $user ? 'upgrade' : 'guest'; // distinguish logged-in free vs guest
 

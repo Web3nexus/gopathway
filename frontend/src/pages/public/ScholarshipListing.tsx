@@ -36,8 +36,10 @@ export default function ScholarshipListing() {
     const fetchScholarships = async () => {
         try {
             const response = await api.get('/api/v1/scholarships');
+            const isAdmin = user?.roles?.some((role: any) => role.name === 'admin');
+            
             setScholarships(response.data.data);
-            setIsLimited(response.data.is_limited || false);
+            setIsLimited(!isAdmin && (response.data.is_limited || false));
             setLimitReason(response.data.reason || null);
             setTotalCount(response.data.total_count || 0);
         } catch (error) {

@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\ExpertPaymentController;
 use App\Http\Controllers\Api\SeoController;
 use App\Http\Controllers\Api\ScholarshipController;
 use App\Http\Controllers\Api\ScholarshipSourceController;
+use App\Http\Controllers\Admin\SystemHealthController;
 use App\Http\Controllers\HealthController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -281,8 +282,9 @@ Route::group(['prefix' => 'v1'], function () {
                         Route::put('profile', [\App\Http\Controllers\AuthController::class, 'updateProfile']);
                     });
 
-                    // Admin Dashboard Stats
+                    // Admin Dashboard Stats & Health
                     Route::get('dashboard/stats', [AdminDashboardController::class , 'stats']);
+                    Route::get('system/health', [SystemHealthController::class , 'index']);
 
                     // Professional Verifications
                     Route::get('verifications', [AdminVerificationController::class , 'index']);

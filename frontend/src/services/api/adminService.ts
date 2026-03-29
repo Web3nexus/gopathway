@@ -34,7 +34,8 @@ export const adminService = {
     deleteCostItem: (id: string) => api.delete(`/api/v1/admin/cost-items/${id}`).then(r => r.data.data),
 
     // Dashboard
-    getDashboardStats: () => api.get('/api/v1/admin/dashboard/stats').then(r => r.data), // Stats don't have data wrapper yet, and it's a single object
+    getDashboardStats: () => api.get('/api/v1/admin/dashboard/stats').then(r => r.data),
+    getSystemHealth: () => api.get('/api/v1/admin/system/health').then(r => r.data),
 
     // Users
     getUsers: (params?: { role?: string; search?: string }) =>

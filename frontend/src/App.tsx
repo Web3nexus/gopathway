@@ -68,6 +68,7 @@ import SubscriptionHistory from '@/pages/admin/SubscriptionHistory';
 import ScholarshipListing from '@/pages/public/ScholarshipListing';
 import ScholarshipManagement from '@/pages/admin/ScholarshipManagement';
 import SourceManagement from '@/pages/admin/SourceManagement';
+import SystemHealth from '@/pages/admin/SystemHealth';
 import SchoolExplorer from '@/pages/dashboard/SchoolExplorer';
 import ExpertMarketplace from '@/pages/marketplace/ExpertMarketplace';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -138,6 +139,7 @@ function App() {
                <Route path="/admin/subscriptions" element={<SubscriptionHistory />} />
               <Route path="/admin/scholarships" element={<ScholarshipManagement />} />
               <Route path="/admin/scholarship-sources" element={<SourceManagement />} />
+              <Route path="/admin/system-health" element={<SystemHealth />} />
               <Route path="/admin/profile" element={<AdminProfile />} />
             </Route>
           </Route>

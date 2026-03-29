@@ -1,4 +1,6 @@
 import { NavLink } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { adminService } from '@/services/api/adminService';
 import {
     Home,
     Globe,
@@ -19,14 +21,22 @@ import {
     User,
     X,
     Award,
-    Database
+    Database,
+    Activity
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 export function AdminSidebar({ mobile, onClose }: { mobile?: boolean, onClose?: () => void }) {
+    const { data: stats } = useQuery({
+        queryKey: ['admin-stats'],
+        queryFn: adminService.getDashboardStats,
+        refetchInterval: 30000,
+    });
+
     const routes = [
         { name: 'Admin Overview', path: '/securegate', icon: Home },
+        { name: 'System Health', path: '/admin/system-health', icon: Activity },
         { name: 'Destinations', path: '/admin/countries', icon: Globe },
         { name: 'Visa & Checklists', path: '/admin/visas', icon: FileCheck },
         { name: 'Cost Templates', path: '/admin/costs', icon: DollarSign },
@@ -42,7 +52,12 @@ export function AdminSidebar({ mobile, onClose }: { mobile?: boolean, onClose?: 
         { name: 'Residency & Career', path: '/admin/career', icon: Briefcase },
         { name: 'User Management', path: '/admin/users', icon: Users },
         { name: 'Expert Payouts', path: '/admin/expert-withdrawals', icon: DollarSign },
-        { name: 'Support Messages', path: '/admin/support', icon: MessageSquare },
+        { 
+            name: 'Support Messages', 
+            path: '/admin/support', 
+            icon: MessageSquare, 
+            badge: stats?.unattended_support > 0 ? stats.unattended_support : null 
+        },
         { name: 'SEO & Branding', path: '/admin/seo-settings', icon: Globe },
         { name: 'Email Management', path: '/admin/email-management', icon: Mail },
         { name: 'Scholarships', path: '/admin/scholarships', icon: Award },
@@ -91,8 +106,13 @@ export function AdminSidebar({ mobile, onClose }: { mobile?: boolean, onClose?: 
                             if (mobile && onClose) onClose();
                         }}
                     >
-                        <route.icon className="w-5 h-5" />
-                        {route.name}
+                        <route.icon className="w-5 h-5 shrink-0" />
+                        <span className="flex-1">{route.name}</span>
+                        {(route as any).badge && (
+                            <span className="inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold bg-rose-500 text-white rounded-full shrink-0">
+                                {(route as any).badge > 9 ? '9+' : (route as any).badge}
+                            </span>
+                        )}
                     </NavLink>
                 ))}
             </nav>

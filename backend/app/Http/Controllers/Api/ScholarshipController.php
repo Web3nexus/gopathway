@@ -14,7 +14,7 @@ class ScholarshipController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Scholarship::approved();
+        $query = Scholarship::approved()->with('country');
 
         if ($request->has('country_id')) {
             $query->where('country_id', $request->country_id);
@@ -28,7 +28,30 @@ class ScholarshipController extends Controller
             $query->where('funding_type', $request->funding_type);
         }
 
-        return $query->with('country')->latest()->paginate(20);
+        // Limit for guests
+        if (!auth('sanctum')->check()) {
+            $allApproved = $query->latest()->get();
+            
+            // Try to get unique countries first
+            $scholarships = $allApproved->unique('country_id')->take(6);
+            
+            // If we have fewer than 6 unique countries, fill with others
+            if ($scholarships->count() < 6) {
+                $scholarships = $allApproved->take(6);
+            }
+
+            return response()->json([
+                'data' => $scholarships->values(),
+                'is_limited' => true,
+                'total_count' => Scholarship::approved()->count()
+            ]);
+        }
+
+        $results = $query->latest()->paginate(20);
+        
+        return response()->json(array_merge($results->toArray(), [
+            'is_limited' => false
+        ]));
     }
 
     /**

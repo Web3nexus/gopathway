@@ -170,6 +170,7 @@ function App() {
               <Route path="/job-search" element={<JobSearchKit />} />
               <Route path="/cv-builder" element={<CvBuilder />} />
               <Route path="/residency" element={<ResidencyTracker />} />
+              <Route path="/dashboard/scholarships" element={<ScholarshipListing />} />
 
               {/* Professional Specific Routes */}
               <Route path="/professional/onboarding" element={<ProfessionalOnboarding />} />

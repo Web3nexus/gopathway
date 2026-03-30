@@ -115,7 +115,7 @@ export default function ScholarshipListing() {
                                         </div>
                                         <div className="flex items-center gap-2 text-sm text-slate-600">
                                             <Calendar className="w-4 h-4 text-slate-400" />
-                                            <span>Deadline: {s.deadline ? new Date(s.deadline).toLocaleDateString() : 'Rolling'}</span>
+                                            <span>Deadline: {s.deadline ? new Date(s.deadline).toLocaleDateString() : 'Anytime (Year-Round)'}</span>
                                         </div>
                                     </div>
                                     <Button asChild className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-6 rounded-xl shadow-lg hover:shadow-slate-200 transition-all">

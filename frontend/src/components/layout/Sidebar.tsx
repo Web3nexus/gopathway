@@ -28,7 +28,7 @@ export function Sidebar({ mobile, onClose }: { mobile?: boolean, onClose?: () =>
         { name: 'SOP Builder', path: '/sop-builder', icon: Sparkles, slug: 'sop-builder' },
         { name: 'Checklists', path: '/relocation-hub', icon: FileText, slug: 'settlement-checklist' },
         { name: 'School Explorer', path: '/school-explorer', icon: GraduationCap, slug: 'school-explorer' },
-        { name: 'Scholarships', path: '/scholarships', icon: Award, slug: 'scholarship-directory' },
+        { name: 'Scholarships', path: '/dashboard/scholarships', icon: Award, slug: 'scholarship-directory' },
         { name: 'Job Search', path: '/job-search', icon: Briefcase },
         { name: 'CV Builder', path: '/cv-builder', icon: FileText },
         { name: 'Residency Roadmap', path: '/residency', icon: Map },

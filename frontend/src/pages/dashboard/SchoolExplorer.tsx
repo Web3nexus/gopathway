@@ -349,7 +349,7 @@ export default function SchoolExplorer() {
                                                                             <InfoBlock icon={<Clock className="w-4 h-4 text-rose-500" />} label="Deadline" value={prog.application_deadline} />
                                                                         )}
                                                                         {prog.intake_periods && prog.intake_periods.length > 0 && (
-                                                                            <InfoBlock icon={<Award className="w-4 h-4 text-indigo-500" />} label="Intake" value={prog.intake_periods.join(', ')} />
+                                                                            <InfoBlock icon={<Award className="w-4 h-4 text-indigo-500" />} label="Start Dates" value={prog.intake_periods.join(', ')} />
                                                                         )}
                                                                         {prog.ielts_min && (
                                                                             <InfoBlock icon={<Languages className="w-4 h-4 text-emerald-500" />} label="IELTS Min" value={`${prog.ielts_min}`} />
